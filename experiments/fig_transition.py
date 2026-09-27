@@ -13,7 +13,7 @@ from uai.extremal import transition_constant, transition_upper
 
 kap = np.geomspace(1, 1000, 90)
 styles = {0.8: '-', 0.9: '--', 0.95: ':'}
-fig, ax = plt.subplots(figsize=(6.4, 2.6))
+fig, ax = plt.subplots(figsize=(6.4, 2.2))
 for q, ls in styles.items():
     L = np.array([transition_constant(q, k) for k in kap])
     U = np.array([transition_upper(q, k) for k in kap])

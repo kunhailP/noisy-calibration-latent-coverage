@@ -20,8 +20,9 @@ _BETA0 = 1e-7
 
 
 def _log_diff_exp(u, v):
-    """log(e^u - e^v) for u > v."""
-    return u + np.log1p(-np.exp(v - u))
+    """log(e^u - e^v) for u >= v; -inf when u = v (a zero difference, not an error)."""
+    with np.errstate(divide='ignore'):
+        return u + np.log1p(-np.exp(v - u))
 
 
 def noisy_cdf(c, a, b, beta, x):

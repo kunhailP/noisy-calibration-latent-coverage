@@ -8,17 +8,19 @@ Rules added here (the certified log-concave rule, noisy conformal and the shape-
 read from results/hetldc_synth.csv and results/shape_free.csv):
   cohen        deconvolution threshold of Cohen, Goldberger & Tirer (arXiv:2509.15120v2,
                Algorithm 1): masked ridge deconvolution of the histogram of V with the mixture
-               kernel (1/K) sum N(0, D_i), bin width 0.05, lambda = 0.01, threshold scanned down
+               kernel (1/K) sum N(0, D_i), bin width 0.01 (their default), lambda = 0.01, threshold scanned down
                from the marginal noisy conformal threshold in steps of 0.01 while the estimated
                clean coverage stays >= 0.9. No latent guarantee. With K = 110 most bins are
                empty and the masked fit collapses, so cohen_stable uses bin width 0.2 and fits
-               the empty bins as zeros (no mask); both are reported.
+               the empty bins as zeros (no mask); both are reported. Their method is
+               homoscedastic; the mixture kernel is our adaptation.
   latentcp     LatentCP single level (Zheng, Zhou & Zhu, arXiv:2608.03607, eqs 3-5), gamma =
                alpha/2: C = [-q, q] with q the noisy conformal threshold at level 1 - gamma, and
                U(d) = {w : p_gamma(w, d) >= 1 - gamma/alpha}. The latent set depends on the new
-               unit's kernel d; an unsampled area has none, so d_new is drawn uniformly from the
-               calibration D_i (exchangeability as in their Assumption 1) and coverage and width
-               average over that draw. Marginal guarantee.
+               unit's kernel d; an unsampled area has none, so d_new is drawn afresh from the
+               distribution that generated the D_i (400 draws per data set; exchangeability as in
+               their Assumption 1) and coverage and width average over that draw. Marginal
+               guarantee.
   latentcp_tuned, latentcp_multi
                the tuned single level and the two-level (Multi-gamma, eq 6) versions, tuned on a
                random half of the data (their Algorithms 1-2, criterion: mean width on the tuning
@@ -27,6 +29,10 @@ read from results/hetldc_synth.csv and results/shape_free.csv):
                least 1 - gamma with probability 0.95 (Beta quantile, as for the other PAC rules);
                then pr(W_new not in U | data) <= alpha on that event (our adaptation, not in the
                paper). gamma = 0.05.
+  noisy_threshold, simple_shrink
+               the analytic rules of Proposition 4 and Corollary 2 (uai.procedures): the noisy
+               threshold at rank 105, valid for unknown heterogeneous variances, and
+               max{0, T - 0.114 D_min^{1/2}}.
 
   python experiments/e34_competitors.py [reps] [procs]
 Writes results/competitors.csv and results/competitors_summary.csv.
@@ -44,6 +50,7 @@ from scipy.special import ndtr
 from _common import RESULTS
 from e12_conditional_synth import draw
 from uai.latent_laws import cdf
+from uai.procedures import noisy_threshold_halfwidth, simple_shrink_halfwidth
 
 warnings.filterwarnings('ignore')
 K, DBAR, ALPHA, DELTA = 110, 0.577, 0.10, 0.05
@@ -122,7 +129,12 @@ def radius_multi(d, qs, gammas, weights):
     return brentq(lambda w: e(w) - 1 / ALPHA, 0, max(qs) + 10 * np.sqrt(d))
 
 
-def latentcp_tuned(V, D, rng, multi):
+def fresh_d(rng, m=400):
+    """New units' noise variances from the generating distribution of the D_i."""
+    return DBAR * rng.lognormal(0, .7, m) / np.exp(.7**2 / 2)
+
+
+def latentcp_tuned(V, D, rng, multi, Dnew):
     idx = rng.permutation(K); tun, cal = idx[:K // 2], idx[K // 2:]
     St, Sc = np.abs(V[tun]), np.abs(V[cal]); m = len(tun)
     grid = [j / (m + 1) for j in range(1, m + 1) if 1 / (m + 1) <= j / (m + 1) <= ALPHA * 0.999]
@@ -137,7 +149,7 @@ def latentcp_tuned(V, D, rng, multi):
     best = min(cands, key=lambda c: (width(c[0], c[1], St, D[tun]), c[0][0]))
     gs, ws = best
     qs = [conformal_q(Sc, 1 - g) for g in gs]
-    return np.array([radius_multi(d, qs, gs, ws) for d in D])      # one radius per d_new
+    return np.array([radius_multi(d, qs, gs, ws) for d in Dnew])   # one radius per d_new
 
 
 def cov_of(shape, s):
@@ -152,15 +164,18 @@ def one(args):
     rng = np.random.default_rng(seed + 7)
     S = np.abs(V)
     out = {}
-    out['cohen'] = cov_of(shape, cohen(V, D))
+    out['cohen'] = cov_of(shape, cohen(V, D, h=0.01))
     out['cohen_stable'] = cov_of(shape, cohen(V, D, h=0.2, masked=False))
+    Dnew = fresh_d(rng)
     g = ALPHA / 2
     q = conformal_q(S, 1 - g)
-    out['latentcp'] = cov_of(shape, np.array([radius_single(d, q, g) for d in D]))
-    out['latentcp_tuned'] = cov_of(shape, latentcp_tuned(V, D, rng, multi=False))
-    out['latentcp_multi'] = cov_of(shape, latentcp_tuned(V, D, rng, multi=True))
+    out['latentcp'] = cov_of(shape, np.array([radius_single(d, q, g) for d in Dnew]))
+    out['latentcp_tuned'] = cov_of(shape, latentcp_tuned(V, D, rng, False, Dnew))
+    out['latentcp_multi'] = cov_of(shape, latentcp_tuned(V, D, rng, True, Dnew))
     qp = pac_q(S, 1 - g)
-    out['latentcp_pac'] = cov_of(shape, np.array([radius_single(d, qp, g) for d in D]))
+    out['latentcp_pac'] = cov_of(shape, np.array([radius_single(d, qp, g) for d in Dnew]))
+    out['noisy_threshold'] = cov_of(shape, noisy_threshold_halfwidth(V))
+    out['simple_shrink'] = cov_of(shape, simple_shrink_halfwidth(V, D.min()))
     return [dict(shape=shape, seed=seed, method=k, cov=c, width=w) for k, (c, w) in out.items()]
 
 

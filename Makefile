@@ -11,10 +11,12 @@ quick:
 	$(PY) experiments/e03_lc_constants.py
 	$(PY) experiments/e32_centering.py
 	$(PY) experiments/e33_edge.py $(PROCS)
+	$(PY) experiments/e35_mean_location.py
 
 figures:
 	$(PY) experiments/fig_transition.py
 	$(PY) experiments/fig_paper.py
+	$(PY) experiments/fig_mean_location.py
 
 # ball-arithmetic certificates for c_q and C_{p,q} (Corollary 1, Lemma 1)
 constants:

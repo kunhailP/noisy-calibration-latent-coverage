@@ -366,3 +366,38 @@ def test_centred_bound_bilc_and_symmetric_counterexample():
     r0 = brentq(lambda r: cdf(r, 0) - cdf(-r, 0) - 0.7, 0, 3, xtol=1e-13)
     r = brentq(lambda r: cdf(r, 1e-5) - cdf(-r, 1e-5) - 0.7, 0, 3, xtol=1e-13)
     assert r < r0 - 1e-7                                     # widening needed although symmetric
+
+
+def _exp_tail_noisy_cdf(y, b, u, sigma):
+    """pr(b - E_u + sigma Z <= y), E_u exponential of rate u."""
+    from scipy.special import ndtr
+    return ndtr((y - b) / sigma) + np.exp(-u * (b - y) + u * u * sigma * sigma / 2) * ndtr((b - y) / sigma - u * sigma)
+
+
+def test_noisy_threshold_valid_for_unknown_variances_population():
+    """Proposition 4 at population level: take the boundary-layer law that needs widening at
+    x = 1e-4 (latent coverage of [-1, 1] below 0.9, noisy coverage 0.9). Its noisy coverage must
+    stay below the certified level 0.901 for every Gaussian noise variance, so no mixture of
+    variances can reach 0.901 either."""
+    from scipy.optimize import brentq
+    from uai.extremal import tail_optimum
+    u, _, _ = tail_optimum(0.9)
+    h = 1e-2                                                     # x = 1e-4
+    cov = lambda b, d: (_exp_tail_noisy_cdf(0.0, b, u, np.sqrt(d) / h)
+                        - _exp_tail_noisy_cdf(-2 / h, b, u, np.sqrt(d) / h))   # W = 1 + h(b - E_u)
+    b = brentq(lambda b: cov(b, h * h) - 0.9, -5, 60)
+    latent = np.exp(-u * b) - np.exp(u * (-2 / h - b))           # pr(|W| <= 1)
+    assert latent < 0.9
+    assert max(cov(b, d) for d in np.geomspace(1e-10, 1.0, 400)) < 0.901
+
+
+def test_analytic_rules_values():
+    from uai.procedures import noisy_threshold_halfwidth, pac_rank, simple_shrink_halfwidth
+    rng = np.random.default_rng(3)
+    D = rng.uniform(0.2, 1.0, 110)
+    V = rng.normal(size=110) + rng.normal(0, np.sqrt(D))
+    k = pac_rank(110, 0.9, 0.05)
+    T = np.sort(np.abs(V))[k - 1]
+    assert k == 105 and noisy_threshold_halfwidth(V) == T
+    assert abs(simple_shrink_halfwidth(V, D.min()) - (T - 0.114 * np.sqrt(D.min()))) < 1e-12
+    assert noisy_threshold_halfwidth(V, k=100) == np.inf        # level below the certified 0.901

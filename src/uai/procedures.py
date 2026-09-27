@@ -15,14 +15,15 @@ _FEASIBLE_X = 0.3696          # above this, P(|e| <= t) < .9: data contradict th
 
 
 class ShrinkTable:
-    """Conservative lookup of the shrink function r(x) = R_{1-a,1-a}(x).
+    """Lookup of grid values of the shrink function r(x) = R_{1-a,1-a}(x). The values are
+    converged maxima over the extremal family, hence lower bounds of R: not a guaranteed radius.
+    For guaranteed radii use CertifiedShrinkTable or the analytic rules below.
 
     alpha = '0.1' uses the exact two-dimensional reduction (results/r_exact_p0.9_q0.9.csv, E16,
     plus the fine small-x grid of E19). r rises for small x (r > 1: widen) to a peak near
     x = .0023 and then decreases. At or right of the peak the value at the grid point at or
     below x is >= r(x); left of it the overall maximum is returned. Other alphas use the E04
-    differential-evolution table (same lookup, first value below the grid). Table values are
-    converged grid maxima, not certified upper bounds.
+    differential-evolution table (same lookup, first value below the grid).
     """
 
     def __init__(self, alpha='0.1', path=ROOT / 'results' / 'r_table.json'):
@@ -241,7 +242,11 @@ def quantised_kernel(xs, n_pts=32):
 
 
 def hetldc_halfwidth(V, D, k=None, q=0.90, delta=0.05, n_pts=32):
-    """Heterogeneous-noise LDC with an order-statistic threshold T = |V|_(k).
+    """Grid value of the heterogeneous-noise radius: T times a lower bound of R^mix, so NOT a
+    guaranteed radius. The guaranteed version is `hetldc_certified`; the analytic rules
+    `noisy_threshold_halfwidth` and `simple_shrink_halfwidth` need no numerical certificate.
+
+    Heterogeneous-noise LDC with an order-statistic threshold T = |V|_(k).
 
     Let Fbar be the average CDF of |V_i| (independent, non-identical because D_i differ). For
     t_p = Fbar^{-1}(p), {Fbar(T) < p} = {#{|V_i| <= t_p} >= k}; the count is Poisson-binomial
@@ -307,3 +312,54 @@ def shape_free_markov(V, D, k, q=0.90, delta=0.05):
         return np.inf, p_k, T
     r = brentq(lambda w: gbar(w) - thr, 0.0, 1 + 10 * sd.max(), xtol=1e-12)
     return T * r, p_k, T
+
+
+# ---------------------------------------------------------------------------------------------
+# Analytic rules for heterogeneous, possibly unknown, Gaussian noise variances (Proposition 4 and
+# Corollary 2 of the paper). Both rest only on the order-statistic event of Proposition 3 and on
+# ball-arithmetic certificates of the one-sided constants (results/interval_constants.json).
+# ---------------------------------------------------------------------------------------------
+
+# levels p with C_{p,q} <= 0 certified in ball arithmetic (E27): noisy coverage >= p at threshold t
+# implies latent coverage >= q at t, for every Gaussian noise variance
+CERTIFIED_SLACK_LEVEL = {0.8: 0.8050, 0.9: 0.9010, 0.95: 0.9502}
+# certified C_{p,q} <= value < 0 (E27): latent radius <= t + value * D^{1/2}
+CERTIFIED_SHRINK = {0.9: [(0.9036, -0.057), (0.9068, -0.114)]}
+
+
+def _order_statistic_level(V, k, delta):
+    V = np.asarray(V)
+    K = len(V)
+    p_k = float(stats.beta.ppf(delta, k, K + 1 - k))
+    assert k >= K * p_k + 1, 'Hoeffding comparison needs k >= K p + 1'
+    return np.sort(np.abs(V))[k - 1], p_k
+
+
+def noisy_threshold_halfwidth(V, k=None, q=0.90, delta=0.05):
+    """The noisy threshold T = |V|_(k) itself, valid for the latent target when the noise
+    variances are heterogeneous and unknown.
+
+    On the event of Proposition 3, the average over i of pr(|W + e_i| <= T) is at least p_k. If
+    pr(|W| <= T) < q, the slack corollary (C_{p,q} <= 0 at p = CERTIFIED_SLACK_LEVEL[q]) forces
+    every term below that level, hence their average too. So p_k >= that level gives
+    pr_D{pr(|W_new| <= T | D) >= q} >= 1 - delta for every bi-log-concave G, whatever the D_i.
+    Returns T, or inf if the rank does not reach the certified level."""
+    K = len(V)
+    k = pac_rank(K, q, delta) if k is None else k
+    T, p_k = _order_statistic_level(V, k, delta)
+    return T if p_k >= CERTIFIED_SLACK_LEVEL[q] else np.inf
+
+
+def simple_shrink_halfwidth(V, D_min, k=None, q=0.90, delta=0.05):
+    """max{0, T + C sqrt(D_min)} with the certified C = C_{p', q} < 0 for the largest certified
+    p' <= p_k. On the event of Proposition 3 some area i has pr(|W + e_i| <= T) >= p_k >= p',
+    so the transfer bound R_{p',q}(x) <= 1 + C x^{1/2} gives Q_q(|W|) <= T + C D_i^{1/2}
+    <= T + C D_min^{1/2}, as C < 0. D_min is a known lower bound on the D_i. Falls back to
+    `noisy_threshold_halfwidth` if no negative constant is certified at level p_k."""
+    K = len(V)
+    k = pac_rank(K, q, delta) if k is None else k
+    T, p_k = _order_statistic_level(V, k, delta)
+    usable = [c for p, c in CERTIFIED_SHRINK.get(q, []) if p <= p_k]
+    if not usable:
+        return noisy_threshold_halfwidth(V, k, q, delta)
+    return max(0.0, T + min(usable) * np.sqrt(D_min))
