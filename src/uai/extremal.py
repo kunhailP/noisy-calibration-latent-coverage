@@ -287,8 +287,8 @@ def shape_values(p, q, beta, ells, xs, w=None, m=256, iters=55):
 
 # ---------------------------------------------------------------------------------------------
 # Scaled one-sided problem c_{p,q} = sup{ F_Y^{-1}(q) : Y log-concave, P(Y + Z <= 0) >= p }.
-# Lemma A: the sup is over exponential tails Y = b - E, E ~ Exp(u). Theorem 5: for every x,
-# R_{q,q}(x) <= 1 + c_q sqrt(x); Theorem 5+: R_{p,q}(x) <= 1 + C_{p,q} sqrt(x).
+# Lemma 1: the sup is over exponential tails Y = b - E, E ~ Exp(u). Theorem 1: for every x,
+# R_{q,q}(x) <= 1 + c_q sqrt(x); the p >= q bound of Section 4.1: R_{p,q}(x) <= 1 + C_{p,q} sqrt(x).
 # ---------------------------------------------------------------------------------------------
 
 def exp_tail_mass(b, u):
@@ -307,7 +307,7 @@ def exp_tail_value(p, q, u):
 
 
 def one_sided_constant(p, q, log_u=np.linspace(np.log(1e-3), np.log(200), 160)):
-    """c_{p,q} by Lemma A: a scan over the rate u, polished around the best grid point.
+    """c_{p,q} by Lemma 1: a scan over the rate u, polished around the best grid point.
     The u -> infinity end is the point mass, value -Phi^{-1}(p)."""
     if p >= 1:
         return -np.inf
@@ -323,7 +323,7 @@ def one_sided_constant(p, q, log_u=np.linspace(np.log(1e-3), np.log(200), 160)):
 
 
 def split_constant(p, q, n=21):
-    """C_{p,q} of Theorem 5+: worst split of the noisy failure 1 - p between the two ends,
+    """C_{p,q} of the p >= q bound of Section 4.1: worst split of the noisy failure 1 - p between the two ends,
     best split of the latent failure 1 - q. Symmetric in the two ends."""
     worst = -np.inf
     for a_r in np.linspace(0, (1 - p) / 2, n):
@@ -374,7 +374,7 @@ def transition_constant(q, kappa, log_u=np.linspace(np.log(1e-6), np.log(50), 40
 
 
 def transition_upper(q, kappa):
-    """U_q(kappa) = min{c_q, sqrt(kappa^2 + 1) - kappa}: Theorem 5 and the mean-offset bound."""
+    """U_q(kappa) = min{c_q, sqrt(kappa^2 + 1) - kappa}: Theorem 1 and the mean-offset bound."""
     return min(tail_optimum(q)[1], np.sqrt(kappa * kappa + 1) - kappa)
 
 

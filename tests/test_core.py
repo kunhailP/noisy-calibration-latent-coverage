@@ -82,7 +82,7 @@ def test_latent_laws_match_e12_draws():
     from uai.latent_laws import cdf, matched_scales
     rng = np.random.default_rng(3)
     grid = np.linspace(-3, 3, 61)
-    for k in SHAPES:
+    for k in list(SHAPES) + ['bimodal_blc']:
         w = np.sort(draw(k, 400000, rng))
         emp = np.searchsorted(w, grid, side='right') / w.size
         assert np.max(np.abs(emp - cdf(k, grid))) < 0.004, k
@@ -91,7 +91,7 @@ def test_latent_laws_match_e12_draws():
 
 
 def test_small_noise_upper_bound_all_x():
-    """Theorem 5: R_{q,q}(x) <= 1 + c_q sqrt(x); grid values of R are lower bounds of R."""
+    """Theorem 1: R_{q,q}(x) <= 1 + c_q sqrt(x); grid values of R are lower bounds of R."""
     from uai.extremal import R_grid, one_sided_constant
     cq = one_sided_constant(.9, .9)
     assert abs(cq - 0.0190618) < 1e-6
@@ -102,7 +102,7 @@ def test_small_noise_upper_bound_all_x():
 
 
 def test_box_bounds_are_sound():
-    """Proposition 10: every law inside a box obeys the box's noisy upper / latent lower bound."""
+    """Box bounds of Supplementary Section S3: every law inside a box obeys the box's noisy upper / latent lower bound."""
     from uai.certify import _cdf_latent, _cdf_noisy, box_status
     rng = np.random.default_rng(3)
     for _ in range(300):
@@ -224,7 +224,7 @@ def test_quantised_kernel_merges_equal_variances():
 
 
 def test_scale_lemma_on_grid_values():
-    """Lemma 12: R(lambda x) <= sqrt(lambda) R(x), checked on converged grid values."""
+    """Supplementary Lemma S2: R(lambda x) <= sqrt(lambda) R(x), checked on converged grid values."""
     from uai.procedures import shrink_mix
     xs, w = np.array([.05, .15]), np.array([.5, .5])
     r1 = shrink_mix(.9036, .9, xs, wts=w)
@@ -401,3 +401,41 @@ def test_analytic_rules_values():
     assert k == 105 and noisy_threshold_halfwidth(V) == T
     assert abs(simple_shrink_halfwidth(V, D.min()) - (T - 0.114 * np.sqrt(D.min()))) < 1e-12
     assert noisy_threshold_halfwidth(V, k=100) == np.inf        # level below the certified 0.901
+
+
+def test_certified_rank_and_analytic_rule_defaults():
+    """Default rank of the analytic rules reaches the certified slack level and the Hoeffding
+    condition; the usual PAC rank can fall short (K = 46, 1000), and small K has no rank."""
+    from scipy import stats
+    from uai.procedures import (CERTIFIED_SLACK_LEVEL, certified_rank, noisy_threshold_halfwidth,
+                                pac_rank, simple_shrink_halfwidth)
+    assert [certified_rank(K) for K in (20, 28, 29, 46, 110, 1000)] == [None, None, 29, 46, 105, 917]
+    assert pac_rank(46, .9, .05) == 45 and pac_rank(1000, .9, .05) == 916
+    rng = np.random.default_rng(5)
+    for K in (20, 28):
+        V = rng.normal(size=K)
+        assert noisy_threshold_halfwidth(V) == np.inf and simple_shrink_halfwidth(V, .1) == np.inf
+    for K in (29, 46, 110, 1000):
+        V = rng.normal(size=K)
+        k = certified_rank(K)
+        p_k = stats.beta.ppf(.05, k, K + 1 - k)
+        assert p_k >= CERTIFIED_SLACK_LEVEL[.9] and k >= K * p_k + 1
+        T = np.sort(np.abs(V))[k - 1]
+        assert noisy_threshold_halfwidth(V) == T and simple_shrink_halfwidth(V, .1) <= T
+
+
+def test_bimodal_simulation_law_is_bilogconcave_not_logconcave():
+    """The Table 1 law `bimodal_blc`: two modes, f' F <= f^2 and -f' (1 - F) <= f^2 (bi-log-
+    concavity, Duembgen et al. 2017), and log f not concave."""
+    from scipy.stats import norm
+    from uai.latent_laws import BIMODAL, cdf
+    p, m1, m2, s = BIMODAL
+    x = np.linspace(-8, 8, 400001)
+    f = p * norm.pdf(x, m1, s) + (1 - p) * norm.pdf(x, m2, s)
+    fp = -(p * norm.pdf(x, m1, s) * (x - m1) + (1 - p) * norm.pdf(x, m2, s) * (x - m2)) / s**2
+    F = cdf('bimodal_blc', x)
+    S = p * norm.sf(x, m1, s) + (1 - p) * norm.sf(x, m2, s)      # 1 - F without cancellation
+    assert np.all(fp * F - f * f <= 0) and np.all(-fp * S - f * f <= 0)
+    assert np.sum(np.diff(np.sign(np.diff(f))) < 0) == 2
+    assert np.max(np.diff(np.log(f), 2)) > 0
+    assert abs(p * m1 + (1 - p) * m2) < 1e-12 and abs(s**2 + p * m1**2 + (1 - p) * m2**2 - 1) < 1e-12

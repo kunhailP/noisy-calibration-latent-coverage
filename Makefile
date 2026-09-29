@@ -1,7 +1,7 @@
 PY ?= python3
 PROCS ?= 8
 
-.PHONY: test quick figures constants certified simulations comparison estimated apipop supplement-extras paper all
+.PHONY: test quick edge figures constants certified simulations table1-extra-laws comparison estimated apipop supplement-extras paper all
 
 test:
 	$(PY) -m pytest -q
@@ -10,8 +10,11 @@ test:
 quick:
 	$(PY) experiments/e03_lc_constants.py
 	$(PY) experiments/e32_centering.py
-	$(PY) experiments/e33_edge.py $(PROCS)
 	$(PY) experiments/e35_mean_location.py
+
+# edge constants M_q near the feasibility edge (not in the manuscript; slow)
+edge:
+	$(PY) experiments/e33_edge.py $(PROCS)
 
 figures:
 	$(PY) experiments/fig_transition.py
@@ -36,6 +39,12 @@ simulations:
 	$(PY) experiments/e20_hetldc_synth.py 150 $(PROCS)
 	$(PY) experiments/e31_shape_free.py
 	$(PY) experiments/e28_level_decomposition.py
+
+# the last three laws of Table 1 (hours; merged into the existing results)
+table1-extra-laws:
+	$(PY) experiments/e20_hetldc_synth.py 150 $(PROCS) shapes=trunc_exp,bimodal_blc,t3_not_LC
+	$(PY) experiments/e31_shape_free.py
+	$(PY) experiments/e34_competitors.py 150 $(PROCS) shapes=trunc_exp,bimodal_blc,t3_not_LC
 
 # LatentCP and deconvolution conformal on the data sets of Table 1 (minutes)
 comparison:
@@ -63,4 +72,4 @@ paper:
 	cd paper && pdflatex main && bibtex main && pdflatex main && pdflatex main
 	cd paper && pdflatex supplement && bibtex supplement && pdflatex supplement && pdflatex supplement
 
-all: quick figures constants certified simulations comparison estimated apipop supplement-extras paper
+all: quick edge figures constants certified simulations comparison estimated apipop supplement-extras paper

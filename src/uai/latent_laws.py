@@ -26,6 +26,24 @@ def _trunc_exp(x):
     return np.expm1(_TE_B * y) / np.expm1(_TE_B)
 
 
+def _bimodal_params(p=0.4, ratio=2.5):
+    """Mixture p N(m1, s^2) + (1 - p) N(m2, s^2) with mean 0, variance 1 and separation
+    (m2 - m1)/s = ratio. For p = 0.4 it is bimodal for ratio above about 2.1 and bi-log-concave
+    up to about 2.55 (f' F <= f^2 and -f' (1 - F) <= f^2 checked on a grid, tests); it is not
+    log-concave."""
+    d = ratio / np.sqrt(1 + p * (1 - p) * ratio**2)          # m2 - m1 after standardisation
+    s = d / ratio
+    return p, -(1 - p) * d, p * d, s
+
+
+BIMODAL = _bimodal_params()
+
+
+def _bimodal(x):
+    p, m1, m2, s = BIMODAL
+    return p * special.ndtr((x - m1) / s) + (1 - p) * special.ndtr((x - m2) / s)
+
+
 LAWS = {
     'normal': lambda x: special.ndtr(x),
     'shifted_normal': lambda x: special.ndtr(x - 0.3),
@@ -34,6 +52,7 @@ LAWS = {
     'trunc_laplace': _trunc_laplace,
     'trunc_exp': _trunc_exp,
     't3_not_LC': lambda x: stats.t.cdf(np.sqrt(3) * x, 3),
+    'bimodal_blc': _bimodal,
 }
 
 

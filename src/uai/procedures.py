@@ -16,8 +16,9 @@ _FEASIBLE_X = 0.3696          # above this, P(|e| <= t) < .9: data contradict th
 
 class ShrinkTable:
     """Lookup of grid values of the shrink function r(x) = R_{1-a,1-a}(x). The values are
-    converged maxima over the extremal family, hence lower bounds of R: not a guaranteed radius.
-    For guaranteed radii use CertifiedShrinkTable or the analytic rules below.
+    converged maxima over the extremal family, hence lower bounds of R: not a valid radius.
+    For valid radii use the analytic rules below (proved, Arb-certified constants) or
+    CertifiedShrinkTable (numerically computed upper bounds, double precision).
 
     alpha = '0.1' uses the exact two-dimensional reduction (results/r_exact_p0.9_q0.9.csv, E16,
     plus the fine small-x grid of E19). r rises for small x (r > 1: widen) to a peak near
@@ -53,11 +54,12 @@ class ShrinkTable:
 
 
 class CertifiedShrinkTable:
-    """Certified upper bound U(x) >= R_{p,.9}(x) for p in {.90, .9036, .9068} (E24).
+    """Numerically certified upper bound U(x) >= R_{p,.9}(x) for p in {.90, .9036, .9068} (E24):
+    double-precision branch and bound, not interval arithmetic (see README, Precision).
 
     Grid points x_i >= .002 carry branch-and-bound certificates U_i (`uai.certify`). For any x
     the lookup returns min over x_i <= x of U_i + c_q sqrt(x - x_i) (Supplementary Proposition S1),
-    together with the closed bound of Theorem 5 (p = q: 1 + c_q sqrt x) or Theorem 5+
+    together with the closed bound of Theorem 1 (p = q: 1 + c_q sqrt x) or the p >= q bound of Section 4.1
     (p = .9036, .9068: 1 + C sqrt x, C = -.057, -.114). The constants are proved upper bounds in ball
     arithmetic (E27, `uai.interval`). Above the feasibility
     edge (P(|e| <= 1) < p) the data contradict the noise level and 1 is returned, as in
@@ -89,7 +91,7 @@ class CertifiedShrinkTable:
         """Certified upper bound of sup{R(x) : x_low <= x < x_edge}, for use when only a lower
         bound x_low of the scaled noise variance is known. R is not monotone in x (it rises for
         small x when p = q), so the value at x_low alone is not enough. Between grid points
-        Proposition 9 gives R(x) <= U_j + c_q sqrt(x_{j+1} - x_j) on [x_j, x_{j+1}], and below the
+        Supplementary Proposition S1 gives R(x) <= U_j + c_q sqrt(x_{j+1} - x_j) on [x_j, x_{j+1}], and below the
         first grid point the closed bound 1 + C sqrt(x) is monotone, so its ends suffice."""
         if x_low >= self.x_edge:
             return 1.0
@@ -148,7 +150,7 @@ def pac_rank(K, level=0.90, delta=0.05):
     """Smallest k with P(Beta(k, K+1-k) >= level) >= 1 - delta. For K i.i.d. scores with a
     continuous law, the k-th order statistic then has coverage >= level for a new independent
     score, conditionally on the calibration sample, with probability >= 1 - delta. (With
-    independent non-identical scores see Proposition 7 / `hetldc_parts`, which needs
+    independent non-identical scores see Proposition 3 / `hetldc_parts`, which needs
     k >= K p + 1; exchangeability alone gives only the marginal guarantee.)"""
     for k in range(1, K + 1):
         if stats.beta.sf(level, k, K + 1 - k) >= 1 - delta:
@@ -243,8 +245,9 @@ def quantised_kernel(xs, n_pts=32):
 
 def hetldc_halfwidth(V, D, k=None, q=0.90, delta=0.05, n_pts=32):
     """Grid value of the heterogeneous-noise radius: T times a lower bound of R^mix, so NOT a
-    guaranteed radius. The guaranteed version is `hetldc_certified`; the analytic rules
-    `noisy_threshold_halfwidth` and `simple_shrink_halfwidth` need no numerical certificate.
+    valid radius. `hetldc_certified` returns a numerically computed upper bound of R^mix
+    (double precision, not interval arithmetic); the analytic rules `noisy_threshold_halfwidth`
+    and `simple_shrink_halfwidth` rest on proofs and Arb-certified constants only.
 
     Heterogeneous-noise LDC with an order-statistic threshold T = |V|_(k).
 
@@ -275,7 +278,8 @@ def hetldc_parts(V, D, k=None, q=0.90, delta=0.05, n_pts=32):
 
 def hetldc_certified(V, D, k=None, q=0.90, delta=0.05, n_pts=32, parts=None,
                      tols=(1e-3, 3e-3, 1e-2, 3e-2, 1e-1)):
-    """HetLDC with a certified radius: the smallest R (1 + tol) that the branch and bound of
+    """HetLDC with a numerically certified radius (double-precision closed forms, margin 1e-9;
+    not interval arithmetic): the smallest R (1 + tol) that the branch and bound of
     `uai.certify` clears for the mixture kernel at level p_k - eps. If none clears, the
     shape-free union bound with the largest D is returned. Returns (half-width, tol);
     tol is nan for the fallback."""
@@ -327,6 +331,20 @@ CERTIFIED_SLACK_LEVEL = {0.8: 0.8050, 0.9: 0.9010, 0.95: 0.9502}
 CERTIFIED_SHRINK = {0.9: [(0.9036, -0.057), (0.9068, -0.114)]}
 
 
+def certified_rank(K, q=0.90, delta=0.05, level=None):
+    """Smallest rank k whose order-statistic level p_k (the delta-quantile of Beta(k, K + 1 - k))
+    reaches `level` (default: the certified slack level CERTIFIED_SLACK_LEVEL[q]) and satisfies
+    the Hoeffding condition k >= K p_k + 1 of Proposition 3. None if no rank qualifies (for
+    q = .9 and delta = .05 this happens exactly when K <= 28). The usual PAC rank
+    (`pac_rank`, level q) can fall short: K = 46 gives rank 45 with p_k = .90098 < .901."""
+    level = CERTIFIED_SLACK_LEVEL[q] if level is None else level
+    for k in range(1, K + 1):
+        p_k = float(stats.beta.ppf(delta, k, K + 1 - k))
+        if p_k >= level and k >= K * p_k + 1:
+            return k
+    return None
+
+
 def _order_statistic_level(V, k, delta):
     V = np.asarray(V)
     K = len(V)
@@ -337,27 +355,33 @@ def _order_statistic_level(V, k, delta):
 
 def noisy_threshold_halfwidth(V, k=None, q=0.90, delta=0.05):
     """The noisy threshold T = |V|_(k) itself, valid for the latent target when the noise
-    variances are heterogeneous and unknown.
+    variances are heterogeneous and unknown (Proposition 4).
 
     On the event of Proposition 3, the average over i of pr(|W + e_i| <= T) is at least p_k. If
-    pr(|W| <= T) < q, the slack corollary (C_{p,q} <= 0 at p = CERTIFIED_SLACK_LEVEL[q]) forces
-    every term below that level, hence their average too. So p_k >= that level gives
+    pr(|W| <= T) < q, Corollary 1 (C_{p,q} <= 0 at p = CERTIFIED_SLACK_LEVEL[q]) forces every
+    term below that level, hence their average too. So p_k >= that level gives
     pr_D{pr(|W_new| <= T | D) >= q} >= 1 - delta for every bi-log-concave G, whatever the D_i.
-    Returns T, or inf if the rank does not reach the certified level."""
+    The default rank is `certified_rank`. Returns inf if no rank reaches the certified level
+    (K too small) or if a rank k given by the caller does not."""
     K = len(V)
-    k = pac_rank(K, q, delta) if k is None else k
+    k = certified_rank(K, q, delta) if k is None else k
+    if k is None:
+        return np.inf
     T, p_k = _order_statistic_level(V, k, delta)
     return T if p_k >= CERTIFIED_SLACK_LEVEL[q] else np.inf
 
 
 def simple_shrink_halfwidth(V, D_min, k=None, q=0.90, delta=0.05):
-    """max{0, T + C sqrt(D_min)} with the certified C = C_{p', q} < 0 for the largest certified
-    p' <= p_k. On the event of Proposition 3 some area i has pr(|W + e_i| <= T) >= p_k >= p',
-    so the transfer bound R_{p',q}(x) <= 1 + C x^{1/2} gives Q_q(|W|) <= T + C D_i^{1/2}
-    <= T + C D_min^{1/2}, as C < 0. D_min is a known lower bound on the D_i. Falls back to
-    `noisy_threshold_halfwidth` if no negative constant is certified at level p_k."""
+    """max{0, T + C sqrt(D_min)} (Corollary 2) with the certified C = C_{p', q} < 0 for the
+    largest certified p' <= p_k. On the event of Proposition 3 some area i has
+    pr(|W + e_i| <= T) >= p_k >= p', so the transfer bound R_{p',q}(x) <= 1 + C x^{1/2} gives
+    Q_q(|W|) <= T + C D_i^{1/2} <= T + C D_min^{1/2}, as C < 0. D_min is a known lower bound on
+    the D_i. The default rank is `certified_rank`; falls back to `noisy_threshold_halfwidth`
+    (possibly inf) if no negative constant is certified at level p_k."""
     K = len(V)
-    k = pac_rank(K, q, delta) if k is None else k
+    k = certified_rank(K, q, delta) if k is None else k
+    if k is None:
+        return np.inf
     T, p_k = _order_statistic_level(V, k, delta)
     usable = [c for p, c in CERTIFIED_SHRINK.get(q, []) if p <= p_k]
     if not usable:

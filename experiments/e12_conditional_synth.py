@@ -54,6 +54,10 @@ def draw(kind, n, rng):
         v = 1 / b**2 - np.exp(b) / np.expm1(b)**2
         return (y - m) / np.sqrt(v)
     if kind == 't3_not_LC': return rng.standard_t(3, n) / np.sqrt(3)
+    if kind == 'bimodal_blc':         # bi-log-concave, bimodal, not log-concave (latent_laws.BIMODAL)
+        from uai.latent_laws import BIMODAL
+        p, m1, m2, s = BIMODAL
+        return np.where(rng.uniform(size=n) < p, m1, m2) + s * rng.normal(size=n)
 
 
 def worker(args):

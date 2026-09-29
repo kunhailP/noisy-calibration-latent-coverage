@@ -10,9 +10,11 @@ Gaussian kernel, E04 table), HetLDC (k = 105, exact average kernel, grid value),
 certified radii (E24-E26): LDC_cert_pk (mean variance in the certified R_{.9068,.9} table,
 the same level p_k = .9068 as HetLDC) and HetLDC_cert
 (branch-and-bound certificate for the mixture kernel; union bound if none clears).
-  python experiments/e20_hetldc_synth.py [reps] [procs] [ldc]
+  python experiments/e20_hetldc_synth.py [reps] [procs] [ldc | shapes=a,b,...]
 With a third argument `ldc`, only LDC_cert_pk is recomputed (same seeds) and patched into the
-existing CSV; the other rules, including the slow HetLDC certificates, are kept.
+existing CSV; the other rules, including the slow HetLDC certificates, are kept. With
+`shapes=a,b`, only those laws are (re)computed and merged into the existing CSV. Seeds depend
+only on the position of a law in SHAPES, so adding laws leaves earlier results unchanged.
 Writes results/hetldc_synth.csv (per replication) and results/hetldc_synth_summary.csv.
 """
 import sys
@@ -32,7 +34,8 @@ from uai.procedures import (CertifiedShrinkTable, ShrinkTable, conformal_thresho
 
 warnings.filterwarnings('ignore')
 K, DBAR, LEV = 110, 0.577, 0.90
-SHAPES = ['normal', 'laplace', 'gamma2_skew', 'trunc_laplace']
+SHAPES = ['normal', 'laplace', 'gamma2_skew', 'trunc_laplace',
+          'trunc_exp', 'bimodal_blc', 't3_not_LC']   # log-affine extremal, bi-log-concave, outside
 CERTIFY = True
 
 
@@ -73,7 +76,14 @@ if __name__ == '__main__':
     reps = int(sys.argv[1]) if len(sys.argv) > 1 else 150
     procs = int(sys.argv[2]) if len(sys.argv) > 2 else 8
     jobs = [(s, 40000 + 1000 * i + r) for i, s in enumerate(SHAPES) for r in range(reps)]
-    if len(sys.argv) > 3 and sys.argv[3] == 'ldc':
+    only = sys.argv[3][7:].split(',') if len(sys.argv) > 3 and sys.argv[3].startswith('shapes=') else None
+    if only:
+        jobs = [j for j in jobs if j[0] in only]
+        with Pool(procs) as pool:
+            new = pd.DataFrame([row for rows in pool.imap_unordered(one, jobs, chunksize=1) for row in rows])
+        old = pd.read_csv(RESULTS / 'hetldc_synth.csv')
+        r = pd.concat([old[~old['shape'].isin(only)], new.sort_values(['shape', 'seed', 'method'])])
+    elif len(sys.argv) > 3 and sys.argv[3] == 'ldc':
         with Pool(procs) as pool:
             new = pd.DataFrame(pool.map(one_ldc, jobs, chunksize=4))
         old = pd.read_csv(RESULTS / 'hetldc_synth.csv')

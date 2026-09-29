@@ -34,7 +34,8 @@ read from results/hetldc_synth.csv and results/shape_free.csv):
                threshold at rank 105, valid for unknown heterogeneous variances, and
                max{0, T - 0.114 D_min^{1/2}}.
 
-  python experiments/e34_competitors.py [reps] [procs]
+  python experiments/e34_competitors.py [reps] [procs] [shapes=a,b,...]
+With `shapes=a,b` only those laws are recomputed; rows of the other laws are kept.
 Writes results/competitors.csv and results/competitors_summary.csv.
 """
 import sys
@@ -54,7 +55,8 @@ from uai.procedures import noisy_threshold_halfwidth, simple_shrink_halfwidth
 
 warnings.filterwarnings('ignore')
 K, DBAR, ALPHA, DELTA = 110, 0.577, 0.10, 0.05
-SHAPES = ['normal', 'laplace', 'gamma2_skew', 'trunc_laplace']
+SHAPES = ['normal', 'laplace', 'gamma2_skew', 'trunc_laplace',
+          'trunc_exp', 'bimodal_blc', 't3_not_LC']   # same order and seeds as e20
 
 
 def data(shape, seed):
@@ -183,9 +185,16 @@ if __name__ == '__main__':
     reps = int(sys.argv[1]) if len(sys.argv) > 1 else 150
     procs = int(sys.argv[2]) if len(sys.argv) > 2 else 8
     jobs = [(s, 40000 + 1000 * i + r) for i, s in enumerate(SHAPES) for r in range(reps)]
+    only = sys.argv[3][7:].split(',') if len(sys.argv) > 3 and sys.argv[3].startswith('shapes=') else None
+    run = [j for j in jobs if only is None or j[0] in only]
     with Pool(procs) as pool:
-        rows = [r for rs in pool.map(one, jobs, chunksize=2) for r in rs]
+        rows = [r for rs in pool.map(one, run, chunksize=2) for r in rs]
     d = pd.DataFrame(rows)
+    if only is not None:
+        prev = pd.read_csv(RESULTS / 'competitors.csv')
+        keep = prev[~prev['shape'].isin(only) & ~prev.method.isin(['HetLDC_cert', 'CP_PAC', 'FH_PAC',
+                                                                    'shape_free_k107'])]
+        d = pd.concat([keep, d])
     old = pd.read_csv(RESULTS / 'hetldc_synth.csv')
     old = old[old.method.isin(['HetLDC_cert', 'CP_PAC', 'FH_PAC'])].assign(width=lambda x: 2 * x.half)
     sf = pd.read_csv(RESULTS / 'shape_free.csv')

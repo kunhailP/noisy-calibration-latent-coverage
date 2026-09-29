@@ -7,9 +7,9 @@ order-statistic event (>= 1 - delta), the radius
 
     s = T sup_{sigma^2 in [lo, hi]} R^mix_{p_k - eps, q}(sigma^2 a / T^2)
 
-covers a new latent residual with probability >= q (Lemma 11); reliability >= 1 - delta - eta.
+covers a new latent residual with probability >= q (Supplementary Lemma S1); reliability >= 1 - delta - eta.
 
-The supremum is covered by finitely many points with Lemma 12, R(lambda x) <= sqrt(lambda) R(x)
+The supremum is covered by finitely many points with Supplementary Lemma S2, R(lambda x) <= sqrt(lambda) R(x)
 for lambda >= 1 (all variances scaled together):
 
     sup_{[s_j, s_{j+1}]} R <= sqrt(s_{j+1} / s_j) U(s_j),
@@ -41,7 +41,7 @@ def radius_at(p, q, xs, n_pts=32, certify=False, tols=(1e-3, 3e-3, 1e-2, 3e-2, 1
 
 
 def sup_scale_radius(p, q, a, T, lo, hi, r0=1.004, max_cells=60, certify=False):
-    """Bound on sup_{s in [lo, hi]} R^mix_{p - eps, q}(s a / T^2) by Lemma 12 on an adaptive grid.
+    """Bound on sup_{s in [lo, hi]} R^mix_{p - eps, q}(s a / T^2) by Supplementary Lemma S2 on an adaptive grid.
     Returns (bound, cells) with cells = [(s_j, s_{j+1}, U(s_j))]."""
     a = np.asarray(a, dtype=float)
     U0 = radius_at(p, q, lo * a / T**2, certify=certify)[0]
@@ -59,7 +59,7 @@ def sup_scale_radius(p, q, a, T, lo, hi, r0=1.004, max_cells=60, certify=False):
             U = radius_at(p, q, s * a / T**2, certify=certify)[0]
             if not np.isfinite(U):
                 return np.inf, cells
-    if s < hi:                               # ran out of cells: close with Lemma 12 in one step
+    if s < hi:                               # ran out of cells: close with Supplementary Lemma S2 in one step
         bound = max(bound, np.sqrt(hi / s) * U)
     return bound, cells
 
@@ -90,7 +90,7 @@ def kernel_envelope(w, h0=0.05):
     g_x(w) = P(a/s <= Z <= b/s) with a = |w| - 1, b = |w| + 1, s = sqrt(x); its only critical
     point is s^2 = (b^2 - a^2) / (2 log(b/a)) = 2|w| / log((|w|+1)/(|w|-1)), and M(w) <= 1/2.
     M jumps from 1 to 1/2 at |w| = 1, so a ramp of width h0 is added to keep the majorant
-    continuous (Lemma 11 asks for a continuous kernel)."""
+    continuous (Supplementary Lemma S1 asks for a continuous kernel)."""
     from scipy.special import ndtr
     w = np.abs(np.asarray(w, dtype=float))
     out = np.ones_like(w)
