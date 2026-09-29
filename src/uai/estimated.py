@@ -72,7 +72,8 @@ def s_rule(V, a, s2_hat, nu, q=0.90, delta=0.04, eta_lo=0.009, eta_hi=0.001, k=N
     K = len(V)
     k = pac_rank(K, q, delta) if k is None else k
     p_k = stats.beta.ppf(delta, k, K + 1 - k)
-    assert k >= K * p_k + 1, 'Hoeffding comparison needs k >= K p + 1'
+    if k < K * p_k + 1:
+        raise ValueError('Hoeffding comparison (Proposition 3) needs k >= K p_k + 1')
     T = np.sort(np.abs(V))[k - 1]
     lo, hi = scale_interval(s2_hat, nu, eta_lo, eta_hi)
     bound, cells = sup_scale_radius(p_k, q, a, T, lo, hi, certify=certify)

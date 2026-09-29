@@ -15,10 +15,14 @@ _FEASIBLE_X = 0.3696          # above this, P(|e| <= t) < .9: data contradict th
 
 
 class ShrinkTable:
-    """Lookup of grid values of the shrink function r(x) = R_{1-a,1-a}(x). The values are
+    """Legacy. Lookup of grid values of the shrink function r(x) = R_{1-a,1-a}(x). The values are
     converged maxima over the extremal family, hence lower bounds of R: not a valid radius.
     For valid radii use the analytic rules below (proved, Arb-certified constants) or
     CertifiedShrinkTable (numerically computed upper bounds, double precision).
+
+    Other alphas read results/r_table.json (E04, differential evolution with Gauss-Legendre
+    quadrature), whose values at x = 0.001 exceed the bound of Theorem 1 because the quadrature
+    is inaccurate there; they are not used in the paper and a warning is issued.
 
     alpha = '0.1' uses the exact two-dimensional reduction (results/r_exact_p0.9_q0.9.csv, E16,
     plus the fine small-x grid of E19). r rises for small x (r > 1: widen) to a peak near
@@ -38,6 +42,9 @@ class ShrinkTable:
             d = d[np.isfinite(d.R)].sort_values('x')
             self.x, self.r = d.x.values, d.R.values
         else:
+            import warnings
+            warnings.warn('ShrinkTable: r_table.json (E04) is inaccurate at small x and exceeds '
+                          'Theorem 1 at x = 0.001; not a valid radius', stacklevel=2)
             tab = json.load(open(path))[alpha]
             self.x = np.array(sorted(float(k) for k in tab))
             self.r = np.array([tab[str(k)] for k in self.x])
@@ -270,7 +277,8 @@ def hetldc_parts(V, D, k=None, q=0.90, delta=0.05, n_pts=32):
     K = len(V)
     k = pac_rank(K, q, delta) if k is None else k
     p_k = float(stats.beta.ppf(delta, k, K + 1 - k))
-    assert k >= K * p_k + 1, 'Hoeffding comparison needs k >= K p + 1'
+    if k < K * p_k + 1:
+        raise ValueError('Hoeffding comparison (Proposition 3) needs k >= K p_k + 1')
     T = np.sort(np.abs(V))[k - 1]
     (pts, wts), eps = quantised_kernel(D / T**2, n_pts)
     return T, p_k, eps, (pts, wts), shrink_mix(p_k - eps, q, pts, wts=wts)
@@ -306,7 +314,8 @@ def shape_free_markov(V, D, k, q=0.90, delta=0.05):
     V, D = np.asarray(V), np.asarray(D)
     K = len(V)
     p_k = stats.beta.ppf(delta, k, K + 1 - k)
-    assert k >= K * p_k + 1 and p_k > q
+    if k < K * p_k + 1 or p_k <= q:
+        raise ValueError('needs k >= K p_k + 1 (Proposition 3) and p_k > q')
     T = np.sort(np.abs(V))[k - 1]
     sd = np.sqrt(D) / T
     gbar = lambda w: np.mean(ndtr((1 - w) / sd) - ndtr((-1 - w) / sd))
@@ -337,7 +346,10 @@ def certified_rank(K, q=0.90, delta=0.05, level=None):
     the Hoeffding condition k >= K p_k + 1 of Proposition 3. None if no rank qualifies (for
     q = .9 and delta = .05 this happens exactly when K <= 28). The usual PAC rank
     (`pac_rank`, level q) can fall short: K = 46 gives rank 45 with p_k = .90098 < .901."""
-    level = CERTIFIED_SLACK_LEVEL[q] if level is None else level
+    if level is None:
+        if q not in CERTIFIED_SLACK_LEVEL:
+            raise ValueError(f'no certified slack level for q = {q}; available: {sorted(CERTIFIED_SLACK_LEVEL)}')
+        level = CERTIFIED_SLACK_LEVEL[q]
     for k in range(1, K + 1):
         p_k = float(stats.beta.ppf(delta, k, K + 1 - k))
         if p_k >= level and k >= K * p_k + 1:
@@ -346,11 +358,15 @@ def certified_rank(K, q=0.90, delta=0.05, level=None):
 
 
 def _order_statistic_level(V, k, delta):
+    """(T, p_k) for T = |V|_(k), or (T, nan) if k violates the Hoeffding condition
+    k >= K p_k + 1 of Proposition 3 (then no level is guaranteed)."""
     V = np.asarray(V)
     K = len(V)
+    if not 1 <= k <= K:
+        raise ValueError(f'rank k = {k} outside 1..{K}')
     p_k = float(stats.beta.ppf(delta, k, K + 1 - k))
-    assert k >= K * p_k + 1, 'Hoeffding comparison needs k >= K p + 1'
-    return np.sort(np.abs(V))[k - 1], p_k
+    T = np.sort(np.abs(V))[k - 1]
+    return (T, p_k) if k >= K * p_k + 1 else (T, np.nan)
 
 
 def noisy_threshold_halfwidth(V, k=None, q=0.90, delta=0.05):
@@ -368,7 +384,7 @@ def noisy_threshold_halfwidth(V, k=None, q=0.90, delta=0.05):
     if k is None:
         return np.inf
     T, p_k = _order_statistic_level(V, k, delta)
-    return T if p_k >= CERTIFIED_SLACK_LEVEL[q] else np.inf
+    return T if p_k >= CERTIFIED_SLACK_LEVEL[q] else np.inf      # nan (Hoeffding fails) -> inf
 
 
 def simple_shrink_halfwidth(V, D_min, k=None, q=0.90, delta=0.05):
@@ -378,12 +394,14 @@ def simple_shrink_halfwidth(V, D_min, k=None, q=0.90, delta=0.05):
     Q_q(|W|) <= T + C D_i^{1/2} <= T + C D_min^{1/2}, as C < 0. D_min is a known lower bound on
     the D_i. The default rank is `certified_rank`; falls back to `noisy_threshold_halfwidth`
     (possibly inf) if no negative constant is certified at level p_k."""
+    if not D_min >= 0:
+        raise ValueError(f'D_min must be a nonnegative lower bound on the noise variances, got {D_min}')
     K = len(V)
     k = certified_rank(K, q, delta) if k is None else k
     if k is None:
         return np.inf
     T, p_k = _order_statistic_level(V, k, delta)
-    usable = [c for p, c in CERTIFIED_SHRINK.get(q, []) if p <= p_k]
+    usable = [c for p, c in CERTIFIED_SHRINK.get(q, []) if p <= p_k]      # empty if p_k is nan
     if not usable:
         return noisy_threshold_halfwidth(V, k, q, delta)
     return max(0.0, T + min(usable) * np.sqrt(D_min))

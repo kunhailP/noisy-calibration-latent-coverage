@@ -26,7 +26,9 @@ beta = u / (1 - u), ell = v / (1 - v) with (u, v) in [0, 1]^2.
 Floating point: the closed forms are evaluated in double precision in log space. They lose
 accuracy by cancellation when ell < 1e-4 or 0 < beta ell < 1e-3, so box corners in those
 zones are rounded outward (to a point mass, to ell = 1e-4, to beta = 0 or beta ell = 1e-3).
-Outside them the error against mpmath quadrature is below 1e-11 (tests), and a box is
+Outside them the error against 30-digit mpmath quadrature is below 1e-11 on random points with
+1e-4 <= x <= 0.37, 1e-4 <= ell <= 20 or ell = inf, 1e-3 <= beta ell <= 1e3
+(tests/test_core.py::test_closed_forms_match_high_precision_quadrature), and a box is
 cleared only with a margin EPS = 1e-9.
 """
 import numpy as np

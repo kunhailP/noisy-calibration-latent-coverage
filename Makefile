@@ -44,11 +44,13 @@ simulations:
 table1-extra-laws:
 	$(PY) experiments/e20_hetldc_synth.py 150 $(PROCS) shapes=trunc_exp,bimodal_blc,t3_not_LC
 	$(PY) experiments/e31_shape_free.py
-	$(PY) experiments/e34_competitors.py 150 $(PROCS) shapes=trunc_exp,bimodal_blc,t3_not_LC
+	$(PY) experiments/e34_competitors.py 150 $(PROCS) analytic-shapes=trunc_exp,bimodal_blc,t3_not_LC
 
 # LatentCP and deconvolution conformal on the data sets of Table 1 (minutes)
 comparison:
 	$(PY) experiments/e34_competitors.py 150 $(PROCS)
+	$(PY) experiments/e34_competitors.py 150 $(PROCS) analytic-shapes=trunc_exp,bimodal_blc,t3_not_LC
+	$(PY) experiments/e36_analytic_reliability.py 2000 $(PROCS)
 
 # estimated noise variances (Supplementary Material, Section S4)
 estimated:

@@ -1,4 +1,5 @@
-"""E24. Certified upper bounds for R_{p,q}(x), q = .90, p in {.90, .9036}.
+"""E24. Numerical (double-precision branch-and-bound) upper bounds for R_{p,q}(x), q = .90,
+p in {.90, .9036, .9068} (the last two: order-statistic levels at delta = .04, .05).
 
 For each x on a grid: a lower bound L (feasible extremal law: coarse (beta, ell) grid of exact
 endpoint values, polished by Nelder-Mead) and a certified upper bound U (monotone branch and

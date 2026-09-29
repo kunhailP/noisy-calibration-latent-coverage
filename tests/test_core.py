@@ -439,3 +439,39 @@ def test_bimodal_simulation_law_is_bilogconcave_not_logconcave():
     assert np.sum(np.diff(np.sign(np.diff(f))) < 0) == 2
     assert np.max(np.diff(np.log(f), 2)) > 0
     assert abs(p * m1 + (1 - p) * m2) < 1e-12 and abs(s**2 + p * m1**2 + (1 - p) * m2**2 - 1) < 1e-12
+
+
+def test_closed_forms_match_high_precision_quadrature():
+    """Double-precision closed forms of the box bounds (uai.certify._cdf_noisy) against 30-digit
+    quadrature, on the ranges used after outward rounding: 1e-4 <= x <= 0.37, 1e-4 <= ell <= 20
+    (and ell = inf), 1e-3 <= beta ell <= 1e3."""
+    import mpmath as mp
+    from uai.certify import _cdf_noisy
+    mp.mp.dps = 30
+    rng = np.random.default_rng(11)
+    for i in range(40):
+        x = 10 ** rng.uniform(-4, np.log10(0.37))
+        ell = np.inf if i % 8 == 0 else 10 ** rng.uniform(-4, 1.3)
+        be = 10 ** rng.uniform(-3, 3) / (1.0 if np.isinf(ell) else ell)
+        b, c, s = rng.uniform(-1.5, 2.5), float(rng.choice([1.0, -1.0])), mp.sqrt(x)
+        Z = 1 / mp.mpf(be) if np.isinf(ell) else (1 - mp.e ** (-be * ell)) / be
+        f = lambda y: mp.e ** (-be * y) / Z * mp.ncdf((c - (b - y)) / s)     # W = b - Y
+        top = mp.inf if np.isinf(ell) else ell
+        k = b - c                                                           # kink of the integrand
+        pts = [0] + [p for p in (k - 8 * float(s), k, k + 8 * float(s)) if 0 < p < float(top)] + [top]
+        ref = float(mp.quad(f, pts))
+        val = _cdf_noisy(c, np.array([b]), np.array([ell]), np.array([be]), x)[0]
+        assert abs(val - ref) < 1e-11, (x, ell, be, b, c, val, ref)
+
+
+def test_analytic_rules_input_checks():
+    """Caller-supplied ranks that violate the Hoeffding condition give inf, not an unjustified T;
+    unknown levels and negative D_min raise."""
+    from uai.procedures import certified_rank, noisy_threshold_halfwidth, simple_shrink_halfwidth
+    V = np.random.default_rng(1).normal(size=110)
+    assert noisy_threshold_halfwidth(V, k=1) == np.inf             # k = 1 < K p_k + 1: no guarantee
+    assert simple_shrink_halfwidth(V, .1, k=1) == np.inf
+    with pytest.raises(ValueError):
+        certified_rank(110, q=0.85)
+    with pytest.raises(ValueError):
+        simple_shrink_halfwidth(V, -1.0)

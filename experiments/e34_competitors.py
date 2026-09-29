@@ -35,7 +35,9 @@ read from results/hetldc_synth.csv and results/shape_free.csv):
                max{0, T - 0.114 D_min^{1/2}}.
 
   python experiments/e34_competitors.py [reps] [procs] [shapes=a,b,...]
-With `shapes=a,b` only those laws are recomputed; rows of the other laws are kept.
+With `shapes=a,b` only those laws are recomputed; rows of the other laws are kept. With
+`analytic-shapes=a,b` only the two analytic rules are computed for those laws (seconds); the
+LatentCP and deconvolution comparison is reported for the first four laws only.
 Writes results/competitors.csv and results/competitors_summary.csv.
 """
 import sys
@@ -160,6 +162,14 @@ def cov_of(shape, s):
     return float(np.mean(c)), float(np.mean(2 * s))
 
 
+def one_analytic(args):
+    shape, seed = args
+    V, D = data(shape, seed)
+    out = {'noisy_threshold': cov_of(shape, noisy_threshold_halfwidth(V)),
+           'simple_shrink': cov_of(shape, simple_shrink_halfwidth(V, D.min()))}
+    return [dict(shape=shape, seed=seed, method=k, cov=c, width=w) for k, (c, w) in out.items()]
+
+
 def one(args):
     shape, seed = args
     V, D = data(shape, seed)
@@ -185,10 +195,13 @@ if __name__ == '__main__':
     reps = int(sys.argv[1]) if len(sys.argv) > 1 else 150
     procs = int(sys.argv[2]) if len(sys.argv) > 2 else 8
     jobs = [(s, 40000 + 1000 * i + r) for i, s in enumerate(SHAPES) for r in range(reps)]
-    only = sys.argv[3][7:].split(',') if len(sys.argv) > 3 and sys.argv[3].startswith('shapes=') else None
-    run = [j for j in jobs if only is None or j[0] in only]
+    arg = sys.argv[3] if len(sys.argv) > 3 else ''
+    analytic = arg.startswith('analytic-shapes=')
+    only = arg.split('=', 1)[1].split(',') if arg.startswith(('shapes=', 'analytic-shapes=')) else None
+    keep_laws = only if only is not None else SHAPES[:4]           # full comparison: first four laws
+    run = [j for j in jobs if j[0] in keep_laws]
     with Pool(procs) as pool:
-        rows = [r for rs in pool.map(one, run, chunksize=2) for r in rs]
+        rows = [r for rs in pool.map(one_analytic if analytic else one, run, chunksize=2) for r in rs]
     d = pd.DataFrame(rows)
     if only is not None:
         prev = pd.read_csv(RESULTS / 'competitors.csv')

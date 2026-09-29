@@ -141,7 +141,8 @@ def _eps_term(u):
 def c_enclosure(p, q, u_max=64.0, n0=400, tol=1e-9, max_iter=200000):
     """Rigorous (lo, hi) with lo <= c_{p,q} <= hi, for p >= q (decimal strings or floats)."""
     p, q = A(p), A(q)
-    assert not (p < q), 'needs p >= q'
+    if p < q:
+        raise ValueError('needs p >= q')
     Lq = -q.log()
     # lower bound from the best of the proposal points
     u_min = small_u_end(p)

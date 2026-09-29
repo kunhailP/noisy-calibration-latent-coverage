@@ -28,9 +28,9 @@ def _trunc_exp(x):
 
 def _bimodal_params(p=0.4, ratio=2.5):
     """Mixture p N(m1, s^2) + (1 - p) N(m2, s^2) with mean 0, variance 1 and separation
-    (m2 - m1)/s = ratio. For p = 0.4 it is bimodal for ratio above about 2.1 and bi-log-concave
-    up to about 2.55 (f' F <= f^2 and -f' (1 - F) <= f^2 checked on a grid, tests); it is not
-    log-concave."""
+    (m2 - m1)/s = ratio. For p = 0.4 it is bimodal for ratio above about 2.443 and bi-log-concave
+    up to about 2.59 (f' F <= f^2 and -f' (1 - F) <= f^2 checked on a grid, tests); it is not
+    log-concave. At ratio 2.5 the largest relative violation max (f'F - f^2)/f^2 is -0.036."""
     d = ratio / np.sqrt(1 + p * (1 - p) * ratio**2)          # m2 - m1 after standardisation
     s = d / ratio
     return p, -(1 - p) * d, p * d, s
