@@ -18,7 +18,8 @@ A prediction interval for a latent quantity, such as the true mean of an area th
 4. **Transition.** A correction of order `D^{1/2}` requires the mean within `O(D^{1/2})` of the boundary. At distance `κ D^{1/2}` the limiting coefficient is the one-dimensional extremum `L_q(κ)`, which equals `c_q` up to `κ*`; `κ*` is about 20 at `q = 0.9` (Lemma 2, Theorem 3, Figure 1). These are worst-case statements: a particular law with its mean near the boundary need not require any correction.
 5. **Slack.** A calibration slack of `10^{-3}` at `q = 0.9` removes the correction at every noise level (Corollary 1).
 6. **Unknown heterogeneous variances.** With the order-statistic level of Proposition 2, the noisy threshold at the smallest rank with `p_k >= 0.901` and `k >= K p_k + 1` (`certified_rank`; rank 105 of 110) is itself valid for the latent target when the Gaussian noise variances are heterogeneous and unknown (Proposition 3). At `q = 0.9`, `delta = 0.05` such a rank exists if and only if `K >= 29`; for `K <= 3000` it is at most three ranks above the usual PAC rank (e.g. 46 instead of 45 at `K = 46`); the gap grows with `K` (9060 instead of 9050 at `K = 10000`). A lower bound `D_min` on the variances gives the analytic shrinkage `T - 0.114 D_min^{1/2}` (Corollary 2). Both rest only on ball-arithmetic constants.
-7. **Computed radius.** With known variances and a log-concave latent law, the average-kernel radius `T R^mix` shortens the noisy threshold by about 10% in the simulations of Table 1. The procedure with the exact `R^mix` is valid; the implementation returns a numerically computed upper bound (see Precision).
+7. **Without the slack.** For some log-concave laws the latent reliability of the usual high-probability rank, and of the marginal rank, tends to zero as `K` grows (Proposition 4); exactly, 0.918 at `K = 10^4` and 0.151 at `K = 10^6` against 0.958 and 0.989 for the certified rank (`e40_exact_reliability.py`).
+8. **Computed radius.** With known variances and a log-concave latent law, the average-kernel radius `T R^mix` shortens the noisy threshold by about 10% in the simulations of Table 1. The procedure with the exact `R^mix` is valid; the implementation returns a numerically computed upper bound (see Precision).
 
 `e33_edge.py` studies a regime that is not in the manuscript: near the feasibility edge `x_p`, `R_{p,q}(x) ~ M_q (x_p - x)^{1/2}`, with `M_q = sup Q_q(|W|)/E(W²)^{1/2}` over log-concave laws (`M_0.9 = 1.8532`, computed, not certified).
 
@@ -59,6 +60,7 @@ make test
 | Table 1: noisy threshold, Corollary 2; comparison with LatentCP and deconvolution | `make comparison` | `results/competitors_summary.csv` |
 | Reliability of the analytic rules with 2000 data sets per law (Supplement S6) | `make comparison` | `results/analytic_reliability_summary.csv` |
 | Stress test at the extremal law, K up to 10^4 (Supplement S6) | `make comparison` | `results/stress_summary.csv` |
+| Exact latent reliability without the slack, K up to 10^6 (Proposition 4, Supplement S6) | `make comparison` | `results/exact_reliability.csv`, `paper/fig_reliability.pdf` |
 | Sensitivity to a shared latent law (Supplement S6) | `make comparison` | `results/sensitivity_summary.csv`, `results/sensitivity_stress.csv` |
 | Table 1, last three laws only (truncated exponential, bimodal bi-log-concave, `t_3`) | `make table1-extra-laws` | merged into the files above |
 | Estimated variances (Supplement S4) | `make estimated` | `results/estimated_scale_summary.csv`, `results/areawise_variance_summary.csv` |

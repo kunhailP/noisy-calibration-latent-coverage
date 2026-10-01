@@ -486,3 +486,20 @@ def test_analytic_rules_input_checks():
         certified_rank(110, q=0.85)
     with pytest.raises(ValueError):
         simple_shrink_halfwidth(V, -1.0)
+
+
+def test_exact_reliability_matches_stress_simulation():
+    """Proposition 4: the exact latent reliability pr{Bin(K, H(r_q)) <= k - 1} (E40) agrees with
+    the simulated reliability of E38 within 3.5 Monte Carlo standard errors, and the usual rank
+    falls below 1 - delta for large K while the certified rank does not."""
+    import pandas as pd
+    ex = pd.read_csv(ROOT / 'results' / 'exact_reliability.csv')
+    st = pd.read_csv(ROOT / 'results' / 'stress_summary.csv')
+    st = st[st.design == 'homogeneous']
+    for K in (110, 1000, 10000):
+        for rule, name in (('usual', 'usual_PAC'), ('certified', 'certified'), ('marginal', 'marginal')):
+            e = ex[(ex.K == K) & (ex.rule == rule)].reliability.item()
+            s = st[(st.K == K) & (st.rule == name)].iloc[0]
+            assert abs(e - s.reliability) < 3.5 * max(s.se_rel, 1e-3), (K, rule, e, s.reliability)
+    big = ex[ex.K == 1000000].set_index('rule').reliability
+    assert big['usual'] < 0.2 and big['marginal'] < 0.01 and big['certified'] > 0.95
