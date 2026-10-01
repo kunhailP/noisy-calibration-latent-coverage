@@ -52,6 +52,8 @@ comparison:
 	$(PY) experiments/e34_competitors.py 150 $(PROCS)
 	$(PY) experiments/e34_competitors.py 150 $(PROCS) analytic-shapes=trunc_exp,bimodal_blc,t3_not_LC
 	$(PY) experiments/e36_analytic_reliability.py 2000 $(PROCS)
+	$(PY) experiments/e38_stress.py
+	$(PY) experiments/e39_sensitivity.py 2000
 
 # estimated noise variances (Supplementary Material, Section S4)
 estimated:

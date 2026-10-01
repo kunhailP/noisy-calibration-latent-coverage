@@ -11,3 +11,4 @@ paper/*.out
 paper/*.bbl
 paper/*.blg
 paper/*.thm
+results/stress.csv.gz

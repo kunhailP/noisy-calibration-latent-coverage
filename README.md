@@ -57,7 +57,9 @@ make test
 | Certified `R_{p,q}`, boundary map (Supplement S2–S3) | `make certified` | `results/certified_R.csv`, `results/boundary_map.csv` |
 | Table 1: computed radius, shape-free rule | `make simulations` | `results/hetldc_synth_summary.csv`, `results/shape_free_summary.csv` |
 | Table 1: noisy threshold, Corollary 2; comparison with LatentCP and deconvolution | `make comparison` | `results/competitors_summary.csv` |
-| Reliability of the analytic rules with 2000 data sets per law (Supplement S5) | `make comparison` | `results/analytic_reliability_summary.csv` |
+| Reliability of the analytic rules with 2000 data sets per law (Supplement S6) | `make comparison` | `results/analytic_reliability_summary.csv` |
+| Stress test at the extremal law, K up to 10^4 (Supplement S6) | `make comparison` | `results/stress_summary.csv` |
+| Sensitivity to a shared latent law (Supplement S6) | `make comparison` | `results/sensitivity_summary.csv`, `results/sensitivity_stress.csv` |
 | Table 1, last three laws only (truncated exponential, bimodal bi-log-concave, `t_3`) | `make table1-extra-laws` | merged into the files above |
 | Estimated variances (Supplement S4) | `make estimated` | `results/estimated_scale_summary.csv`, `results/areawise_variance_summary.csv` |
 | School-district application | `make apipop` | `results/hetldc_apipop_summary.csv` |
