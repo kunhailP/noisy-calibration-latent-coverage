@@ -17,7 +17,7 @@ Rules (target Pr[cov >= .90] >= .95):
   Dlow        HetLDC with lo * a_i, lo the lower end of the scale interval (no guarantee: R is
               not monotone in the noise level)
   S           sup of R^mix over the scale interval, delta = .04, eta = .01 (guarantee under S)
-  S_cert      rule S with certified upper bounds U_j at every grid point (the form Supplementary Lemma S1
+  S_cert      rule S with certified upper bounds U_j at every grid point (the form Supplementary Lemma S2
               requires; branch and bound in double precision with a margin, `uai.certify`)
 Radii of the other rules are converged grid values (not certified), as HetLDC in E20.
   python experiments/e29_estimated_scale.py [reps] [procs] [cert]

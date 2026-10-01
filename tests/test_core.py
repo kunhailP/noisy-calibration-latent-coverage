@@ -224,7 +224,7 @@ def test_quantised_kernel_merges_equal_variances():
 
 
 def test_scale_lemma_on_grid_values():
-    """Supplementary Lemma S2: R(lambda x) <= sqrt(lambda) R(x), checked on converged grid values."""
+    """Supplementary Lemma S3: R(lambda x) <= sqrt(lambda) R(x), checked on converged grid values."""
     from uai.procedures import shrink_mix
     xs, w = np.array([.05, .15]), np.array([.5, .5])
     r1 = shrink_mix(.9036, .9, xs, wts=w)
@@ -375,7 +375,7 @@ def _exp_tail_noisy_cdf(y, b, u, sigma):
 
 
 def test_noisy_threshold_valid_for_unknown_variances_population():
-    """Proposition 4 at population level: take the boundary-layer law that needs widening at
+    """Proposition 3 at population level: take the boundary-layer law that needs widening at
     x = 1e-4 (latent coverage of [-1, 1] below 0.9, noisy coverage 0.9). Its noisy coverage must
     stay below the certified level 0.901 for every Gaussian noise variance, so no mixture of
     variances can reach 0.901 either."""
@@ -441,16 +441,27 @@ def test_bimodal_simulation_law_is_bilogconcave_not_logconcave():
     assert abs(p * m1 + (1 - p) * m2) < 1e-12 and abs(s**2 + p * m1**2 + (1 - p) * m2**2 - 1) < 1e-12
 
 
+def test_bimodal_bilogconcavity_certificate():
+    """Lemma S1: the ball-arithmetic certificate proves the Table 1 law bi-log-concave on the whole
+    line; beyond the edge of bi-log-concavity near separation 2.59 it does not succeed."""
+    from uai.interval import bimodal_blc_certificate
+    from uai.latent_laws import BIMODAL, _bimodal_params
+    ok, worst, _ = bimodal_blc_certificate(*BIMODAL)
+    assert ok and worst < 0
+    assert not bimodal_blc_certificate(*_bimodal_params(0.4, 2.65), max_boxes=20000)[0]
+
+
 def test_closed_forms_match_high_precision_quadrature():
     """Double-precision closed forms of the box bounds (uai.certify._cdf_noisy) against 30-digit
-    quadrature, on the ranges used after outward rounding: 1e-4 <= x <= 0.37, 1e-4 <= ell <= 20
+    quadrature, on the ranges used after outward rounding: 1e-4 <= x <= 1.5, which covers the
+    largest compressed mixture-kernel ratio D_i/T^2 of Table 1 (about 1.245), 1e-4 <= ell <= 20
     (and ell = inf), 1e-3 <= beta ell <= 1e3."""
     import mpmath as mp
     from uai.certify import _cdf_noisy
     mp.mp.dps = 30
     rng = np.random.default_rng(11)
-    for i in range(40):
-        x = 10 ** rng.uniform(-4, np.log10(0.37))
+    for i in range(80):
+        x = 10 ** rng.uniform(-4, np.log10(1.5))
         ell = np.inf if i % 8 == 0 else 10 ** rng.uniform(-4, 1.3)
         be = 10 ** rng.uniform(-3, 3) / (1.0 if np.isinf(ell) else ell)
         b, c, s = rng.uniform(-1.5, 2.5), float(rng.choice([1.0, -1.0])), mp.sqrt(x)

@@ -253,3 +253,55 @@ def split_certificate(p, q, g, n0=16, max_rounds=40, pool=None, tol=1e-7):
         ivs = [iv for iv in ivs if iv not in bad] + \
               [h for a, b in bad for h in ((a, (a + b) / 2), ((a + b) / 2, b))]
     return worst, fdown(budget), False, dict(rounds=max_rounds, evals=len(cache), bad=bad[:5])
+
+
+def bimodal_blc_certificate(p, m1, m2, s, n0=64, max_boxes=200000):
+    """Ball-arithmetic proof that the mixture p N(m1, s^2) + (1 - p) N(m2, s^2), m1 < m2, is
+    bi-log-concave (Supplementary Lemma S1).
+
+    With P(w) the posterior weight of the first component, (log f)'' = -1/s^2 + P(1 - P) r^2/s^2,
+    r = (m2 - m1)/s, and P decreases in w. So f is log-concave on (-inf, a] and [b, inf), where
+    P(a) = 1/2 + (1/4 - 1/r^2)^{1/2} and P(b) = 1/2 - (1/4 - 1/r^2)^{1/2} (r > 2); by Prekopa's
+    theorem log F is concave on (-inf, a] and log(1 - F) on [b, inf). Where f' <= 0,
+    f'F <= f^2 holds trivially, and f' < 0 on [m2, inf); where f' >= 0, -f'(1 - F) <= f^2 holds
+    trivially, and f' > 0 on (-inf, m1]. What remains is f'F < f^2 on [a, m2] and
+    -f'(1 - F) < f^2 on [m1, b], checked here on boxes in ball arithmetic. The box ends a_chk <= a
+    and b_chk >= b are rounded outward. Returns (ok, worst upper bound of the two ratios
+    (f'F - f^2)/f^2 and (-f'(1 - F) - f^2)/f^2, number of boxes)."""
+    P, M1, M2, Sg = A(p), A(m1), A(m2), A(s)
+    r = (M2 - M1) / Sg
+    if not r > 2:                                   # f log-concave: nothing to check
+        return True, -math.inf, 0
+    h = (arb(1) / 4 - 1 / (r * r)).sqrt()
+    mid, lo = (M1 + M2) / 2, (P / (1 - P)).log()
+    # log-odds of the first component: lo - (m2 - m1)(2w - m1 - m2)/(2 s^2), decreasing in w
+    w_at = lambda Pv: mid + Sg * Sg * (lo - (Pv / (1 - Pv)).log()) / (M2 - M1)
+    a_chk, b_chk = fdown(w_at(arb(1) / 2 + h)), fup(w_at(arb(1) / 2 - h))
+
+    def parts(w):
+        z1, z2 = (w - M1) / Sg, (w - M2) / Sg
+        d1, d2 = P * phi(z1) / Sg, (1 - P) * phi(z2) / Sg
+        f = d1 + d2
+        fp = -(d1 * z1 + d2 * z2) / Sg
+        F = P * Phi(z1) + (1 - P) * Phi(z2)
+        S = P * Phi(-z1) + (1 - P) * Phi(-z2)
+        return f, fp, F, S
+
+    tests = [(a_chk, float(m2), lambda f, fp, F, S: (fp * F - f * f) / (f * f)),
+             (float(m1), b_chk, lambda f, fp, F, S: (-fp * S - f * f) / (f * f))]
+    worst, boxes = -math.inf, 0
+    for x0, x1, ratio in tests:
+        stack = [(x0 + (x1 - x0) * i / n0, x0 + (x1 - x0) * (i + 1) / n0) for i in range(n0)]
+        stack[0], stack[-1] = (x0, stack[0][1]), (stack[-1][0], x1)
+        while stack:
+            u, v = stack.pop()
+            boxes += 1
+            if boxes > max_boxes:
+                return False, worst, boxes
+            val = ratio(*parts(A(u).union(A(v))))
+            if val < 0:
+                worst = max(worst, fup(val))
+            else:
+                c = (u + v) / 2
+                stack += [(u, c), (c, v)]
+    return True, worst, boxes

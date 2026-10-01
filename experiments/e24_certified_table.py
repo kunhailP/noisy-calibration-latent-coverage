@@ -4,7 +4,7 @@ p in {.90, .9036, .9068} (the last two: order-statistic levels at delta = .04, .
 For each x on a grid: a lower bound L (feasible extremal law: coarse (beta, ell) grid of exact
 endpoint values, polished by Nelder-Mead) and a certified upper bound U (monotone branch and
 bound, `uai.certify`, first relative tolerance in TOLS that clears). Between grid points the
-lookup uses R(x + h) <= R(x) + c_q sqrt(h) (Supplementary Proposition S1); below x = .01 it uses
+lookup uses R(x + h) <= R(x) + c_q sqrt(h) (Supplementary Proposition S2); below x = .01 it uses
 Theorem 1 and its p >= q form (Section 4.1).
   python experiments/e24_certified_table.py [procs] [step] [x_lo] [x_hi] [p,p,...]
 Writes results/certified_R.csv, merged with existing rows (same p and x are replaced), so a

@@ -2,7 +2,7 @@
 
 Same design as E20 (K = 110, var W = 1, D_i = 0.577 lognormal(0, 0.7)/mean, seven latent laws), but
 2000 data sets per law and only the rules that need no numerical optimization: the noisy threshold
-(Proposition 4), Corollary 2 and the shape-free Markov rule at rank 107. Seeds differ from E20.
+(Proposition 3), Corollary 2 and the shape-free Markov rule at rank 107. Seeds differ from E20.
 Reports reliability with a Clopper-Pearson 95% interval, mean conditional coverage and mean
 full width.
   python experiments/e36_analytic_reliability.py [reps] [procs]
