@@ -6,10 +6,12 @@ and a centring dial kappa >= 0,
     p_kappa(q) = sup{ pr(|W + e| < 1) : W log-concave, |E W| <= kappa, pr(|W| < 1) <= q,
                       e = sigma eps, eps in E, sigma > 0 }.
 
-By the localization argument of notes/centred.md (Fradelizi and Guedon 2006, Theorem 1, with the
-degrees-of-freedom count of their Proposition 2) the supremum over W may be taken over point
-masses and laws with density exp(-V) on a segment, V convex and piecewise affine with at most two
-pieces; over symmetric unimodal noise it is over uniform laws on [-r, r] (Khintchine), over
+By the localization theorem of Fradelizi and Guedon (2006), with the coverage constraint and the two
+bounds on the mean as three linear constraints, the supremum over W may be taken over point masses and
+laws with density exp(-V) on a segment, V convex and piecewise affine with at most THREE pieces.
+The search below parametrizes two pieces; the three-piece check (`three_piece_starts`) found gains <= 6e-11. The
+two-piece reduction of notes/centred.md (a degrees-of-freedom count) is not proved and not used in
+the paper; over symmetric unimodal noise it is over uniform laws on [-r, r] (Khintchine), over
 Gaussian noise over sigma. kappa = inf gives Psi_E(q) (Theorem 2 and Supplementary S2).
 
 Laws are represented by `PLA` (piecewise log-affine density, any number of pieces): distribution

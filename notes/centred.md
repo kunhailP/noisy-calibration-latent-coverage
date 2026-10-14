@@ -104,8 +104,9 @@ is where the open convention is needed: mu -> mu(-1, 1) is lower semicontinuous,
 {mu(-1,1) <= q} is weakly closed); f_2, f_3 are continuous on K. The set of log-concave
 probabilities on K, point masses included, is weakly closed, so P_f is compact.
 
-The theorem with p = 3 gives at most three pieces. **Two pieces suffice**, by the
-degrees-of-freedom count (ii): the constraints f_2, f_3 can both be active only if E W = kappa =
+The theorem with p = 3 gives at most three pieces (this is what the paper uses). **Two pieces
+suffice** by the following degrees-of-freedom count (ii) -- an argument through the PROOF of the
+theorem, not its statement, and not proved here in full; the paper does not rely on it: the constraints f_2, f_3 can both be active only if E W = kappa =
 -kappa, i.e. kappa = 0, and then they impose the single linear equation int w h = 0. So at an
 extreme point at most three linear equations act on the perturbation (normalization, coverage if
 active, the mean if active), d <= 3, and by (iii) V is the maximum of at most two affine
