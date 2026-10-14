@@ -109,8 +109,8 @@ Proposition~\ref{M-prop:general} & main text & proved \\
 two-sided level $p_{\E}(q)$ & \S~\ref{sec:s-twoend}, Lemmas~\ref{lem:twoend}--\ref{lem:convex} & proved \\
 $\Psi_{\E}(q)$ cannot be lowered & \S~\ref{sec:s-oneend} & proved \\
 Theorem~\ref{M-thm:classes}(i) & \S~\ref{sec:s-su}, Proposition~\ref{prop:su-exact} & proved; values in ball arithmetic \\
-Theorem~\ref{M-thm:classes}(ii) & \S~\ref{sec:s-lc}, \S~\ref{sec:s-ball} & proved; bounds certified in ball arithmetic \\
-Theorem~\ref{M-thm:classes}(iii) & \S~\ref{sec:s-mzu} & proved \\
+Proposition~\ref{M-prop:lc} & \S~\ref{sec:s-lc}, \S~\ref{sec:s-ball} & proved; bounds certified in ball arithmetic \\
+Theorem~\ref{M-thm:classes}(ii) & \S~\ref{sec:s-mzu} & proved \\
 Theorem~\ref{M-thm:gauss} & \S~\ref{sec:s-gauss-exact} & proved; values in ball arithmetic \\
 Proposition~\ref{M-prop:latentshape} & \S~\ref{sec:s-latentshape} & proved; examples in closed form \\
 Theorem~\ref{M-thm:rank}; ranks of Table~\ref{M-tab:map}, including its first row & \S~\ref{sec:s-rank} & proved; ranks computed exactly \\
@@ -191,7 +191,7 @@ This section proves the results of \S~\ref{M-sec:transfer}.
 
 \subsection{Both ends of the interval}\label{sec:s-twoend}
 
-Let $\lambda_{\E}(p') = \sup\{q' \in (0, 1) : \Psi_{\E}(q') < p'\}$, with $\sup\emptyset = 0$, and $\vartheta_{\E}(a) = 1 - \lambda_{\E}(1 - a)$; both are nondecreasing. Let $\beta_{\E} = \inf_{\epsilon \in \E}\pr(\epsilon \ge 0)$. Since $\min(1, q'\mathrm{e}^{-\epsilon}) \le q'$ when $\epsilon \ge 0$, $\Psi_{\E}(q') \le 1 - (1 - q')\beta_{\E}$. If $\beta_{\E} > 0$, as for Gaussian and symmetric unimodal noise, where $\beta_{\E} = 1/2$, and for mean-zero log-concave noise, where $\beta_{\E} = \mathrm{e}^{-1}$ by fact 4 of \S~\ref{sec:s-prelim}, then $\Psi_{\E}(q') < 1$ for every $q' < 1$, so $\lambda_{\E}(1) = 1$ and $\vartheta_{\E}(0) = 0$. If instead $\Psi_{\E}(q') = 1$ for some $q' < 1$, Proposition~\ref{M-prop:general} shows that no noisy level below $1$ gives latent coverage $q'$ at one end, so no transfer is possible; this is the case of mean-zero unimodal noise, Theorem~\ref{M-thm:classes}(iii).
+Let $\lambda_{\E}(p') = \sup\{q' \in (0, 1) : \Psi_{\E}(q') < p'\}$, with $\sup\emptyset = 0$, and $\vartheta_{\E}(a) = 1 - \lambda_{\E}(1 - a)$; both are nondecreasing. Let $\beta_{\E} = \inf_{\epsilon \in \E}\pr(\epsilon \ge 0)$. Since $\min(1, q'\mathrm{e}^{-\epsilon}) \le q'$ when $\epsilon \ge 0$, $\Psi_{\E}(q') \le 1 - (1 - q')\beta_{\E}$. If $\beta_{\E} > 0$, as for Gaussian and symmetric unimodal noise, where $\beta_{\E} = 1/2$, and for mean-zero log-concave noise, where $\beta_{\E} = \mathrm{e}^{-1}$ by fact 4 of \S~\ref{sec:s-prelim}, then $\Psi_{\E}(q') < 1$ for every $q' < 1$, so $\lambda_{\E}(1) = 1$ and $\vartheta_{\E}(0) = 0$. If instead $\Psi_{\E}(q') = 1$ for some $q' < 1$, Proposition~\ref{M-prop:general} shows that no noisy level below $1$ gives latent coverage $q'$ at one end, so no transfer is possible; this is the case of mean-zero unimodal noise, Theorem~\ref{M-thm:classes}(ii).
 
 \begin{lemma}\label{lem:twoend}
 Let $\beta_{\E} > 0$, $W \in \B$, $t > 0$ and $e = \sigma\epsilon$ with $\sigma > 0$ and the law of $\epsilon$ in $\E$, and let $a_R = \pr(W + e > t)$ and $a_L = \pr(W + e < -t)$. Then $\pr(W > t) \le \vartheta_{\E}(a_R)$ and $\pr(W < -t) \le \vartheta_{\E}(a_L)$. Consequently, if $\pr(|W + e| \le t) \ge p > p_{\E}(q)$, then $\pr(|W| \le t) \ge q$.
@@ -963,6 +963,21 @@ rule & mean cov. & min.\ cov. & share $\ge 0.9$ & width & vs usual \\
 \end{tabular}
 \end{table}
 
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Application, rules that use no variance estimates, at $q = 0.9$ and $0.95$, $\delta = 0.05$, $120$ replications per condition: rank, mean coverage of the evaluation districts (standard error), share of replications with coverage at least $q$ (Wilson $95\%$ interval), and width relative to the rule without a shape assumption, in percent}
+\label{tab:s-app-levels}
+\centering
+\fontsize{7.5}{9pt}\selectfont
+\begin{tabular}{llcccc}
+\toprule
+$q$ & rule & $k$ & mean coverage & coverage $\ge q$ & width vs no shape (\%) \\
+\midrule
+\tabinput{supp_tables/r05_levels.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+
 Table~\ref{tab:s-app} gives the results. The rank of Theorem~\ref{M-thm:rank} covered at least $90\%$ of the evaluation districts in all $480$ replications. The Fay--Herriot interval was shorter, but covered fewer than $90\%$ of the districts in up to $9.2\%$ of the replications of a condition; LatentCP was $4.6$--$5.7\%$ wider than the rank's interval and the Markov rule $12$--$16\%$ wider. The guarantee of Theorem~\ref{M-thm:rank} still needs the noise of the direct estimates to lie in the stated class, independent of the latent residuals, and the calibration districts to be no easier than a new one in the sense of Corollary~\ref{M-cor:hetero}; neither can be confirmed from these data. With two or three schools, the direct estimates are means of very few residuals, so their noise need not be close to Gaussian, which is one reason to state the guarantee for the symmetric unimodal or log-concave class; at $K = 110$ the rank is the same.
 
 %=============================================================================================
@@ -984,7 +999,7 @@ Figure~\ref{M-fig:reliability}, Table~\ref{tab:s-reliability} & \texttt{r01\_rel
 Table~\ref{M-tab:sameinfo}, Table~\ref{tab:s-sameinfo} & \texttt{r02\_same\_information.py} & \texttt{same\_information\_v2*.csv} \\
 mixed noise, Table~\ref{tab:s-mixed} & \texttt{r03\_mixed\_noise\_stress.py} & \texttt{mixed\_noise\_stress*.csv} \\
 Table~\ref{M-tab:competitors}, Tables~\ref{tab:s-comp110}--\ref{tab:s-mc} & \texttt{r04\_competitors.py}, \texttt{r04\_mc\_intervals.py} & \texttt{competitors\_v2\_hetldc*.csv}, \texttt{competitors\_mc\_intervals.csv} \\
-application, Table~\ref{tab:s-app} & \texttt{fetch\_apipop.py}, \texttt{r05\_apipop.py} & \texttt{apipop*.csv} \\
+application, Tables~\ref{tab:s-app} and~\ref{tab:s-app-levels} & \texttt{fetch\_apipop.py}, \texttt{r05\_apipop.py} & \texttt{apipop*.csv} \\
 Corollary~\ref{M-cor:hetero}, Table~\ref{tab:s-hetero} & \texttt{r06\_heterogeneous\_latent.py} & \texttt{heterogeneous\_latent*.csv} \\
 Proposition~\ref{M-prop:contam}, Table~\ref{tab:s-contam} & \texttt{r07\_contamination.py}, \texttt{latentcov.contamination} & \texttt{contamination*.csv} \\
 Proposition~\ref{M-prop:centred}, Tables~\ref{M-tab:centred} and~\ref{tab:s-centred} & \texttt{r08\_centred.py}, \texttt{latentcov.centred} & \texttt{centred\_*.csv} \\

@@ -167,6 +167,7 @@ def r05():
     """Application: per condition, mean and minimum coverage, share of replications with coverage
     >= 0.9 and mean width, for every rule."""
     s = pd.read_csv(RES / 'apipop_summary.csv')
+    s = s[s.q == 0.9]
     cond = {'api99_n3': 'with 1999 index, $n = 3$', 'api99_n2': 'with 1999 index, $n = 2$',
             'socio_n3': 'socio-demographic only, $n = 3$',
             'socio_n2': 'socio-demographic only, $n = 2$'}
@@ -183,7 +184,7 @@ def r05():
         for m, nm in name.items():
             x = d.loc[m]
             lines.append(' & '.join([nm, f'{x.mean_cov:.3f}', f'{x.min_cov:.3f}',
-                                     f'{x.pr_cov_ge_90:.3f}', f'{x.width:.1f}',
+                                     f'{x.pr_cov_ge_q:.3f}', f'{x.width:.1f}',
                                      pct(100 * (x.width / w0 - 1), 1)]) + r' \\')
         if c != 'socio_n2':
             lines.append(r'\addlinespace')
@@ -334,5 +335,36 @@ def r04_mc():
     write('r04_mc.tex', lines)
 
 
+def r05_levels():
+    """Application, rules with the same information at q = 0.9 and 0.95: rank, mean coverage (s.e.),
+    share of replications with coverage >= q (Wilson 95% interval), width relative to the rule
+    without a shape assumption."""
+    s = pd.read_csv(RES / 'apipop_summary.csv')
+    cond = {'api99_n3': 'with 1999 index, $n = 3$', 'api99_n2': 'with 1999 index, $n = 2$',
+            'socio_n3': 'socio-demographic only, $n = 3$', 'socio_n2': 'socio-demographic only, $n = 2$'}
+    name = {'usual': 'usual rank', 'ours: Gaussian': 'Theorem~\\ref{M-thm:rank}, Gaussian',
+            'contamination 1%, Gaussian': '$\\xi = 1\\%$, Gaussian', 'contamination 5%, Gaussian': '$\\xi = 5\\%$, Gaussian',
+            'no shape, median-zero': 'no shape, median zero'}
+    lines = []
+    for c, lab in cond.items():
+        lines.append(r'\multicolumn{6}{l}{\emph{' + lab + r'}} \\')
+        for q in (0.9, 0.95):
+            d = s[(s.condition == c) & (s.q == q)].set_index('method')
+            w0 = d.loc['no shape, median-zero', 'width']
+            for m, nm in name.items():
+                x = d.loc[m]
+                k = '--' if pd.isna(x['rank']) else str(int(x['rank']))
+                if not np.isfinite(x.width):
+                    rest = ['--', '--', 'no valid rank']
+                else:
+                    rel = '--' if not np.isfinite(w0) else pct(100 * (x.width / w0 - 1), 1)
+                    rest = [f'{x.mean_cov:.3f} ({x.mean_cov_se:.4f})',
+                            f'{x.pr_cov_ge_q:.3f} ({x.pr_lo:.3f}, {x.pr_hi:.3f})', rel]
+                lines.append(' & '.join([f'${q}$' if m == 'usual' else '', nm, k] + rest) + r' \\')
+        if c != 'socio_n2':
+            lines.append(r'\addlinespace')
+    write('r05_levels.tex', lines)
+
+
 if __name__ == '__main__':
-    r01(), r02(), r03(), r04(), r04_mc(), r05(), r06(), r07(), r08(), r09(), r10()
+    r01(), r02(), r03(), r04(), r04_mc(), r05(), r05_levels(), r06(), r07(), r08(), r09(), r10()
