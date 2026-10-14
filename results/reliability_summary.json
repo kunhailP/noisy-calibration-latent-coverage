@@ -1,10 +1,10 @@
 {
  "0.8": {
-  "u": 0.1351243797547531,
+  "u": 0.13512437114895648,
   "psi_gaussian_float": 0.8044105932256033,
   "r_q": 1.0,
-  "H_at_r_q": 0.8044105932255923,
-  "excess": 0.00441059322559223,
+  "H_at_r_q": 0.8044105932255965,
+  "excess": 0.004410593225596449,
   "gaussian_level": [
    0.8044105932256033,
    0.8044105932256035
@@ -13,18 +13,18 @@
    0.8043,
    0.805
   ],
-  "K_half_normal_approx": 22252.585791843718,
+  "K_half_normal_approx": 22252.58579180115,
   "first_grid_K_usual_below_0.95": 82,
   "first_grid_K_usual_below_0.9": 1421,
   "first_grid_K_usual_below_0.5": 24757,
-  "min_reliability_gaussian_certified": 0.9500030330159037
+  "min_reliability_gaussian_certified": 0.9500030330140788
  },
  "0.9": {
-  "u": 0.050273873782677385,
+  "u": 0.05027387975982015,
   "psi_gaussian_float": 0.900803469446498,
   "r_q": 1.0,
-  "H_at_r_q": 0.9008034694464965,
-  "excess": 0.000803469446496452,
+  "H_at_r_q": 0.9008034694464995,
+  "excess": 0.0008034694464994496,
   "gaussian_level": [
    0.900803469446498,
    0.9008034694464981
@@ -33,18 +33,18 @@
    0.90079,
    0.901
   ],
-  "K_half_normal_approx": 377188.36696365586,
+  "K_half_normal_approx": 377188.3669608414,
   "first_grid_K_usual_below_0.95": 61,
   "first_grid_K_usual_below_0.9": 21461,
   "first_grid_K_usual_below_0.5": 431314,
-  "min_reliability_gaussian_certified": 0.9500192349087321
+  "min_reliability_gaussian_certified": 0.9500192349054603
  },
  "0.95": {
-  "u": 0.020916321618516136,
+  "u": 0.020916318318678555,
   "psi_gaussian_float": 0.9501589751489204,
   "r_q": 1.0,
-  "H_at_r_q": 0.9501589751489194,
-  "excess": 0.0001589751489194935,
+  "H_at_r_q": 0.9501589751489193,
+  "excess": 0.00015897514891938247,
   "gaussian_level": [
    0.9501589751489204,
    0.9501589751489206
@@ -53,10 +53,10 @@
    0.95015,
    0.9502
   ],
-  "K_half_normal_approx": 5084984.603069567,
+  "K_half_normal_approx": 5084984.60307667,
   "first_grid_K_usual_below_0.95": 1639,
   "first_grid_K_usual_below_0.9": 280950,
   "first_grid_K_usual_below_0.5": 5646518,
-  "min_reliability_gaussian_certified": 0.9500045628656366
+  "min_reliability_gaussian_certified": 0.9500045628656903
  }
 }
