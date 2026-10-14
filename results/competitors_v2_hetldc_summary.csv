@@ -1,0 +1,475 @@
+K,noise,latent,method,reps,mean_cov,reliability,rel_width,information,guarantee
+110,Gaussian,normal,usual,300,0.9844098485861201,1.0,1.5037184031451891,none,none
+110,Gaussian,normal,ours: Gaussian,300,0.9844098485861201,1.0,1.5037184031451891,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,normal,ours: symmetric unimodal,300,0.9844098485861201,1.0,1.5037184031451891,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Gaussian,normal,"no shape, median-zero",300,0.9971791410815797,1.0,1.9235146420532616,none,"PAC, any W, median-zero noise"
+110,Gaussian,normal,latentcp,300,0.9881097927398874,1.0,1.5701755190505546,known D_i,marginal
+110,Gaussian,normal,latentcp_tuned,300,0.9819479454789564,0.9866666666666667,1.6092571563535671,known D_i,marginal
+110,Gaussian,normal,latentcp_multi,300,0.9796121709260025,0.98,1.5867292080981987,known D_i,marginal
+110,Gaussian,normal,latentcp_pac,300,0.9971785127848392,1.0,1.9234946706035645,known D_i,PAC (adaptation)
+110,Gaussian,normal,shape_free,300,0.9954556257223556,1.0,1.8006603815378595,known D_i,"PAC, any W"
+110,Gaussian,normal,cohen,300,0.3280478085408325,0.0,0.2578265781389929,known D_i,none
+110,Gaussian,normal,cohen_stable,300,0.9053329015041781,0.6166666666666667,1.0555064720626948,known D_i,none
+110,Gaussian,normal,fay_herriot,300,0.9494397878377735,0.9733333333333334,1.2128369339795029,known D_i,normal model
+110,Gaussian,normal,simple_shrink,300,0.9830203043183934,1.0,1.4842246246337014,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,normal,hetldc,300,0.9687011185659206,0.9833333333333333,1.3482147241172742,known D_i,"PAC, log-concave W, Gaussian noise"
+110,Gaussian,Laplace,usual,300,0.9712542786503853,1.0,1.5842331059555794,none,none
+110,Gaussian,Laplace,ours: Gaussian,300,0.9712542786503853,1.0,1.5842331059555794,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,Laplace,ours: symmetric unimodal,300,0.9712542786503853,1.0,1.5842331059555794,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Gaussian,Laplace,"no shape, median-zero",300,0.9911389588413867,1.0,2.164838683753355,none,"PAC, any W, median-zero noise"
+110,Gaussian,Laplace,latentcp,300,0.976238442543054,1.0,1.6730368098036545,known D_i,marginal
+110,Gaussian,Laplace,latentcp_tuned,300,0.9736258449674866,0.9966666666666667,1.7367715537173516,known D_i,marginal
+110,Gaussian,Laplace,latentcp_multi,300,0.9759716132976769,0.9966666666666667,1.7943244675350982,known D_i,marginal
+110,Gaussian,Laplace,latentcp_pac,300,0.991138359563932,1.0,2.164825744656001,known D_i,PAC (adaptation)
+110,Gaussian,Laplace,shape_free,300,0.9867321148806364,1.0,1.9514556162858938,known D_i,"PAC, any W"
+110,Gaussian,Laplace,cohen,300,0.4296823773025712,0.0,0.24497633994377832,known D_i,none
+110,Gaussian,Laplace,cohen_stable,300,0.8939789172569791,0.5366666666666666,1.03062150634383,known D_i,none
+110,Gaussian,Laplace,fay_herriot,300,0.9355024750384202,0.9366666666666666,1.2195887234441272,known D_i,normal model
+110,Gaussian,Laplace,simple_shrink,300,0.9699278632785181,1.0,1.564664106863781,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,Laplace,hetldc,300,0.9580919233276105,0.9866666666666667,1.4332174193840534,known D_i,"PAC, log-concave W, Gaussian noise"
+110,Gaussian,centred gamma,usual,300,0.9720136979657639,1.0,1.8289694738871594,none,none
+110,Gaussian,centred gamma,ours: Gaussian,300,0.9720136979657639,1.0,1.8289694738871594,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,centred gamma,ours: symmetric unimodal,300,0.9720136979657639,1.0,1.8289694738871594,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Gaussian,centred gamma,"no shape, median-zero",300,0.9895993260061181,1.0,2.5386815845092388,none,"PAC, any W, median-zero noise"
+110,Gaussian,centred gamma,latentcp,300,0.9760133444731478,1.0,1.9350231664740705,known D_i,marginal
+110,Gaussian,centred gamma,latentcp_tuned,300,0.9756920925293027,0.9933333333333333,2.0654163009620095,known D_i,marginal
+110,Gaussian,centred gamma,latentcp_multi,300,0.9751516699996515,0.99,2.0543371073328034,known D_i,marginal
+110,Gaussian,centred gamma,latentcp_pac,300,0.9895985885464204,1.0,2.5386603678379682,known D_i,PAC (adaptation)
+110,Gaussian,centred gamma,shape_free,300,0.9847946001418912,1.0,2.248421612783331,known D_i,"PAC, any W"
+110,Gaussian,centred gamma,cohen,300,0.32447037408964957,0.0,0.3118694686902858,known D_i,none
+110,Gaussian,centred gamma,cohen_stable,300,0.9051255606682477,0.6866666666666666,1.1555352424318017,known D_i,none
+110,Gaussian,centred gamma,fay_herriot,300,0.9479090152828433,0.9833333333333333,1.444489526831096,known D_i,normal model
+110,Gaussian,centred gamma,simple_shrink,300,0.9709506022881523,1.0,1.8059343646139128,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,centred gamma,hetldc,300,0.9610585891799165,0.9966666666666667,1.6386939177898325,known D_i,"PAC, log-concave W, Gaussian noise"
+110,Gaussian,truncated exponential,usual,300,0.9689530665739647,1.0,1.7357357137672587,none,none
+110,Gaussian,truncated exponential,ours: Gaussian,300,0.9689530665739647,1.0,1.7357357137672587,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,truncated exponential,ours: symmetric unimodal,300,0.9689530665739647,1.0,1.7357357137672587,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Gaussian,truncated exponential,"no shape, median-zero",300,0.9914760484838856,1.0,2.287899531160043,none,"PAC, any W, median-zero noise"
+110,Gaussian,truncated exponential,latentcp,300,0.9742616692000742,1.0,1.8310951689792592,known D_i,marginal
+110,Gaussian,truncated exponential,latentcp_tuned,300,0.9726380218175408,0.9933333333333333,1.8625388610937132,known D_i,marginal
+110,Gaussian,truncated exponential,latentcp_multi,300,0.9723698446817847,1.0,1.854850548993947,known D_i,marginal
+110,Gaussian,truncated exponential,latentcp_pac,300,0.9914751930852214,1.0,2.287880818543414,known D_i,PAC (adaptation)
+110,Gaussian,truncated exponential,shape_free,300,0.9866850535937319,1.0,2.1197044192422885,known D_i,"PAC, any W"
+110,Gaussian,truncated exponential,cohen,300,0.290537302588903,0.0,0.2874786981621034,known D_i,none
+110,Gaussian,truncated exponential,cohen_stable,300,0.9068122456891141,0.6066666666666667,1.1015312578664285,known D_i,none
+110,Gaussian,truncated exponential,fay_herriot,300,0.9382765277820594,0.97,1.3422786186880185,known D_i,normal model
+110,Gaussian,truncated exponential,simple_shrink,300,0.9676048236993241,1.0,1.7139715141495366,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,truncated exponential,hetldc,300,0.9571049186807629,1.0,1.5679362162502397,known D_i,"PAC, log-concave W, Gaussian noise"
+110,Gaussian,bimodal,usual,300,0.9923565878281746,1.0,1.517058719877513,none,none
+110,Gaussian,bimodal,ours: Gaussian,300,0.9923565878281746,1.0,1.517058719877513,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,bimodal,ours: symmetric unimodal,300,0.9923565878281746,1.0,1.517058719877513,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Gaussian,bimodal,"no shape, median-zero",300,0.9991282453425577,1.0,1.9192683663926118,none,"PAC, any W, median-zero noise"
+110,Gaussian,bimodal,latentcp,300,0.9945449058197615,1.0,1.5793168171979393,known D_i,marginal
+110,Gaussian,bimodal,latentcp_tuned,300,0.9865917375157273,0.9866666666666667,1.579404739753543,known D_i,marginal
+110,Gaussian,bimodal,latentcp_multi,300,0.9853009658905438,0.9833333333333333,1.598148300139601,known D_i,marginal
+110,Gaussian,bimodal,latentcp_pac,300,0.999127521492141,1.0,1.919232899219367,known D_i,PAC (adaptation)
+110,Gaussian,bimodal,shape_free,300,0.9984133372346858,1.0,1.8074472064544982,known D_i,"PAC, any W"
+110,Gaussian,bimodal,cohen,300,0.27929348726936803,0.0,0.27522519025298975,known D_i,none
+110,Gaussian,bimodal,cohen_stable,300,0.9107587739093312,0.66,1.0674646408661461,known D_i,none
+110,Gaussian,bimodal,fay_herriot,300,0.9640382552023045,0.9866666666666667,1.2460621515395547,known D_i,normal model
+110,Gaussian,bimodal,simple_shrink,300,0.9913133552947905,1.0,1.4972215382918805,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,bimodal,hetldc,300,0.9777420233916193,0.9933333333333333,1.3520959043175949,known D_i,"PAC, log-concave W, Gaussian noise"
+110,Gaussian,t3,usual,300,0.9727391799375115,1.0,1.7628656013430701,none,none
+110,Gaussian,t3,ours: Gaussian,300,0.9727391799375115,1.0,1.7628656013430701,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,t3,ours: symmetric unimodal,300,0.9727391799375115,1.0,1.7628656013430701,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Gaussian,t3,"no shape, median-zero",300,0.9890445623435805,1.0,2.6368770082679682,none,"PAC, any W, median-zero noise"
+110,Gaussian,t3,latentcp,300,0.9769239353584313,1.0,1.8894544423009063,known D_i,marginal
+110,Gaussian,t3,latentcp_tuned,300,0.9766658669842987,1.0,2.113043955915745,known D_i,marginal
+110,Gaussian,t3,latentcp_multi,300,0.9765066290866692,1.0,2.1280009200348995,known D_i,marginal
+110,Gaussian,t3,latentcp_pac,300,0.9890437169141366,1.0,2.6368450393913516,known D_i,PAC (adaptation)
+110,Gaussian,t3,shape_free,300,0.9842318146642614,1.0,2.207914465034467,known D_i,"PAC, any W"
+110,Gaussian,t3,cohen,300,0.45129498503052723,0.0,0.2873925054062101,known D_i,none
+110,Gaussian,t3,cohen_stable,300,0.8943218460247028,0.5433333333333333,1.036973291100083,known D_i,none
+110,Gaussian,t3,fay_herriot,300,0.9456606196476974,0.9666666666666667,1.3858849222895777,known D_i,normal model
+110,Gaussian,t3,simple_shrink,300,0.9717095926278841,1.0,1.7391184740329826,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Gaussian,t3,hetldc,300,0.9611037361862977,0.99,1.562495593690881,known D_i,"PAC, log-concave W, Gaussian noise"
+1000,Gaussian,normal,usual,200,0.9686899484844037,1.0,1.3119298029817457,none,none
+1000,Gaussian,normal,ours: Gaussian,200,0.9692476658632355,1.0,1.3162575321203351,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,normal,ours: symmetric unimodal,200,0.9698466681664286,1.0,1.3210966026087112,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Gaussian,normal,"no shape, median-zero",200,0.9907904719789176,1.0,1.5897694095902233,none,"PAC, any W, median-zero noise"
+1000,Gaussian,normal,latentcp,200,0.9862498453824828,1.0,1.5031073269552224,known D_i,marginal
+1000,Gaussian,normal,latentcp_tuned,200,0.9797687128531166,1.0,1.5271909682932858,known D_i,marginal
+1000,Gaussian,normal,latentcp_multi,200,0.9793622439077505,1.0,1.498111132247925,known D_i,marginal
+1000,Gaussian,normal,latentcp_pac,200,0.9907866060456343,1.0,1.5896949759146883,known D_i,PAC (adaptation)
+1000,Gaussian,normal,shape_free,200,0.9909095932955512,1.0,1.5935693092739565,known D_i,"PAC, any W"
+1000,Gaussian,normal,cohen,200,0.8698108407614369,0.055,0.9228259751007434,known D_i,none
+1000,Gaussian,normal,cohen_stable,200,0.9067789543282267,0.6,1.028853646586156,known D_i,none
+1000,Gaussian,normal,fay_herriot,200,0.917529969027212,0.97,1.0581191819410578,known D_i,normal model
+1000,Gaussian,normal,simple_shrink,200,0.9692476658632355,1.0,1.3162575321203351,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,normal,usual,200,0.9666496275349591,1.0,1.2964397887656016,none,none
+1000,Laplace,normal,ours: Gaussian,200,0.9672325400019376,1.0,1.300788223091888,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,normal,ours: symmetric unimodal,200,0.9678383497587609,1.0,1.3052928691529946,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Laplace,normal,"no shape, median-zero",200,0.9910292537183291,1.0,1.595872879651354,none,"PAC, any W, median-zero noise"
+1000,Laplace,normal,latentcp,200,0.9861915394181809,1.0,1.502028510186607,known D_i,marginal
+1000,Laplace,normal,latentcp_tuned,200,0.9829866647440444,1.0,1.5127484764976808,known D_i,marginal
+1000,Laplace,normal,latentcp_multi,200,0.9840602874973174,1.0,1.5384741804593096,known D_i,marginal
+1000,Laplace,normal,latentcp_pac,200,0.9910251268333657,1.0,1.5957968092086605,known D_i,PAC (adaptation)
+1000,Laplace,normal,shape_free,200,0.9904977405493216,1.0,1.5838529516730913,known D_i,"PAC, any W"
+1000,Laplace,normal,cohen,200,0.8582845058323372,0.01,0.8962982873733941,known D_i,none
+1000,Laplace,normal,cohen_stable,200,0.8982723950273328,0.495,1.0036026682058214,known D_i,none
+1000,Laplace,normal,fay_herriot,200,0.9161800293932558,0.935,1.0534738328616284,known D_i,normal model
+1000,Laplace,normal,simple_shrink,200,0.9672325400019376,1.0,1.300788223091888,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,normal,usual,200,0.9662184997228151,1.0,1.293740411932178,none,none
+1000,mixed symmetric unimodal,normal,ours: Gaussian,200,0.9668570052160455,1.0,1.298373264513809,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,normal,ours: symmetric unimodal,200,0.9674504613544884,1.0,1.3027940186068567,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,mixed symmetric unimodal,normal,"no shape, median-zero",200,0.9901249289361657,1.0,1.575977045609429,none,"PAC, any W, median-zero noise"
+1000,mixed symmetric unimodal,normal,latentcp,200,0.9853511279197003,1.0,1.4902579584645756,known D_i,marginal
+1000,mixed symmetric unimodal,normal,latentcp_tuned,200,0.978621394358806,1.0,1.4925898219995215,known D_i,marginal
+1000,mixed symmetric unimodal,normal,latentcp_multi,200,0.9799652956772081,1.0,1.512614446709691,known D_i,marginal
+1000,mixed symmetric unimodal,normal,latentcp_pac,200,0.9901195266195082,1.0,1.5758892930579527,known D_i,PAC (adaptation)
+1000,mixed symmetric unimodal,normal,shape_free,200,0.9900617945430815,1.0,1.5762524853943733,known D_i,"PAC, any W"
+1000,mixed symmetric unimodal,normal,cohen,200,0.859934073795914,0.025,0.900117249748351,known D_i,none
+1000,mixed symmetric unimodal,normal,cohen_stable,200,0.9004229787775461,0.58,1.010309425532359,known D_i,none
+1000,mixed symmetric unimodal,normal,fay_herriot,200,0.9148291559143371,0.915,1.0494478890185492,known D_i,normal model
+1000,mixed symmetric unimodal,normal,simple_shrink,200,0.9668570052160455,1.0,1.298373264513809,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,Laplace,usual,200,0.9540894280272815,1.0,1.3407098554855421,none,none
+1000,Gaussian,Laplace,ours: Gaussian,200,0.9546731612803602,1.0,1.3462980866697132,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,Laplace,ours: symmetric unimodal,200,0.9552268764560911,1.0,1.351677138040691,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Gaussian,Laplace,"no shape, median-zero",200,0.9799477873931669,1.0,1.7031340806178823,none,"PAC, any W, median-zero noise"
+1000,Gaussian,Laplace,latentcp,200,0.9738371417324854,1.0,1.5866164754424097,known D_i,marginal
+1000,Gaussian,Laplace,latentcp_tuned,200,0.974150417010737,1.0,1.6151097231872749,known D_i,marginal
+1000,Gaussian,Laplace,latentcp_multi,200,0.9741032316683527,1.0,1.617953645349595,known D_i,marginal
+1000,Gaussian,Laplace,latentcp_pac,200,0.9799452802631103,1.0,1.703085344799626,known D_i,PAC (adaptation)
+1000,Gaussian,Laplace,shape_free,200,0.9785027096529013,1.0,1.6735082217093957,known D_i,"PAC, any W"
+1000,Gaussian,Laplace,cohen,200,0.8705228185705975,0.03,0.891975934227617,known D_i,none
+1000,Gaussian,Laplace,cohen_stable,200,0.9112860938531705,0.705,1.0672950842593263,known D_i,none
+1000,Gaussian,Laplace,fay_herriot,200,0.9149950261816352,0.96,1.073405233038597,known D_i,normal model
+1000,Gaussian,Laplace,simple_shrink,200,0.9546731612803602,1.0,1.3462980866697132,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,Laplace,usual,200,0.9537930537832412,1.0,1.3383830039528595,none,none
+1000,Laplace,Laplace,ours: Gaussian,200,0.954339967155009,1.0,1.3435632276553087,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,Laplace,ours: symmetric unimodal,200,0.9549582335319952,1.0,1.3495075330447797,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Laplace,Laplace,"no shape, median-zero",200,0.9805328994982784,1.0,1.7186511252364303,none,"PAC, any W, median-zero noise"
+1000,Laplace,Laplace,latentcp,200,0.9743405992441904,1.0,1.5966386137962527,known D_i,marginal
+1000,Laplace,Laplace,latentcp_tuned,200,0.9752822065791171,1.0,1.6326667702281534,known D_i,marginal
+1000,Laplace,Laplace,latentcp_multi,200,0.9750666096108792,1.0,1.6289767670633122,known D_i,marginal
+1000,Laplace,Laplace,latentcp_pac,200,0.9805309219784205,1.0,1.7186104491052836,known D_i,PAC (adaptation)
+1000,Laplace,Laplace,shape_free,200,0.9786817261170578,1.0,1.678169082795691,known D_i,"PAC, any W"
+1000,Laplace,Laplace,cohen,200,0.8686870866421734,0.04,0.8870823602478797,known D_i,none
+1000,Laplace,Laplace,cohen_stable,200,0.9147310726602178,0.785,1.0859862199002497,known D_i,none
+1000,Laplace,Laplace,fay_herriot,200,0.9141557902221129,0.925,1.0694368355978314,known D_i,normal model
+1000,Laplace,Laplace,simple_shrink,200,0.954339967155009,1.0,1.3435632276553087,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,Laplace,usual,200,0.952006648904631,1.0,1.321819552400384,none,none
+1000,mixed symmetric unimodal,Laplace,ours: Gaussian,200,0.9526191049313968,1.0,1.3273902427950242,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,Laplace,ours: symmetric unimodal,200,0.9533438715677994,1.0,1.334129727459651,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,mixed symmetric unimodal,Laplace,"no shape, median-zero",200,0.9796177073080423,1.0,1.6973617749946543,none,"PAC, any W, median-zero noise"
+1000,mixed symmetric unimodal,Laplace,latentcp,200,0.97297960448803,1.0,1.5735649648629093,known D_i,marginal
+1000,mixed symmetric unimodal,Laplace,latentcp_tuned,200,0.9741246890698025,1.0,1.6313749246526348,known D_i,marginal
+1000,mixed symmetric unimodal,Laplace,latentcp_multi,200,0.9747919911119753,1.0,1.6244886027822218,known D_i,marginal
+1000,mixed symmetric unimodal,Laplace,latentcp_pac,200,0.9796147642414745,1.0,1.6973060195886374,known D_i,PAC (adaptation)
+1000,mixed symmetric unimodal,Laplace,shape_free,200,0.9773122097856353,1.0,1.651274347853521,known D_i,"PAC, any W"
+1000,mixed symmetric unimodal,Laplace,cohen,200,0.8644151068831171,0.02,0.8726431289859862,known D_i,none
+1000,mixed symmetric unimodal,Laplace,cohen_stable,200,0.9052810178181353,0.62,1.039025885137992,known D_i,none
+1000,mixed symmetric unimodal,Laplace,fay_herriot,200,0.9135027822009734,0.905,1.066657191566015,known D_i,normal model
+1000,mixed symmetric unimodal,Laplace,simple_shrink,200,0.9526191049313968,1.0,1.3273902427950242,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,centred gamma,usual,200,0.9585601418979948,1.0,1.5455787659008748,none,none
+1000,Gaussian,centred gamma,ours: Gaussian,200,0.9589337997998854,1.0,1.5512167632344869,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,centred gamma,ours: symmetric unimodal,200,0.9593338070385521,1.0,1.5573763572072459,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Gaussian,centred gamma,"no shape, median-zero",200,0.9791091602655783,1.0,1.97158446534145,none,"PAC, any W, median-zero noise"
+1000,Gaussian,centred gamma,latentcp,200,0.97383251452048,1.0,1.8327249664748442,known D_i,marginal
+1000,Gaussian,centred gamma,latentcp_tuned,200,0.9751164484669629,1.0,1.8934285511253424,known D_i,marginal
+1000,Gaussian,centred gamma,latentcp_multi,200,0.9747940196276283,1.0,1.8772835049366292,known D_i,marginal
+1000,Gaussian,centred gamma,latentcp_pac,200,0.979106726758294,1.0,1.9715187563676893,known D_i,PAC (adaptation)
+1000,Gaussian,centred gamma,shape_free,200,0.9770381810952701,1.0,1.9140982904418493,known D_i,"PAC, any W"
+1000,Gaussian,centred gamma,cohen,200,0.9014158934710176,0.615,1.0226635247973872,known D_i,none
+1000,Gaussian,centred gamma,cohen_stable,200,0.9162685718562367,0.85,1.1176126693682966,known D_i,none
+1000,Gaussian,centred gamma,fay_herriot,200,0.9360322370478774,1.0,1.2762598562162903,known D_i,normal model
+1000,Gaussian,centred gamma,simple_shrink,200,0.9589337997998854,1.0,1.5512167632344869,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,centred gamma,usual,200,0.9584642232100911,1.0,1.5451514082772109,none,none
+1000,Laplace,centred gamma,ours: Gaussian,200,0.9588806631331624,1.0,1.5514805524070376,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,centred gamma,ours: symmetric unimodal,200,0.9594112769821392,1.0,1.5595954056444705,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Laplace,centred gamma,"no shape, median-zero",200,0.9804863612102721,1.0,2.015126083463217,none,"PAC, any W, median-zero noise"
+1000,Laplace,centred gamma,latentcp,200,0.9748753483631323,1.0,1.858173261410945,known D_i,marginal
+1000,Laplace,centred gamma,latentcp_tuned,200,0.9761991216518707,1.0,1.9241597722383093,known D_i,marginal
+1000,Laplace,centred gamma,latentcp_multi,200,0.9759126638332983,1.0,1.9016904987903303,known D_i,marginal
+1000,Laplace,centred gamma,latentcp_pac,200,0.9804842737982213,1.0,2.0150663877136905,known D_i,PAC (adaptation)
+1000,Laplace,centred gamma,shape_free,200,0.9777644676619437,1.0,1.9350845293912915,known D_i,"PAC, any W"
+1000,Laplace,centred gamma,cohen,200,0.8752881812974749,0.165,0.9440332141564983,known D_i,none
+1000,Laplace,centred gamma,cohen_stable,200,0.9003521177122693,0.6,1.0464783438251108,known D_i,none
+1000,Laplace,centred gamma,fay_herriot,200,0.9364473028979049,1.0,1.2768988477098429,known D_i,normal model
+1000,Laplace,centred gamma,simple_shrink,200,0.9588806631331624,1.0,1.5514805524070376,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,centred gamma,usual,200,0.9573722434108393,1.0,1.5285868068839485,none,none
+1000,mixed symmetric unimodal,centred gamma,ours: Gaussian,200,0.9577808798685765,1.0,1.5346426178631591,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,centred gamma,ours: symmetric unimodal,200,0.9581789300962087,1.0,1.5406066879436302,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,mixed symmetric unimodal,centred gamma,"no shape, median-zero",200,0.9788631363439428,1.0,1.966009789262337,none,"PAC, any W, median-zero noise"
+1000,mixed symmetric unimodal,centred gamma,latentcp,200,0.9732567746524633,1.0,1.8197113526666484,known D_i,marginal
+1000,mixed symmetric unimodal,centred gamma,latentcp_tuned,200,0.9741192642422756,1.0,1.879592595492867,known D_i,marginal
+1000,mixed symmetric unimodal,centred gamma,latentcp_multi,200,0.9743253998831343,1.0,1.898483982479529,known D_i,marginal
+1000,mixed symmetric unimodal,centred gamma,latentcp_pac,200,0.9788601152814745,1.0,1.9659287713659344,known D_i,PAC (adaptation)
+1000,mixed symmetric unimodal,centred gamma,shape_free,200,0.9762986018495817,1.0,1.8955047879595628,known D_i,"PAC, any W"
+1000,mixed symmetric unimodal,centred gamma,cohen,200,0.8893945186779625,0.35,0.9810686435774028,known D_i,none
+1000,mixed symmetric unimodal,centred gamma,cohen_stable,200,0.906292790505837,0.71,1.0612462881028377,known D_i,none
+1000,mixed symmetric unimodal,centred gamma,fay_herriot,200,0.9365039945596593,1.0,1.277806043580835,known D_i,normal model
+1000,mixed symmetric unimodal,centred gamma,simple_shrink,200,0.9577808798685765,1.0,1.5346426178631591,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,truncated exponential,usual,200,0.9515875945949762,1.0,1.4673003163783074,none,none
+1000,Gaussian,truncated exponential,ours: Gaussian,200,0.9520600573417402,1.0,1.473064991043149,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,truncated exponential,ours: symmetric unimodal,200,0.9526563286887852,1.0,1.4804659306324905,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Gaussian,truncated exponential,"no shape, median-zero",200,0.9775044550586804,1.0,1.8678484819595582,none,"PAC, any W, median-zero noise"
+1000,Gaussian,truncated exponential,latentcp,200,0.9707908530227753,1.0,1.7440526265564873,known D_i,marginal
+1000,Gaussian,truncated exponential,latentcp_tuned,200,0.9728637326091775,1.0,1.8160216371876459,known D_i,marginal
+1000,Gaussian,truncated exponential,latentcp_multi,200,0.9714613022767086,1.0,1.7781424859698918,known D_i,marginal
+1000,Gaussian,truncated exponential,latentcp_pac,200,0.9775016326848194,1.0,1.8677951794878225,known D_i,PAC (adaptation)
+1000,Gaussian,truncated exponential,shape_free,200,0.9754841007973036,1.0,1.8290045982698135,known D_i,"PAC, any W"
+1000,Gaussian,truncated exponential,cohen,200,0.8912700339096059,0.175,0.9440468860099057,known D_i,none
+1000,Gaussian,truncated exponential,cohen_stable,200,0.9088873835605746,0.69,1.0714306370891298,known D_i,none
+1000,Gaussian,truncated exponential,fay_herriot,200,0.9238802370012763,1.0,1.185756127922049,known D_i,normal model
+1000,Gaussian,truncated exponential,simple_shrink,200,0.9520600573417402,1.0,1.473064991043149,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,truncated exponential,usual,200,0.9521893826499769,1.0,1.4751979774208888,none,none
+1000,Laplace,truncated exponential,ours: Gaussian,200,0.9527747374035056,1.0,1.4824282818460555,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,truncated exponential,ours: symmetric unimodal,200,0.953250039074042,1.0,1.488352535211197,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Laplace,truncated exponential,"no shape, median-zero",200,0.9797422316892473,1.0,1.9143682414867984,none,"PAC, any W, median-zero noise"
+1000,Laplace,truncated exponential,latentcp,200,0.9727849586773161,1.0,1.7795283824516792,known D_i,marginal
+1000,Laplace,truncated exponential,latentcp_tuned,200,0.9741430403671972,1.0,1.8372036076306169,known D_i,marginal
+1000,Laplace,truncated exponential,latentcp_multi,200,0.9751527842278628,1.0,1.8517514627075717,known D_i,marginal
+1000,Laplace,truncated exponential,latentcp_pac,200,0.9797394107510474,1.0,1.9143150603204813,known D_i,PAC (adaptation)
+1000,Laplace,truncated exponential,shape_free,200,0.9772668870052789,1.0,1.8644173629231637,known D_i,"PAC, any W"
+1000,Laplace,truncated exponential,cohen,200,0.8747591423183083,0.0,0.8440854862669415,known D_i,none
+1000,Laplace,truncated exponential,cohen_stable,200,0.9007512364029016,0.525,1.0154404733470421,known D_i,none
+1000,Laplace,truncated exponential,fay_herriot,200,0.9236275272969711,1.0,1.1834288244097884,known D_i,normal model
+1000,Laplace,truncated exponential,simple_shrink,200,0.9527747374035056,1.0,1.4824282818460555,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,truncated exponential,usual,200,0.9500037325652251,1.0,1.4485870029781125,none,none
+1000,mixed symmetric unimodal,truncated exponential,ours: Gaussian,200,0.9505268938079545,1.0,1.4548413173731272,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,truncated exponential,ours: symmetric unimodal,200,0.9510783600195265,1.0,1.4614885467765169,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,mixed symmetric unimodal,truncated exponential,"no shape, median-zero",200,0.9769773438398522,1.0,1.8578578629480151,none,"PAC, any W, median-zero noise"
+1000,mixed symmetric unimodal,truncated exponential,latentcp,200,0.9699051615389923,1.0,1.7291301590453227,known D_i,marginal
+1000,mixed symmetric unimodal,truncated exponential,latentcp_tuned,200,0.9718692404517081,1.0,1.8141879398344807,known D_i,marginal
+1000,mixed symmetric unimodal,truncated exponential,latentcp_multi,200,0.9714322244547611,1.0,1.772499216834082,known D_i,marginal
+1000,mixed symmetric unimodal,truncated exponential,latentcp_pac,200,0.9769746138457733,1.0,1.8578071678416053,known D_i,PAC (adaptation)
+1000,mixed symmetric unimodal,truncated exponential,shape_free,200,0.9744817932174574,1.0,1.8108527078847203,known D_i,"PAC, any W"
+1000,mixed symmetric unimodal,truncated exponential,cohen,200,0.8835710152073868,0.04,0.8956784153619063,known D_i,none
+1000,mixed symmetric unimodal,truncated exponential,cohen_stable,200,0.9038752026651854,0.55,1.0360049005080034,known D_i,none
+1000,mixed symmetric unimodal,truncated exponential,fay_herriot,200,0.9231166356544938,1.0,1.179054734528146,known D_i,normal model
+1000,mixed symmetric unimodal,truncated exponential,simple_shrink,200,0.9505268938079545,1.0,1.4548413173731272,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,bimodal,usual,200,0.9814885381155832,1.0,1.3317195148907566,none,none
+1000,Gaussian,bimodal,ours: Gaussian,200,0.9819492050488599,1.0,1.335952430469425,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,bimodal,ours: symmetric unimodal,200,0.9823977237236464,1.0,1.3401534041953838,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Gaussian,bimodal,"no shape, median-zero",200,0.996649104919627,1.0,1.591723625307324,none,"PAC, any W, median-zero noise"
+1000,Gaussian,bimodal,latentcp,200,0.9940764109673846,1.0,1.5109041738517155,known D_i,marginal
+1000,Gaussian,bimodal,latentcp_tuned,200,0.9823975748822653,0.995,1.4822107348436768,known D_i,marginal
+1000,Gaussian,bimodal,latentcp_multi,200,0.983626608076942,1.0,1.4983731395537285,known D_i,marginal
+1000,Gaussian,bimodal,latentcp_pac,200,0.996646639224947,1.0,1.5916443201570984,known D_i,PAC (adaptation)
+1000,Gaussian,bimodal,shape_free,200,0.9968976147126805,1.0,1.6038635710257951,known D_i,"PAC, any W"
+1000,Gaussian,bimodal,cohen,200,0.8773914322747197,0.145,0.9539394082012111,known D_i,none
+1000,Gaussian,bimodal,cohen_stable,200,0.9122390352526488,0.745,1.0359308924636346,known D_i,none
+1000,Gaussian,bimodal,fay_herriot,200,0.9319974288221964,1.0,1.0879006051669395,known D_i,normal model
+1000,Gaussian,bimodal,simple_shrink,200,0.9819492050488599,1.0,1.335952430469425,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,bimodal,usual,200,0.9785766423886301,1.0,1.3074360987100635,none,none
+1000,Laplace,bimodal,ours: Gaussian,200,0.9791006213690038,1.0,1.3117971691909227,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,bimodal,ours: symmetric unimodal,200,0.979680219229138,1.0,1.3166654381149103,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Laplace,bimodal,"no shape, median-zero",200,0.9966832893081728,1.0,1.5977353452079768,none,"PAC, any W, median-zero noise"
+1000,Laplace,bimodal,latentcp,200,0.9936691201958598,1.0,1.5026182554079721,known D_i,marginal
+1000,Laplace,bimodal,latentcp_tuned,200,0.9894287231289554,1.0,1.5451720547044019,known D_i,marginal
+1000,Laplace,bimodal,latentcp_multi,200,0.9886330541588572,1.0,1.5151174940650578,known D_i,marginal
+1000,Laplace,bimodal,latentcp_pac,200,0.9966794259622462,1.0,1.5976409617800942,known D_i,PAC (adaptation)
+1000,Laplace,bimodal,shape_free,200,0.9962162885133565,1.0,1.5795513620857276,known D_i,"PAC, any W"
+1000,Laplace,bimodal,cohen,200,0.854667844071214,0.025,0.9106262554942708,known D_i,none
+1000,Laplace,bimodal,cohen_stable,200,0.8817591168157034,0.29,0.9652140849783545,known D_i,none
+1000,Laplace,bimodal,fay_herriot,200,0.931907549821113,0.995,1.0884468331102246,known D_i,normal model
+1000,Laplace,bimodal,simple_shrink,200,0.9791006213690038,1.0,1.3117971691909227,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,bimodal,usual,200,0.9796783514001057,1.0,1.316002254285746,none,none
+1000,mixed symmetric unimodal,bimodal,ours: Gaussian,200,0.9801961110185234,1.0,1.3204388330348964,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,bimodal,ours: symmetric unimodal,200,0.9806693936750318,1.0,1.3246489936927628,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,mixed symmetric unimodal,bimodal,"no shape, median-zero",200,0.9964096081295247,1.0,1.5834090772980627,none,"PAC, any W, median-zero noise"
+1000,mixed symmetric unimodal,bimodal,latentcp,200,0.9935315739780869,1.0,1.4978698422463734,known D_i,marginal
+1000,mixed symmetric unimodal,bimodal,latentcp_tuned,200,0.9847481630849483,1.0,1.5839245797564387,known D_i,marginal
+1000,mixed symmetric unimodal,bimodal,latentcp_multi,200,0.9836873997978313,1.0,1.4969757918041295,known D_i,marginal
+1000,mixed symmetric unimodal,bimodal,latentcp_pac,200,0.9964055251584634,1.0,1.5833069822245158,known D_i,PAC (adaptation)
+1000,mixed symmetric unimodal,bimodal,shape_free,200,0.996340902503156,1.0,1.5826323027643765,known D_i,"PAC, any W"
+1000,mixed symmetric unimodal,bimodal,cohen,200,0.8677085420814079,0.05,0.9347256974284176,known D_i,none
+1000,mixed symmetric unimodal,bimodal,cohen_stable,200,0.9041848916874632,0.56,1.0159960328808846,known D_i,none
+1000,mixed symmetric unimodal,bimodal,fay_herriot,200,0.9326561831137299,0.995,1.0903154095244103,known D_i,normal model
+1000,mixed symmetric unimodal,bimodal,simple_shrink,200,0.9801961110185234,1.0,1.3204388330348964,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,t3,usual,200,0.958578055121296,1.0,1.462000939366409,none,none
+1000,Gaussian,t3,ours: Gaussian,200,0.9590183726228192,1.0,1.4682567253444687,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Gaussian,t3,ours: symmetric unimodal,200,0.9595060066229765,1.0,1.4753985786313104,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Gaussian,t3,"no shape, median-zero",200,0.9788955489743395,1.0,1.898156194822092,none,"PAC, any W, median-zero noise"
+1000,Gaussian,t3,latentcp,200,0.9739629498965471,1.0,1.7531311101234877,known D_i,marginal
+1000,Gaussian,t3,latentcp_tuned,200,0.9746985022877646,1.0,1.8050468285210757,known D_i,marginal
+1000,Gaussian,t3,latentcp_multi,200,0.9747762959184676,1.0,1.8002257926047636,known D_i,marginal
+1000,Gaussian,t3,latentcp_pac,200,0.9788914069191742,1.0,1.89804127090811,known D_i,PAC (adaptation)
+1000,Gaussian,t3,shape_free,200,0.9758926794972852,1.0,1.8064183652102215,known D_i,"PAC, any W"
+1000,Gaussian,t3,cohen,200,0.8881013069552821,0.24,0.953844602497597,known D_i,none
+1000,Gaussian,t3,cohen_stable,200,0.9034220784394548,0.57,1.033736264100402,known D_i,none
+1000,Gaussian,t3,fay_herriot,200,0.9383381066474789,1.0,1.260518128998053,known D_i,normal model
+1000,Gaussian,t3,simple_shrink,200,0.9590183726228192,1.0,1.4682567253444687,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,t3,usual,200,0.9592284472282425,1.0,1.4728723854607848,none,none
+1000,Laplace,t3,ours: Gaussian,200,0.9597379806875478,1.0,1.4802975643439436,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,Laplace,t3,ours: symmetric unimodal,200,0.9602416211236765,1.0,1.4877966178221451,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,Laplace,t3,"no shape, median-zero",200,0.9804541666371936,1.0,1.9558333176045952,none,"PAC, any W, median-zero noise"
+1000,Laplace,t3,latentcp,200,0.9754788296200995,1.0,1.795359852502883,known D_i,marginal
+1000,Laplace,t3,latentcp_tuned,200,0.9759121150643769,1.0,1.8273454760141843,known D_i,marginal
+1000,Laplace,t3,latentcp_multi,200,0.976642254565692,1.0,1.8479915448249795,known D_i,marginal
+1000,Laplace,t3,latentcp_pac,200,0.980451948218692,1.0,1.9557608232084076,known D_i,PAC (adaptation)
+1000,Laplace,t3,shape_free,200,0.9771292867676952,1.0,1.8456599018060063,known D_i,"PAC, any W"
+1000,Laplace,t3,cohen,200,0.8751332275510458,0.225,0.9134168553915402,known D_i,none
+1000,Laplace,t3,cohen_stable,200,0.8994637497196785,0.575,1.0356647134498163,known D_i,none
+1000,Laplace,t3,fay_herriot,200,0.9369535593394234,1.0,1.253151663643269,known D_i,normal model
+1000,Laplace,t3,simple_shrink,200,0.9597379806875478,1.0,1.4802975643439436,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,t3,usual,200,0.9576873903684491,1.0,1.4502558037016342,none,none
+1000,mixed symmetric unimodal,t3,ours: Gaussian,200,0.9581439662342909,1.0,1.4565961045010178,none,"PAC, bi-log-concave W, Gaussian noise"
+1000,mixed symmetric unimodal,t3,ours: symmetric unimodal,200,0.9585572419625352,1.0,1.4624361864459203,none,"PAC, bi-log-concave W, symm. unimodal noise"
+1000,mixed symmetric unimodal,t3,"no shape, median-zero",200,0.9792824844742105,1.0,1.9121476254534588,none,"PAC, any W, median-zero noise"
+1000,mixed symmetric unimodal,t3,latentcp,200,0.9739756691611855,1.0,1.7544656981647868,known D_i,marginal
+1000,mixed symmetric unimodal,t3,latentcp_tuned,200,0.97426246923714,1.0,1.7821630347108646,known D_i,marginal
+1000,mixed symmetric unimodal,t3,latentcp_multi,200,0.97435960861584,1.0,1.7855207795377317,known D_i,marginal
+1000,mixed symmetric unimodal,t3,latentcp_pac,200,0.9792790881749263,1.0,1.9120533744602328,known D_i,PAC (adaptation)
+1000,mixed symmetric unimodal,t3,shape_free,200,0.9753134133263841,1.0,1.7926387493565639,known D_i,"PAC, any W"
+1000,mixed symmetric unimodal,t3,cohen,200,0.878205349332495,0.15,0.9184467662421355,known D_i,none
+1000,mixed symmetric unimodal,t3,cohen_stable,200,0.892819115138709,0.465,0.9927081080728403,known D_i,none
+1000,mixed symmetric unimodal,t3,fay_herriot,200,0.9378559355503928,1.0,1.2575593950082364,known D_i,normal model
+1000,mixed symmetric unimodal,t3,simple_shrink,200,0.9581439662342909,1.0,1.4565961045010178,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,normal,usual,300,0.9839599077075565,1.0,1.510801146078141,none,none
+110,Laplace,normal,ours: Gaussian,300,0.9839599077075565,1.0,1.510801146078141,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,normal,ours: symmetric unimodal,300,0.9839599077075565,1.0,1.510801146078141,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Laplace,normal,"no shape, median-zero",300,0.997079338338872,1.0,1.9927283102288793,none,"PAC, any W, median-zero noise"
+110,Laplace,normal,latentcp,300,0.9884008082420701,1.0,1.5896200458760725,known D_i,marginal
+110,Laplace,normal,latentcp_tuned,300,0.9821502707654465,0.9866666666666667,1.6260973205407419,known D_i,marginal
+110,Laplace,normal,latentcp_multi,300,0.982962392775474,0.9766666666666667,1.6672193215082827,known D_i,marginal
+110,Laplace,normal,latentcp_pac,300,0.997078192689182,1.0,1.9927016475016117,known D_i,PAC (adaptation)
+110,Laplace,normal,shape_free,300,0.995398127115299,1.0,1.8246070442406457,known D_i,"PAC, any W"
+110,Laplace,normal,cohen,300,0.32728472972509676,0.0,0.25716549618570655,known D_i,none
+110,Laplace,normal,cohen_stable,300,0.8945025236108758,0.5366666666666666,1.0249947096625407,known D_i,none
+110,Laplace,normal,fay_herriot,300,0.94963996038241,0.9766666666666667,1.215525891337877,known D_i,normal model
+110,Laplace,normal,simple_shrink,300,0.9825684211200547,1.0,1.4915134299874442,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,normal,usual,300,0.9829149798040158,1.0,1.4842184204969158,none,none
+110,mixed symmetric unimodal,normal,ours: Gaussian,300,0.9829149798040158,1.0,1.4842184204969158,none,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,normal,ours: symmetric unimodal,300,0.9829149798040158,1.0,1.4842184204969158,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,mixed symmetric unimodal,normal,"no shape, median-zero",300,0.9969849535131345,1.0,1.9402451425517324,none,"PAC, any W, median-zero noise"
+110,mixed symmetric unimodal,normal,latentcp,300,0.9870344942194237,1.0,1.554752116299938,known D_i,marginal
+110,mixed symmetric unimodal,normal,latentcp_tuned,300,0.9797788159099897,0.9833333333333333,1.593301943053322,known D_i,marginal
+110,mixed symmetric unimodal,normal,latentcp_multi,300,0.9808789190178343,0.9766666666666667,1.6426237277566933,known D_i,marginal
+110,mixed symmetric unimodal,normal,latentcp_pac,300,0.9969840086887384,1.0,1.9402210703075098,known D_i,PAC (adaptation)
+110,mixed symmetric unimodal,normal,shape_free,300,0.9950744974570264,1.0,1.7911619827035623,known D_i,"PAC, any W"
+110,mixed symmetric unimodal,normal,cohen,300,0.32883015799776794,0.0,0.2584410602977435,known D_i,none
+110,mixed symmetric unimodal,normal,cohen_stable,300,0.8886119738011483,0.5166666666666667,1.0118819620859991,known D_i,none
+110,mixed symmetric unimodal,normal,fay_herriot,300,0.9452438637947065,0.9666666666666667,1.1932849110209303,known D_i,normal model
+110,mixed symmetric unimodal,normal,simple_shrink,300,0.9814157232459692,1.0,1.4648673508403927,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,Laplace,usual,300,0.9716278634888948,1.0,1.5898813600743409,none,none
+110,Laplace,Laplace,ours: Gaussian,300,0.9716278634888948,1.0,1.5898813600743409,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,Laplace,ours: symmetric unimodal,300,0.9716278634888948,1.0,1.5898813600743409,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Laplace,Laplace,"no shape, median-zero",300,0.9913347693327595,1.0,2.196120011550799,none,"PAC, any W, median-zero noise"
+110,Laplace,Laplace,latentcp,300,0.9772997196014137,1.0,1.6982636851842863,known D_i,marginal
+110,Laplace,Laplace,latentcp_tuned,300,0.9751629691248755,1.0,1.7634199102115005,known D_i,marginal
+110,Laplace,Laplace,latentcp_multi,300,0.9747304820898945,0.9933333333333333,1.738359870283756,known D_i,marginal
+110,Laplace,Laplace,latentcp_pac,300,0.9913342902495843,1.0,2.1961090422779987,known D_i,PAC (adaptation)
+110,Laplace,Laplace,shape_free,300,0.9871830844423094,1.0,1.9834232169216939,known D_i,"PAC, any W"
+110,Laplace,Laplace,cohen,300,0.42666062161376583,0.0,0.2426614205849911,known D_i,none
+110,Laplace,Laplace,cohen_stable,300,0.8986879079310239,0.59,1.0610836009630615,known D_i,none
+110,Laplace,Laplace,fay_herriot,300,0.9336773401161118,0.9266666666666666,1.2081942153170746,known D_i,normal model
+110,Laplace,Laplace,simple_shrink,300,0.9703155962910561,1.0,1.5702950791348746,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,Laplace,usual,300,0.9705213937991505,1.0,1.5673727773211787,none,none
+110,mixed symmetric unimodal,Laplace,ours: Gaussian,300,0.9705213937991505,1.0,1.5673727773211787,none,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,Laplace,ours: symmetric unimodal,300,0.9705213937991505,1.0,1.5673727773211787,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,mixed symmetric unimodal,Laplace,"no shape, median-zero",300,0.9905510540861491,1.0,2.1543593296670824,none,"PAC, any W, median-zero noise"
+110,mixed symmetric unimodal,Laplace,latentcp,300,0.9756714868838128,1.0,1.6599008266583208,known D_i,marginal
+110,mixed symmetric unimodal,Laplace,latentcp_tuned,300,0.9722244192510086,0.9866666666666667,1.706164057817884,known D_i,marginal
+110,mixed symmetric unimodal,Laplace,latentcp_multi,300,0.9736251779622552,0.99,1.750376412343082,known D_i,marginal
+110,mixed symmetric unimodal,Laplace,latentcp_pac,300,0.9905503933727661,1.0,2.1543458928846566,known D_i,PAC (adaptation)
+110,mixed symmetric unimodal,Laplace,shape_free,300,0.9859298276751027,1.0,1.9313417329889773,known D_i,"PAC, any W"
+110,mixed symmetric unimodal,Laplace,cohen,300,0.42784850759294074,0.0,0.24365469469423398,known D_i,none
+110,mixed symmetric unimodal,Laplace,cohen_stable,300,0.8930363843666497,0.55,1.0290541870357368,known D_i,none
+110,mixed symmetric unimodal,Laplace,fay_herriot,300,0.9322876053738446,0.9,1.2004059177676167,known D_i,normal model
+110,mixed symmetric unimodal,Laplace,simple_shrink,300,0.969139527451628,1.0,1.5475849431218334,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,centred gamma,usual,300,0.9741410717458475,1.0,1.8888824437742273,none,none
+110,Laplace,centred gamma,ours: Gaussian,300,0.9741410717458475,1.0,1.8888824437742273,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,centred gamma,ours: symmetric unimodal,300,0.9741410717458475,1.0,1.8888824437742273,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Laplace,centred gamma,"no shape, median-zero",300,0.9910696029844083,1.0,2.6589491934536604,none,"PAC, any W, median-zero noise"
+110,Laplace,centred gamma,latentcp,300,0.9782257821827756,1.0,2.002133180862345,known D_i,marginal
+110,Laplace,centred gamma,latentcp_tuned,300,0.9775461446346114,0.9933333333333333,2.1228270553727544,known D_i,marginal
+110,Laplace,centred gamma,latentcp_multi,300,0.9782174607882886,0.9966666666666667,2.1458779864007096,known D_i,marginal
+110,Laplace,centred gamma,latentcp_pac,300,0.9910689211248536,1.0,2.6589292379369796,known D_i,PAC (adaptation)
+110,Laplace,centred gamma,shape_free,300,0.9864143252762694,1.0,2.3315109804039227,known D_i,"PAC, any W"
+110,Laplace,centred gamma,cohen,300,0.3197428762326052,0.0,0.30730372899188096,known D_i,none
+110,Laplace,centred gamma,cohen_stable,300,0.8931314069861148,0.6033333333333334,1.1160372323107663,known D_i,none
+110,Laplace,centred gamma,fay_herriot,300,0.9489743587878164,0.99,1.4518611096507195,known D_i,normal model
+110,Laplace,centred gamma,simple_shrink,300,0.9731437546979671,1.0,1.8656037769187042,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,centred gamma,usual,300,0.9717374418436288,1.0,1.818982094487006,none,none
+110,mixed symmetric unimodal,centred gamma,ours: Gaussian,300,0.9717374418436288,1.0,1.818982094487006,none,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,centred gamma,ours: symmetric unimodal,300,0.9717374418436288,1.0,1.818982094487006,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,mixed symmetric unimodal,centred gamma,"no shape, median-zero",300,0.9900811015984413,1.0,2.5819798146522115,none,"PAC, any W, median-zero noise"
+110,mixed symmetric unimodal,centred gamma,latentcp,300,0.9762244622186963,1.0,1.9395064240451858,known D_i,marginal
+110,mixed symmetric unimodal,centred gamma,latentcp_tuned,300,0.9763431100598202,0.99,2.136849817505505,known D_i,marginal
+110,mixed symmetric unimodal,centred gamma,latentcp_multi,300,0.9749871927801494,0.9966666666666667,2.0369753594213655,known D_i,marginal
+110,mixed symmetric unimodal,centred gamma,latentcp_pac,300,0.9900802023193395,1.0,2.581956403386517,known D_i,PAC (adaptation)
+110,mixed symmetric unimodal,centred gamma,shape_free,300,0.9852579180590482,1.0,2.261904155480173,known D_i,"PAC, any W"
+110,mixed symmetric unimodal,centred gamma,cohen,300,0.3272636122480508,0.0,0.3145578221816255,known D_i,none
+110,mixed symmetric unimodal,centred gamma,cohen_stable,300,0.8962492445460829,0.6,1.11172889097072,known D_i,none
+110,mixed symmetric unimodal,centred gamma,fay_herriot,300,0.9489104382442357,0.98,1.447539837656648,known D_i,normal model
+110,mixed symmetric unimodal,centred gamma,simple_shrink,300,0.9706425847260617,1.0,1.7954494703245125,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,truncated exponential,usual,300,0.9707995908794392,1.0,1.7684768594302689,none,none
+110,Laplace,truncated exponential,ours: Gaussian,300,0.9707995908794392,1.0,1.7684768594302689,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,truncated exponential,ours: symmetric unimodal,300,0.9707995908794392,1.0,1.7684768594302689,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Laplace,truncated exponential,"no shape, median-zero",300,0.9939171300355755,1.0,2.3876565234382694,none,"PAC, any W, median-zero noise"
+110,Laplace,truncated exponential,latentcp,300,0.9765414219768838,1.0,1.873766165222316,known D_i,marginal
+110,Laplace,truncated exponential,latentcp_tuned,300,0.9763673123859827,0.9966666666666667,1.9406001089821578,known D_i,marginal
+110,Laplace,truncated exponential,latentcp_multi,300,0.9768340353947722,0.9933333333333333,1.9698993273569465,known D_i,marginal
+110,Laplace,truncated exponential,latentcp_pac,300,0.9939165337751648,1.0,2.3876427931709,known D_i,PAC (adaptation)
+110,Laplace,truncated exponential,shape_free,300,0.988737648087843,1.0,2.177360077189599,known D_i,"PAC, any W"
+110,Laplace,truncated exponential,cohen,300,0.2947767412819333,0.0,0.2915643935124079,known D_i,none
+110,Laplace,truncated exponential,cohen_stable,300,0.8987267573819149,0.5566666666666666,1.0794135933690634,known D_i,none
+110,Laplace,truncated exponential,fay_herriot,300,0.9411316768653876,0.9866666666666667,1.3635033457154784,known D_i,normal model
+110,Laplace,truncated exponential,simple_shrink,300,0.9695277316527499,1.0,1.747118868327357,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,truncated exponential,usual,300,0.9677930374786052,1.0,1.7172070013496996,none,none
+110,mixed symmetric unimodal,truncated exponential,ours: Gaussian,300,0.9677930374786052,1.0,1.7172070013496996,none,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,truncated exponential,ours: symmetric unimodal,300,0.9677930374786052,1.0,1.7172070013496996,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,mixed symmetric unimodal,truncated exponential,"no shape, median-zero",300,0.9915334826294537,1.0,2.3006931449622225,none,"PAC, any W, median-zero noise"
+110,mixed symmetric unimodal,truncated exponential,latentcp,300,0.9731163193254717,1.0,1.8096696716592229,known D_i,marginal
+110,mixed symmetric unimodal,truncated exponential,latentcp_tuned,300,0.9715390244613086,0.9966666666666667,1.8479238882577866,known D_i,marginal
+110,mixed symmetric unimodal,truncated exponential,latentcp_multi,300,0.9727210777025863,0.9833333333333333,1.915095801220756,known D_i,marginal
+110,mixed symmetric unimodal,truncated exponential,latentcp_pac,300,0.9915323898871433,1.0,2.3006725803816708,known D_i,PAC (adaptation)
+110,mixed symmetric unimodal,truncated exponential,shape_free,300,0.9862040266342,1.0,2.1029614772467977,known D_i,"PAC, any W"
+110,mixed symmetric unimodal,truncated exponential,cohen,300,0.2910139939487878,0.0,0.2880078691617917,known D_i,none
+110,mixed symmetric unimodal,truncated exponential,cohen_stable,300,0.8994770769342487,0.5566666666666666,1.0698852461068902,known D_i,none
+110,mixed symmetric unimodal,truncated exponential,fay_herriot,300,0.9377302590059738,0.9533333333333334,1.3394063140832428,known D_i,normal model
+110,mixed symmetric unimodal,truncated exponential,simple_shrink,300,0.9664081265563338,1.0,1.6952851511625109,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,bimodal,usual,300,0.9914175584137782,1.0,1.5130590449496844,none,none
+110,Laplace,bimodal,ours: Gaussian,300,0.9914175584137782,1.0,1.5130590449496844,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,bimodal,ours: symmetric unimodal,300,0.9914175584137782,1.0,1.5130590449496844,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Laplace,bimodal,"no shape, median-zero",300,0.9992431984401272,1.0,2.0196244348537715,none,"PAC, any W, median-zero noise"
+110,Laplace,bimodal,latentcp,300,0.9941891865466536,1.0,1.5887222182698657,known D_i,marginal
+110,Laplace,bimodal,latentcp_tuned,300,0.9859026723858428,0.9833333333333333,1.605528356986126,known D_i,marginal
+110,Laplace,bimodal,latentcp_multi,300,0.9867380027000092,0.98,1.6207408723729269,known D_i,marginal
+110,Laplace,bimodal,latentcp_pac,300,0.9992409501640388,1.0,2.019593225146065,known D_i,PAC (adaptation)
+110,Laplace,bimodal,shape_free,300,0.9984155099951039,1.0,1.8384720362596985,known D_i,"PAC, any W"
+110,Laplace,bimodal,cohen,300,0.28023990797950826,0.0,0.276116157087163,known D_i,none
+110,Laplace,bimodal,cohen_stable,300,0.8802881332736456,0.4533333333333333,0.9894472958862601,known D_i,none
+110,Laplace,bimodal,fay_herriot,300,0.9641542951954747,0.9966666666666667,1.2509121406720052,known D_i,normal model
+110,Laplace,bimodal,simple_shrink,300,0.990270703220098,1.0,1.4929556933720294,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,bimodal,usual,300,0.9906975699159869,1.0,1.490365387078262,none,none
+110,mixed symmetric unimodal,bimodal,ours: Gaussian,300,0.9906975699159869,1.0,1.490365387078262,none,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,bimodal,ours: symmetric unimodal,300,0.9906975699159869,1.0,1.490365387078262,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,mixed symmetric unimodal,bimodal,"no shape, median-zero",300,0.9990715717660628,1.0,1.9522483828654174,none,"PAC, any W, median-zero noise"
+110,mixed symmetric unimodal,bimodal,latentcp,300,0.9936152406098249,1.0,1.5565639538512654,known D_i,marginal
+110,mixed symmetric unimodal,bimodal,latentcp_tuned,300,0.9849594128328631,0.9833333333333333,1.7779131630640317,known D_i,marginal
+110,mixed symmetric unimodal,bimodal,latentcp_multi,300,0.9866218272232791,0.9966666666666667,1.7086251416697311,known D_i,marginal
+110,mixed symmetric unimodal,bimodal,latentcp_pac,300,0.9990681966900928,1.0,1.9522083362431402,known D_i,PAC (adaptation)
+110,mixed symmetric unimodal,bimodal,shape_free,300,0.9977732654713182,1.0,1.7745044798748875,known D_i,"PAC, any W"
+110,mixed symmetric unimodal,bimodal,cohen,300,0.278396835583144,0.0,0.2743620364073196,known D_i,none
+110,mixed symmetric unimodal,bimodal,cohen_stable,300,0.8948506016920655,0.5333333333333333,1.0236251985198916,known D_i,none
+110,mixed symmetric unimodal,bimodal,fay_herriot,300,0.9638002563380977,0.98,1.2632474005886671,known D_i,normal model
+110,mixed symmetric unimodal,bimodal,simple_shrink,300,0.9894645205524712,1.0,1.4703654304023575,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,t3,usual,300,0.9734420117281483,1.0,1.7964919144625549,none,none
+110,Laplace,t3,ours: Gaussian,300,0.9734420117281483,1.0,1.7964919144625549,none,"PAC, bi-log-concave W, Gaussian noise"
+110,Laplace,t3,ours: symmetric unimodal,300,0.9734420117281483,1.0,1.7964919144625549,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,Laplace,t3,"no shape, median-zero",300,0.9903201475216332,1.0,2.7430686912081916,none,"PAC, any W, median-zero noise"
+110,Laplace,t3,latentcp,300,0.9775932266613957,1.0,1.9187526831663817,known D_i,marginal
+110,Laplace,t3,latentcp_tuned,300,0.9778203827432528,0.9966666666666667,2.1265423335774054,known D_i,marginal
+110,Laplace,t3,latentcp_multi,300,0.9780526412629761,0.9966666666666667,2.132758070827902,known D_i,marginal
+110,Laplace,t3,latentcp_pac,300,0.9903196600666414,1.0,2.743050042263147,known D_i,PAC (adaptation)
+110,Laplace,t3,shape_free,300,0.9850399598955802,1.0,2.257707612207686,known D_i,"PAC, any W"
+110,Laplace,t3,cohen,300,0.4369506457325235,0.0,0.2764685849701135,known D_i,none
+110,Laplace,t3,cohen_stable,300,0.8720142980305837,0.49333333333333335,1.010912519686271,known D_i,none
+110,Laplace,t3,fay_herriot,300,0.9454206557152386,0.9733333333333334,1.3769848427325728,known D_i,normal model
+110,Laplace,t3,simple_shrink,300,0.9724578026533112,1.0,1.7731580413376737,known D_min,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,t3,usual,300,0.9718950209607251,1.0,1.7612492082696194,none,none
+110,mixed symmetric unimodal,t3,ours: Gaussian,300,0.9718950209607251,1.0,1.7612492082696194,none,"PAC, bi-log-concave W, Gaussian noise"
+110,mixed symmetric unimodal,t3,ours: symmetric unimodal,300,0.9718950209607251,1.0,1.7612492082696194,none,"PAC, bi-log-concave W, symm. unimodal noise"
+110,mixed symmetric unimodal,t3,"no shape, median-zero",300,0.9899223477695945,1.0,2.7816544186224603,none,"PAC, any W, median-zero noise"
+110,mixed symmetric unimodal,t3,latentcp,300,0.9764972290032508,1.0,1.8902649149212678,known D_i,marginal
+110,mixed symmetric unimodal,t3,latentcp_tuned,300,0.9753829287539615,0.9933333333333333,2.0882780787974604,known D_i,marginal
+110,mixed symmetric unimodal,t3,latentcp_multi,300,0.9769012543872542,1.0,2.153108147950492,known D_i,marginal
+110,mixed symmetric unimodal,t3,latentcp_pac,300,0.9899209275636923,1.0,2.7816280154345243,known D_i,PAC (adaptation)
+110,mixed symmetric unimodal,t3,shape_free,300,0.9841686229797998,1.0,2.2269936460411244,known D_i,"PAC, any W"
+110,mixed symmetric unimodal,t3,cohen,300,0.449865834511542,0.0,0.28651965432899457,known D_i,none
+110,mixed symmetric unimodal,t3,cohen_stable,300,0.8808860587381109,0.49333333333333335,1.0150756729436095,known D_i,none
+110,mixed symmetric unimodal,t3,fay_herriot,300,0.9474276354593695,0.97,1.4155778256065366,known D_i,normal model
+110,mixed symmetric unimodal,t3,simple_shrink,300,0.9708368522434128,1.0,1.7380852963385072,known D_min,"PAC, bi-log-concave W, Gaussian noise"

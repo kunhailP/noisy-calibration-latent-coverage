@@ -1,0 +1,472 @@
+\documentclass[12pt]{article}
+\usepackage[sectionbib]{natbib}
+\usepackage{array,epsfig,fancyheadings,rotating}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\usepackage{sectsty, secdot}
+\sectionfont{\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont}
+\renewcommand{\theequation}{\thesection\arabic{equation}}
+\subsectionfont{\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont}
+
+\textwidth=31.9pc
+\textheight=46.5pc
+\oddsidemargin=1pc
+\evensidemargin=1pc
+\headsep=15pt
+\topmargin=.6cm
+\parindent=1.7pc
+\parskip=0pt
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xr}
+\externaldocument[S-]{supplement}
+
+\setcounter{page}{1}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+\pagestyle{fancy}
+
+\newcommand{\pr}{\mathrm{pr}}
+\newcommand{\LC}{\mathcal{L}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\E}{\mathcal{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\var}{\mathrm{var}}
+\newcommand{\Bin}{\mathrm{Bin}}
+
+\def\n{\noindent}
+\lhead[\fancyplain{} \leftmark]{}
+\chead[]{}
+\rhead[]{\fancyplain{}\rightmark}
+\cfoot{}
+
+\begin{document}
+
+\renewcommand{\baselinestretch}{2}
+
+\markright{ \hbox{\footnotesize\rm Statistica Sinica}\hfill\\[-13pt]
+\hbox{\footnotesize\rm}\hfill }
+
+\markboth{\hfill{\footnotesize\rm KUN WOO PARK} \hfill}
+{\hfill {\footnotesize\rm LATENT COVERAGE FROM NOISY CALIBRATION} \hfill}
+
+\renewcommand{\thefootnote}{}
+$\ $\par
+
+\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont \vspace{0.8pc}
+\centerline{\large\bf LATENT COVERAGE FROM NOISY CALIBRATION}
+\vspace{.4cm}
+\centerline{Kun Woo Park}
+\vspace{.4cm}
+\centerline{\it Kookmin University}
+\vspace{.55cm} \fontsize{9}{11.5pt plus.8pt minus.6pt}\selectfont
+
+\begin{quotation}
+\noindent {\it Abstract:}
+Prediction intervals for a latent quantity, such as the true mean of an unsampled small area or a response measured with error, are often calibrated on noisy proxies, with the usual conformal threshold. We ask when this threshold covers the latent target with high probability, if the law and the variance of the noise are unknown and differ between units, and what is the smallest correction when it does not. The answer turns on the shape of the latent law. Unimodality, even with mean zero, gains nothing over no shape assumption. Under bi-log-concavity, which allows asymmetry and some multimodality, the usual threshold is nearly valid: at a target of ninety percent its latent coverage falls short by less than one thousandth under Gaussian noise. This shortfall is a matter of miscentring: for centred log-concave residuals, numerical optimization puts it below three millionths, so that the reliability of the usual threshold falls short of its nominal level by at most two thousandths for calibration samples up to three million, and it reaches its maximum only as the bias of the centre approaches the half-width of the interval. A small raise of the conformal rank, which needs no noise variances, restores the guarantee for every noise configuration in a class, and for Gaussian and symmetric unimodal noise no smaller raise does. The guarantee degrades gradually when part of the latent law departs from bi-log-concavity, and extends to latent laws that differ between units under an ordering condition. The paper concerns validity, not width: calibrating on noisy scores widens the interval far more than the correction does. Simulations and a school-district application illustrate the procedure.
+
+\vspace{9pt}
+\noindent {\it Key words and phrases:}
+Bi-log-concavity, conformal prediction, measurement error, small area estimation, tolerance interval.
+\par
+\end{quotation}\par
+
+\def\thefigure{\arabic{figure}}
+\def\thetable{\arabic{table}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\numberwithin{equation}{section}
+
+\fontsize{12}{14pt plus.8pt minus .6pt}\selectfont
+
+%=============================================================================================
+\section{Introduction}\label{sec:intro}
+
+Suppose that a residual $W$, the latent target minus a centre fitted on independent training data, is observed only through $V = W + e$, with noise $e$ independent of $W$. A survey statistician who calibrates a prediction interval for the true mean of an unsampled area on the direct estimates of sampled areas is in this position \citep{fay1979}, as is a conformal analyst whose calibration responses carry measurement error \citep{einbinder2024, cohen2025}. The threshold $t$ at which the noisy scores $|V|$ have coverage $p$ is observable; the quantity of interest is the latent coverage $\pr(|W| \le t)$. The noise law and its variance are often unknown, or known only through rough estimates, and they differ between units: direct estimates of areas with different sample sizes have different variances.
+
+The interval is for a unit without its own noisy observation, such as an unsampled area, predicted synthetically; intervals for sampled areas that combine a direct estimate with a model are a different problem. The practice is to calibrate on the noisy scores as if they were latent, with the usual conformal rank. We ask when this covers the latent target, and what is the smallest correction that makes it do so when the noise laws and scales are unknown and differ between units.
+
+Two answers are known. If $W$ is symmetric and unimodal about zero, no interval of length $2t$ carries more of its mass than $[-t, t]$, so $\pr(|W + e| \le t) \le \pr(|W| \le t)$ for every independent noise and the noisy threshold is conservative; this is the one-dimensional case of the theorem of \citet{anderson1955}, and \citet[Proposition~1]{einbinder2024} prove a version for conformal intervals. Without a shape assumption, median-zero noise turns a noisy level $1 - \alpha$ into a latent level $1 - 2\alpha$ \citep[Proposition~2.3]{guille2024}. Symmetry is a strong assumption, since residuals of area means of skewed outcomes are asymmetric, and the shape-free answer is very costly.
+
+We take the latent law to be bi-log-concave \citep*{dumbgen2017}: its distribution function $F$ is continuous and both $\log F$ and $\log(1 - F)$ are concave. The class contains the log-concave laws and some multimodal ones and does not require symmetry. Our answer has three parts.
+\begin{enumerate}
+\item \emph{The latent shape decides.} Unimodality of the latent law, even with mean zero, gives nothing over no shape assumption (Proposition~\ref{prop:latentshape}). Under bi-log-concavity the noisy coverage barely overstates the latent one: we give the noisy level $\Psi_{\E}(q)$ that guarantees latent coverage $q$, exactly for Gaussian and symmetric unimodal noise (Theorems~\ref{thm:classes} and~\ref{thm:gauss}); for Gaussian noise at $q = 0.9$ it exceeds $q$ by $8.0 \times 10^{-4}$.
+\item \emph{When the usual threshold is valid.} The full excess is attained only by residual laws that pile up just inside the threshold, that is, by miscentred residuals. For log-concave residuals with mean zero the excess is, numerically, at most $2.8 \times 10^{-6}$ at $q = 0.9$ under Gaussian noise, and the reliability of the usual high-probability rank falls short of $1 - \delta = 0.95$ by at most $0.002$ up to $K = 3 \times 10^6$ and stays above $0.5$ up to $K$ of order $10^{10}$; the excess grows steeply with the bias of the fitted centre and reaches $\Psi_{\E}(q) - q$ when the bias reaches the half-width of the interval (Proposition~\ref{prop:centred}). At an extremal miscentred law, by contrast, the usual high-probability rank loses its latent guarantee as the calibration sample grows (Proposition~\ref{prop:fail}).
+\item \emph{A correction that needs no variances.} Raising the level from $q$ to $\Psi_{\E}(q)$ gives a conformal rank that keeps the latent guarantee with probability at least $1 - \delta$ for every bi-log-concave latent law and every noise law and scale in the class, possibly different between units (Theorem~\ref{thm:rank}); for Gaussian and symmetric unimodal noise no smaller rank is valid. For these two classes the raise is one or two ranks at $K = 10^3$. The guarantee degrades gradually when a fraction of the latent law departs from bi-log-concavity, with an exact level (Proposition~\ref{prop:contam}), and extends to latent laws that differ between units under an ordering condition (Corollary~\ref{cor:hetero}).
+\end{enumerate}
+
+Related methods target different quantities or use more information (Table~\ref{tab:methods}). LatentCP \citep*{zheng2026} inverts a conformal set for the response through a known forward model and gives a marginal latent guarantee. \citet*{cohen2025} estimate the noise-free conformal threshold under homoscedastic label noise with a known kernel, without a finite-sample latent guarantee; deconvolution without a known error law is possible for symmetric, identically distributed errors \citep{delaigle2016}, again without a coverage guarantee. For classification, noisy labels have been corrected for under a known or estimable contamination model \citep*{sesia2025, penso2025}, contamination or distribution shift enters marginal coverage bounds through a distance between laws \citep{clarkson2024, barber2023}, and \citet*{cauchois2024} raise the calibration level to cover every test law within a divergence ball; such bounds do not shrink with the calibration sample, whereas here what is at stake as the sample grows is the high-probability guarantee. Our rank is the nonparametric tolerance limit of \citet{wilks1941}, the training-conditional rank of \citet{vovk2012} and \citet{bian2023}, with a raised level; the shift from latent to noisy scores is not bounded in any divergence, and the raise is uniform over a shape class and all noise scales. Conformal intervals for small areas or survey data cover observable responses \citep{bersson2024, wieczorek2023} or conditional expectations of sampled units \citep{zhang2026}, and \citet*{feldman2026} impute corrupted labels. Intervals for latent small-area means \citep{burris2020, diao2014, yoshimori2014, hallmaiti2006} and empirical Bayes intervals \citep*{armstrong2022} use known sampling variances, possibly estimated \citep{wangfuller2003}, or a model for the latent effects, and nonparametric estimates of the latent law under heteroscedastic Gaussian noise \citep*{soloff2025} carry no coverage guarantee. \citet*{ignatiadis2022} invert a confidence band for the law of the noisy observations into a confidence set for a nonparametric latent law and so bound functionals of it, such as the latent coverage of $[-t, t]$, with high probability; this requires the noise law to be known and common to all units. Tolerance intervals for true values under measurement error assume normality \citep{wang1994}. None of these gives a guarantee over a nonparametric class of latent laws when the noise law and variance are unknown and differ between units.
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Interval methods for a latent target calibrated on noisy scores, by the noise information used and the guarantee targeted}
+\label{tab:methods}
+\centering
+\fontsize{9}{11pt}\selectfont
+\begin{tabular}{p{4.1cm}p{3.6cm}p{4.3cm}}
+\toprule
+method & noise information & guarantee \\
+\midrule
+noisy threshold, usual rank & none & none for the latent target \\
+noisy threshold, symmetric case \citep{anderson1955, einbinder2024} & none (independent noise) & latent, symmetric unimodal latent law \\
+shape-free level \citep{guille2024} & median-zero noise & latent, any latent law \\
+LatentCP \citep*{zheng2026} & known forward model & marginal latent \\
+deconvolution threshold \citep*{cohen2025} & known common noise kernel & none in finite samples \\
+F-localization \citep*{ignatiadis2022} & known common noise law & latent with probability $1 - \delta$, nonparametric latent law \\
+this paper, Theorem~\ref{thm:rank} & a class of noise laws only & latent with probability $1 - \delta$, bi-log-concave latent law \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Section~\ref{sec:setting} sets up the problem, Section~\ref{sec:transfer} gives the coverage transfer and Section~\ref{sec:procedure} the calibration rank, when the usual rank is valid, and its robustness. Sections~\ref{sec:numerical} and~\ref{sec:application} give numerical evidence and an application. Proofs and further results are in the Supplementary Material.
+
+%=============================================================================================
+\section{Setting}\label{sec:setting}
+
+Let $\LC$ be the class of log-concave laws on the real line, including point masses, and $\B \supset \LC$ the class of laws that are point masses or have a continuous distribution function $F$ with $\log F$ and $\log(1 - F)$ concave. Both classes are closed under translation and scaling, and convolution with a log-concave law preserves them (Supplementary \S~\ref{S-sec:s-prelim}); $\B$ contains some bimodal mixtures of normal laws (Supplementary Lemma~\ref{S-lem:bimodal}).
+
+A class $\E$ of noise laws is closed under scaling and negation. The classes considered are the Gaussian laws $\N = \{\sigma Z : \sigma > 0\}$; symmetric unimodal laws; mean-zero log-concave laws; mean-zero unimodal laws; and, for rules without a latent shape assumption, median-zero laws. For a noise law and a latent law, the noisy coverage of $[-t, t]$ is $\pr(|W + e| \le t)$ and the latent coverage is $\pr(|W| \le t)$.
+
+In calibration, $W_1, \ldots, W_K, W_{\rm new}$ are independent latent residuals and $e_i = \sigma_i\epsilon_i$ are independent noises, independent of the residuals, with laws of $\epsilon_i$ in $\E$ that may differ between units and fixed unknown scales $\sigma_i > 0$. Let $\mathcal D$ denote the calibration data and $T = |V|_{(k)}$, the $k$th smallest of $|V_1|, \ldots, |V_K|$. The interval $[-T, T]$ is placed around the fitted centre of a new unit. We call
+\[
+\pr_{\mathcal D}\{\pr(|W_{\rm new}| \le T \mid \mathcal D) \ge q\}
+\]
+the latent reliability of rank $k$: the probability, over calibration samples, that the interval attains latent coverage $q$. A rank is valid at level $1 - \delta$ if its latent reliability is at least $1 - \delta$ for every latent law and noise configuration in the model. The usual rank is the smallest $k$ with $\pr\{\Bin(K, q) \le k - 1\} \ge 1 - \delta$ \citep{wilks1941, vovk2012}, valid when the scores are noise free. $Q_q$ denotes the lower $q$-quantile, $\Phi$ and $\phi$ the standard normal distribution function and density.
+
+%=============================================================================================
+\section{Coverage transfer}\label{sec:transfer}
+
+\subsection{Unimodality does not suffice}
+
+Let $\beta_{\E} = \inf_{\epsilon \in \E}\pr(\epsilon \ge 0)$: $1/2$ for Gaussian, symmetric unimodal and median-zero noise, $\mathrm{e}^{-1}$ for mean-zero log-concave noise, attained by the centred exponential law, and $0$ for mean-zero unimodal noise.
+
+\begin{proposition}\label{prop:latentshape}
+Let $\beta_{\E} > 0$ and $1 - \beta_{\E} < p < 1$. Then $\pr(|W| \le 1) \ge 1 - (1 - p)/\beta_{\E}$ for every $W$ and every noise with law in $\E$ and $\pr(|W + e| \le 1) \ge p$. If the infimum defining $\beta_{\E}$ is approached by laws continuous at $0$, then for every $\gamma > 0$ there are a unimodal $W$ with $E(W) = 0$ and such a noise with $\pr(|W| \le 1) \le 1 - (1 - p)/\beta_{\E} + \gamma$. If $\beta_{\E} = 0$, approached in the same way, then for every $p < 1$ and $\gamma > 0$ there are such $W$ and noise with $\pr(|W| \le 1) \le \gamma$.
+\end{proposition}
+
+The lower bound is that of \citet[Proposition~2.3]{guille2024}; Proposition~\ref{prop:latentshape} adds that unimodal latent laws with mean zero attain it. With median-zero noise, noisy coverage $0.9$ thus guarantees only latent coverage $0.8$. The extremal laws place a thin layer of mass just outside the threshold, and the noise carries a fraction $1 - \beta_{\E}$ of it inside. Bi-log-concavity excludes such a layer: concavity of $\log F$ makes $f/F$ nonincreasing, so the density cannot jump up at the threshold.
+
+\subsection{One end of the interval}
+
+For a class $\E$ let
+\begin{equation}\label{eq:psi}
+\Psi_{\E}(q) = \sup_{\epsilon \in \E} E\{\min(1, q \mathrm{e}^{-\epsilon})\}.
+\end{equation}
+The extremal latent laws are exponential tails, because concavity of $\log F_Y$ limits how fast mass can accumulate below a quantile: with $E_u$ exponential with rate $u > 0$, the law of $b - E_u$ has distribution function $\min\{1, \mathrm{e}^{u(y - b)}\}$.
+
+\begin{proposition}\label{prop:general}
+Let $\epsilon$ have a law in $\E$ and be independent of $Y$, with $\log F_Y$ concave. If $\pr(Y + \epsilon \le 0) \ge p > \Psi_{\E}(q)$, then $F_Y(0) \ge q$. If $p < \Psi_{\E}(q)$, some exponential tail $Y$ with $F_Y(0) < q$ and some $\epsilon$ with law in $\E$ have $\pr(Y + \epsilon \le 0) > p$.
+\end{proposition}
+
+\begin{proof}
+Suppose that $v = F_Y^{-1}(q) > 0$, let $a = \log(1/q)$ and let $u$ be a supergradient of $\log F_Y$ at $v$. Then $F_Y(y) \le \min\{1, q\mathrm{e}^{u(y - v)}\}$, so the exponential tail $v + a/u - E_u$ lies stochastically below $Y$. Adding $\epsilon$ preserves this, and as $v > 0$ and $u\epsilon$ has a law in $\E$,
+\[
+p \le \pr(Y + \epsilon \le 0) \le \pr(a/u - E_u + \epsilon \le 0) = E\{\min(1, q \mathrm{e}^{-u\epsilon})\} \le \Psi_{\E}(q).
+\]
+This uses $F_Y(v) = q$. Since a concave function is continuous on the interior of its domain, the only other case is an atom of mass at least $q$ at the left end $v$ of the support of $Y$; then $Y + \epsilon \le 0$ requires $\epsilon < 0$, and $p \le \pr(\epsilon < 0) \le \lim_{u\to\infty} E\{\min(1, q \mathrm{e}^{-u\epsilon})\} \le \Psi_{\E}(q)$. Conversely, $a - E_1$ with noise $\epsilon$ attains $E\{\min(1, q \mathrm{e}^{-\epsilon})\}$; shift it slightly to the right.
+\end{proof}
+
+Applied to $Y = (W - t)/s$ for any scale $s > 0$, Proposition~\ref{prop:general} controls the right end of $[-t, t]$; applied to $-W$, it controls the left end. For a one-sided interval $(-\infty, t]$ it is the complete answer under concavity of $\log F_W$ alone.
+
+\subsection{Both ends}
+
+A noisy failure probability $1 - p$ may be split in any way between the two ends, and each end transfers separately. Let $\lambda_{\E}(p) = \sup\{q' \in (0, 1) : \Psi_{\E}(q') < p\}$, with $\sup\emptyset = 0$, and $\vartheta_{\E}(a) = 1 - \lambda_{\E}(1 - a)$, the largest latent failure probability at one end compatible with noisy failure probability $a$ there; $\vartheta_{\E}(0) = 0$ when $\beta_{\E} > 0$. Define the sufficient noisy level
+\begin{equation}\label{eq:pE}
+p_{\E}(q) = \inf\Big\{p : \sup_{a_L, a_R \ge 0,\ a_L + a_R \le 1 - p}\{\vartheta_{\E}(a_L) + \vartheta_{\E}(a_R)\} \le 1 - q\Big\}.
+\end{equation}
+Noisy coverage above $p_{\E}(q)$ at threshold $t$ gives latent coverage $q$ for every $W \in \B$ and every noise with law in $\E$ (Supplementary Lemma~\ref{S-lem:twoend}). Putting all the failure at one end shows that $\Psi_{\E}(q) \le p_{\E}(q)$, and if $\Psi_{\E}$ is convex the worst split puts the whole failure at one end, so that $p_{\E}(q) = \Psi_{\E}(q)$ (Supplementary Lemma~\ref{S-lem:convex}).
+
+\begin{theorem}\label{thm:classes}
+Let $q > \mathrm{e}^{-1}$.
+\par\noindent (i) For symmetric unimodal noise, $\Psi_{\E}(q) = (1 + q \mathrm{e}^{-r})/2$, where $r > 0$ solves $(1 + r)\mathrm{e}^{-r} = (1 + \log q)/q$, attained by uniform noise; $\Psi_{\E}$ is strictly convex, so $p_{\E}(q) = \Psi_{\E}(q)$.
+\par\noindent (ii) (Computer-assisted.) For mean-zero log-concave noise, $\Psi_{\E}(q)$ is the supremum over centred log-affine laws on segments; at $q = 0.9$ it lies in $(0.90517, 0.9052)$, the lower end attained by the centred exponential law, and certified splits of the failure probability give $p_{\E}(0.9) \le 0.906$.
+\par\noindent (iii) For mean-zero unimodal noise, $\Psi_{\E}(q) = 1$.
+\end{theorem}
+
+Part (i) holds because symmetric unimodal laws are scale mixtures of uniform laws (Supplementary Proposition~\ref{S-prop:su-exact}). For part (ii), the localization theorem of \citet{fradelizi2004} reduces the supremum to log-affine laws on segments, which a branch and bound in ball arithmetic bounds (Supplementary \S\S~\ref{S-sec:s-lc} and~\ref{S-sec:s-ball}). For part (iii), a noise spread uniformly over $[-a, 0]$, balanced to mean zero by a small mass far above zero, makes $E\{\min(1, q\mathrm{e}^{-\epsilon})\}$ arbitrarily close to $1$.
+
+\subsection{Gaussian noise}
+
+For the Gaussian class $\N$ the supremum in (\ref{eq:psi}) is over the scale only. With $a = \log(1/q)$,
+\begin{equation}\label{eq:G}
+\Psi_{\N}(q) = \sup_{s > 0} \Gamma(q, s), \qquad \Gamma(q, s) = \Phi(-a/s) + q\mathrm{e}^{s^2/2}\Phi(a/s - s).
+\end{equation}
+Let $m(b) = \phi(b)/\Phi(b)$ and $A(b) = m(b)\{b + m(b)\} = 1 - \var(Z \mid Z \le b)$, which decreases strictly from $1$ to $0$ as $b$ runs over the real line \citep{sampford1953}.
+
+\begin{theorem}\label{thm:gauss}
+Consider the Gaussian class $\N$.
+\par\noindent (i) If $q \le \mathrm{e}^{-1}$, then $\Psi_{\N}(q) = 1/2$, approached as $s \to \infty$ and not attained.
+\par\noindent (ii) If $q > \mathrm{e}^{-1}$, then $\Gamma(q, \cdot)$ has a unique maximiser $s^* = m(b^*)$, where $b^*$ is the unique solution of $A(b^*) = \log(1/q)$, and
+\[
+\Psi_{\N}(q) = \Phi(-c) + \phi(c)/m(b^*), \qquad c = b^* + m(b^*).
+\]
+\par\noindent (iii) $\Psi_{\N}$ is continuously differentiable, with $\Psi_{\N}'(q) = \mathrm{e}^{m(b^*)^2/2}\,\Phi(b^*)$ for $q > \mathrm{e}^{-1}$, and strictly convex on $(\mathrm{e}^{-1}, 1)$. Hence $p_{\N}(q) = \Psi_{\N}(q)$ for every $q \in (\mathrm{e}^{-1}, 1)$.
+\end{theorem}
+
+\begin{proof}[Outline of the proof]
+Let $b = a/s - s$. The identity $q\mathrm{e}^{s^2/2}\phi(b) = \phi(a/s)$ gives $\partial_s\Gamma = \phi(a/s)\{s/m(b) - 1\}$, so the sign of $\partial_s\Gamma$ is that of $s - m(b)$, and $s > m(b)$ if and only if $a > A(b)$. Since $A$ increases through $(0, 1)$ as $b$ decreases, $\Gamma(q, \cdot)$ increases throughout when $a \ge 1$, which gives (i), and has a unique interior maximum at $A(b^*) = a$ when $a < 1$, which gives (ii). By the envelope theorem $\Psi_{\N}'(q) = D(b^*)$ with $D(b) = \mathrm{e}^{m(b)^2/2}\Phi(b)$; $b^*$ increases with $q$ and $\{\log D(b)\}' = m(b)\var(Z \mid Z \le b) > 0$, so $\Psi_{\N}'$ increases strictly. Details are in Supplementary \S~\ref{S-sec:s-gauss-exact}.
+\end{proof}
+
+At $q = 0.8$, $0.9$ and $0.95$, $\Psi_{\N}(q) = 0.80441$, $0.90080$ and $0.95016$; noisy coverage $0.9$ guarantees latent coverage $0.89918$ and no more. For Gaussian and symmetric unimodal noise the transfer is nontrivial exactly when $q > \mathrm{e}^{-1}$; for mean-zero log-concave noise $\Psi_{\E}(q) \ge 1 - \mathrm{e}^{-1}$ for every $q$, from scaled centred exponential noise. Table~\ref{tab:map} collects the levels.
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Latent coverage guaranteed by noisy coverage $0.9$, the noisy level that guarantees latent coverage $0.9$, and the smallest valid rank at $\delta = 0.05$ (Theorem~\ref{thm:rank} for the rows with $\B$; Anderson's theorem for the first row; Supplementary \S~\ref{S-sec:s-rank} for the last two)}
+\label{tab:map}
+\centering
+\fontsize{9}{11pt}\selectfont\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{2.3cm}p{2.6cm}cccc}
+\toprule
+latent law & noise & latent cov. & noisy level & $K = 10^3$ & $K = 10^4$ \\
+\midrule
+symm.\ unimodal & any & $\ge 0.9$ & $0.9$ & 916 & 9050 \\
+$\B$ & Gaussian & $0.8991$ & $0.90080$ & 917 & 9058 \\
+$\B$ & symm.\ unimodal & $0.8981$ & $0.90179$ & 918 & 9068 \\
+$\B$ & mean-zero log-conc. & $0.8935$ & $(0.90517, 0.906]$ & 921--922 & 9101--9109 \\
+$\B$ & mean-zero unimodal & none & $1$ & -- & -- \\
+unimodal, mean 0 & median zero & $0.8$ & $0.95$ & 962 & 9537 \\
+unimodal, mean 0 & mean-zero log-conc. & $1 - \mathrm{e}/10$ & $1 - 0.1/\mathrm{e}$ & 974 & 9664 \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{\textwidth}{\fontsize{8}{10pt}\selectfont Levels are proved, with values enclosed in ball arithmetic; latent coverages are rounded down. For log-concave noise the levels run from a certified lower bound on $\Psi_{\E}(0.9)$ to a certified sufficient level, and of a range of ranks the lower is necessary and the upper sufficient.}
+\end{table}
+
+%=============================================================================================
+\section{Calibration with unknown, heterogeneous noise}\label{sec:procedure}
+
+\subsection{A valid rank}
+
+\begin{theorem}\label{thm:rank}
+In the setting of \S~\ref{sec:setting}, let the latent residuals have a common law $G \in \B$. Then
+\[
+\pr_{\mathcal D}\{\pr(|W_{\rm new}| \le T \mid \mathcal D) \ge q\} \ge \pr\{\Bin(K, p_{\E}(q)) \le k - 1\}.
+\]
+Conversely, if $\pr\{\Bin(K, \Psi_{\E}(q)) \le k - 1\} < 1 - \delta$, there are a log-concave $G$ and a noise law in $\E$, the same in every unit, for which the latent reliability is below $1 - \delta$. Hence the smallest rank valid for every $G \in \B$ lies between the smallest $k$ with $\pr\{\Bin(K, \ell) \le k - 1\} \ge 1 - \delta$ at $\ell = \Psi_{\E}(q)$ and at $\ell = p_{\E}(q)$, which coincide for Gaussian and symmetric unimodal noise.
+\end{theorem}
+
+\begin{proof}
+Let $r = Q_q(|W|)$ for $W \sim G$ and $N = \#\{i : |V_i| < r\}$. Then
+\[
+\pr(|W_{\rm new}| \le T \mid \mathcal D) \ge q \iff T \ge r \iff N \le k - 1.
+\]
+For $s < r$, $\pr(|W| \le s) < q$, so by the transfer of \S~\ref{sec:transfer} at threshold $s$, $\pr(|V_i| \le s) \le p$ for every $p > p_{\E}(q)$, whatever the law and scale of $e_i$; letting $s \uparrow r$, $\pr(|V_i| < r) \le p_{\E}(q)$. $N$ is a sum of independent indicators with these success probabilities, so it is stochastically smaller than $\Bin\{K, p_{\E}(q)\}$. Conversely, for $p < \Psi_{\E}(q)$ the one-ended laws of \S~\ref{sec:transfer} give a log-concave $G$ and a noise with $\pr(|V_i| < r) > p$, so the latent reliability is at most $\pr\{\Bin(K, p) \le k - 1\}$, which tends to $\pr\{\Bin(K, \Psi_{\E}(q)) \le k - 1\}$ as $p \uparrow \Psi_{\E}(q)$.
+\end{proof}
+
+The bound holds unit by unit, so the noise laws and scales need not be known or shared; it uses independence of the units, not only exchangeability. For Gaussian and symmetric unimodal noise the rank is sharp: along the laws of the converse, the latent reliability of the smallest valid rank tends to exactly $1 - \delta$ as $K \to \infty$. The procedure needs only $K$, $q$, $\delta$ and a noise class.
+\begin{enumerate}
+\item Take the level of the noise class from Table~\ref{tab:map}, or from the accompanying software for other $q > \mathrm{e}^{-1}$ (Gaussian, symmetric unimodal); for mean-zero log-concave noise a sufficient level is certified only at $q = 0.9$.
+\item Take $k$ as the smallest rank with $\pr\{\Bin(K, \text{level}) \le k - 1\} \ge 1 - \delta$; if even $k = K$ fails, no valid interval exists at this $K$.
+\item Report $[\hat\mu_{\rm new} - T, \hat\mu_{\rm new} + T]$ with $T = |V|_{(k)}$.
+\end{enumerate}
+With known positive scales $s_i$, fixed before calibration, the normalized scores $|V_i|/s_i$ and the interval $[-s_{\rm new}T, s_{\rm new}T]$ have the same guarantee, because both classes are closed under scaling. At $K = 110$ the three bi-log-concave rows of Table~\ref{tab:map} give the usual rank, $k = 105$, against $109$ and $110$ without a shape assumption.
+
+\subsection{When the usual rank is valid}\label{sec:usual}
+
+The rank of Theorem~\ref{thm:rank} exceeds the usual rank because the level $\Psi_{\E}(q)$ exceeds $q$ by a fixed amount, while consecutive ranks differ in level by about $1/K$. At the extremal laws this raise cannot be dropped.
+
+\begin{proposition}\label{prop:fail}
+Let $q \in (0,1)$. There are a log-concave law $G$ and $D > 0$ such that, with $e_i \sim N(0, D)$ for all $i$, $\pr_{\mathcal D}\{\pr(|W_{\rm new}| \le |V|_{(k_K)} \mid \mathcal D) \ge q\} \to 0$ as $K \to \infty$ for every sequence of ranks with $k_K/K \to q$, such as the marginal and, for fixed $\delta$, the usual high-probability rank.
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:gauss}, $\Psi_{\N}(q) > q$ for every $q \in (0, 1)$. Take $p$ with $q < p < \Psi_{\N}(q)$. The converse construction in the proof of Theorem~\ref{thm:rank} gives a log-concave latent law and $D > 0$ with $H = \pr(|V_i| < r) > p$, $r = Q_q(|W|)$; the latent reliability of rank $k$ is $\pr\{\Bin(K, H) \le k - 1\}$, which tends to zero because $k_K/K \to q < H$.
+\end{proof}
+
+The latent coverage itself barely moves: at the extremal Gaussian-noise law, the usual rank's latent coverage tends to $0.89918$ at $q = 0.9$. What fails is the guarantee, once $K$ is of order $q(1 - q)/\{\Psi_{\N}(q) - q\}^2$: the reliability falls below $0.5$ at $K \approx 2.2 \times 10^4$ and $3.8 \times 10^5$ for $q = 0.8$ and $0.9$ (\S~\ref{sec:need}). The extremal law, however, is far from a typical residual. It is an exponential tail $W = t + s\{\log(1/q) - E_1\}$ with $s$ small: almost all of its mass lies just inside the threshold, on one side, so that its mean is close to $t$. A residual with a correctly fitted centre does not look like this.
+
+How far from typical the extremal law must be is measured by a dial on centring. For $\zeta \ge 0$ let
+\[
+p^\zeta_{\E}(q) = \sup\{\pr(|W + e| < 1) : W \in \LC,\ |E(W)| \le \zeta,\ \pr(|W| < 1) \le q\},
+\]
+the supremum being also over noise laws in $\E$ and their scales. With the threshold scaled to $1$, $\zeta$ bounds the bias of the fitted centre relative to the half-width of the interval; the extremal law above has $\zeta$ close to $1$.
+
+\begin{proposition}\label{prop:centred}
+Let $\E$ be the Gaussian or the symmetric unimodal class, $\mathrm{e}^{-1} < q < 1$ and $\zeta \ge 0$.
+\par\noindent (i) If the latent residuals have a common log-concave law with $|E(W)| \le \zeta\,Q_q(|W|)$, the bound of Theorem~\ref{thm:rank} holds with $p^\zeta_{\E}(q)$ in place of $p_{\E}(q)$, for noise laws and scales in the class that differ between units.
+\par\noindent (ii) $p^\zeta_{\E}(q) = \Psi_{\E}(q)$ for $\zeta \ge 1$, and $q < p^\zeta_{\E}(q) \le \Psi_{\E}(q)$ for every $\zeta \ge 0$.
+\par\noindent (iii) In the supremum, $W$ may be restricted to point masses and to laws with density proportional to $\mathrm{e}^{-V}$ on a segment, with $V$ the maximum of at most three affine functions, and the noise to Gaussian or to uniform laws.
+\end{proposition}
+
+Part (i) is the proof of Theorem~\ref{thm:rank}, applied at $r = Q_q(|W|)$ itself. In part (ii), the extremal law above has its mean inside the interval, and a slightly tilted centred law whose density rises through the right end gains coverage from small noise, at the order of the noise variance; so the usual rank is not exactly valid even for centred residuals. Part (iii) follows from the localization theorem of \citet{fradelizi2006}, with the coverage and the two bounds on the mean as linear constraints, and reduces $p^\zeta_{\E}(q)$ to a search over six parameters (Supplementary \S~\ref{S-sec:s-centred}). Table~\ref{tab:centred} gives the values. They are numerical: each is attained by an explicit law, checked in $30$-digit arithmetic, so no lower level is valid; that it is the supremum rests on a global search, which no other log-concave law among $3700$ tried exceeded.
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Centred log-concave residuals: excess $p^\zeta_{\E}(q) - q$ of the level over $q$, and the calibration size $K$ from which the usual rank's latent reliability is below $0.5$ at the worst law, $\delta = 0.05$}
+\label{tab:centred}
+\centering
+\fontsize{9}{11pt}\selectfont
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{2}{c}{Gaussian, $q = 0.8$} & \multicolumn{2}{c}{Gaussian, $q = 0.9$} & \multicolumn{2}{c}{symm.\ unimodal, $q = 0.9$} \\
+$\zeta$ & excess & $K$ & excess & $K$ & excess & $K$ \\
+\midrule
+$0$ & $1.7 \times 10^{-4}$ & $1.5 \times 10^{7}$ & $2.8 \times 10^{-6}$ & $3.1 \times 10^{10}$ & $1.3 \times 10^{-5}$ & $1.4 \times 10^{9}$ \\
+$0.1$ & $3.9 \times 10^{-4}$ & $2.8 \times 10^{6}$ & $3.1 \times 10^{-5}$ & $2.5 \times 10^{8}$ & $1.1 \times 10^{-4}$ & $1.8 \times 10^{7}$ \\
+$0.3$ & $1.2 \times 10^{-3}$ & $2.8 \times 10^{5}$ & $4.1 \times 10^{-4}$ & $1.4 \times 10^{6}$ & $1.1 \times 10^{-3}$ & $1.9 \times 10^{5}$ \\
+$0.5$ & $3.3 \times 10^{-3}$ & $4.1 \times 10^{4}$ & $7.4 \times 10^{-4}$ & $4.4 \times 10^{5}$ & $1.7 \times 10^{-3}$ & $8.6 \times 10^{4}$ \\
+$\ge 1$ & $4.4 \times 10^{-3}$ & $2.2 \times 10^{4}$ & $8.0 \times 10^{-4}$ & $3.8 \times 10^{5}$ & $1.8 \times 10^{-3}$ & $7.6 \times 10^{4}$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{\textwidth}{\fontsize{8}{10pt}\selectfont Rows with $\zeta \ge 1$ are $\Psi_{\E}(q) - q$ (proved); the other rows are numerical. $K$ from an exact scan of the binomial reliability.}
+\end{table}
+
+For centred residuals the excess is tiny, numerically $2.8 \times 10^{-6}$ at $q = 0.9$ under Gaussian noise, nearly three hundred times smaller than $\Psi_{\N}(0.9) - 0.9$, and the usual rank's reliability is first below $0.95$ at $K = 966$, by $2 \times 10^{-5}$, stays above $0.948$ up to $K = 3 \times 10^6$ and above $0.5$ up to $K \approx 3 \times 10^{10}$: for exactly centred log-concave residuals the loss is negligible at any realistic calibration size, though not zero. The excess grows quickly with the bias of the centre: at $\zeta = 0.1$ the failure moves to $K \approx 2.5 \times 10^8$, at $\zeta = 0.3$ to $1.4 \times 10^6$, and the whole excess $\Psi_{\N}(q) - q$ is reached at $\zeta = 1$. The worst laws have a hard edge just outside the threshold with a density that rises or stays flat towards it. At $q = 0.8$ the margin is smaller, $1.7 \times 10^{-4}$ for centred residuals, attained by a centred exponential law. The raise of Theorem~\ref{thm:rank} is therefore insurance against a biased centre, and it is cheap: at $K = 10^4$ and $q = 0.9$ the ranks are $9050$ for the usual rank and for $\zeta = 0$, $9054$ for $\zeta = 0.3$ and $9058$ for Theorem~\ref{thm:rank}. The proposition is for log-concave residuals; the localization argument does not cover $\B$.
+
+\subsection{Robustness of the latent assumptions}\label{sec:robust}
+
+The common latent law in Theorem~\ref{thm:rank} is the assumption a user is least able to check. Two relaxations keep an exact guarantee.
+
+\begin{corollary}\label{cor:hetero}
+In the setting of \S~\ref{sec:setting}, let $W_1, \ldots, W_K, W_{\rm new}$ be independent with laws $G_1, \ldots, G_K, G_0$, and let $r_0 = Q_q(|W_{\rm new}|)$. If $G_i \in \B$ and $Q_q(|W_i|) \ge r_0$ for every $i = 1, \ldots, K$, then the bound of Theorem~\ref{thm:rank} holds. The law $G_0$ need not be bi-log-concave.
+\end{corollary}
+
+\begin{proof}
+The first display in the proof of Theorem~\ref{thm:rank} uses only the law of $W_{\rm new}$, with $r_0$ in place of $r$. For $s < r_0 \le Q_q(|W_i|)$, $\pr(|W_i| \le s) < q$, and the transfer applied to $G_i \in \B$ and the noise of unit $i$ gives $\pr(|V_i| < r_0) \le p_{\E}(q)$.
+\end{proof}
+
+The condition says that the new unit is no harder to cover than any calibration unit at the $q$-quantile of $|W|$. It is sufficient, not necessary: a few easier calibration units are absorbed by slack in the others (Supplementary \S~\ref{S-sec:s-hetero}). It cannot simply be dropped: at the extremal law lowering every $Q_q(|W_i|)$ by a factor $1 - 5 \times 10^{-6}$ lowers the reliability to $0.094$ at $K = 10^6$, and if the new unit is a random draw from a population of units with different laws, a shape assumption on the components gives nothing, because mixtures of point masses are arbitrary laws. If the noise scale is random and the latent residual depends on it, the corollary applies conditionally on the scale; without that, a large noise scale exactly for units whose residual lies just outside the threshold carries them inside, as can happen when the noise variance is a function of the latent quantity, such as $\theta_i(1 - \theta_i)/n_i$ for estimated proportions.
+
+The second relaxation lets a fraction of the latent law be arbitrary. For $0 \le \xi < 1$ let $\B_\xi = \{(1 - \xi)G + \xi H : G \in \B,\ H \text{ any law}\}$.
+
+\begin{proposition}\label{prop:contam}
+Let $\E$ be the Gaussian or the symmetric unimodal class, $q \ge 0.53$ and $0 \le \xi < 1 - q$, and let
+\[
+p_\xi(q) = (1 - \xi)\,\Psi_{\E}\{q/(1 - \xi)\} + \xi/2,
+\]
+and $p_\xi(q) = (1 + q)/2$ for $\xi \ge 1 - q$. Noisy coverage above $p_\xi(q)$ at a threshold guarantees latent coverage $q$ at that threshold for every $W \in \B_\xi$ and every noise with law in $\E$, and no lower level does, even with $G$ log-concave and $H$ a point mass. The level increases continuously from $\Psi_{\E}(q)$ at $\xi = 0$ to the shape-free level $(1 + q)/2$ at $\xi = 1 - q$, and Theorem~\ref{thm:rank} and Corollary~\ref{cor:hetero} hold with $\B_\xi$ and $p_\xi(q)$ in place of $\B$ and $p_{\E}(q)$, the rank again being sharp.
+\end{proposition}
+
+The bound $q \ge 0.53$ makes the derivative of $\Psi_{\E}$ at the relevant point at least $1/2$, which the proof needs; it covers every $q$ of practical interest. The worst contamination is a layer just outside the threshold, half of which the noise carries inside, as in Proposition~\ref{prop:latentshape}; the rest of the latent law is then extremal for the reduced target $q/(1 - \xi)$. The proof is in Supplementary \S~\ref{S-sec:s-contam}. At $q = 0.9$ under Gaussian noise the level rises by about $0.48\,\xi$: it is $0.90322$, $0.90563$ and $0.92517$ for $\xi = 0.5\%$, $1\%$ and $5\%$, and the ranks at $K = 10^3$ are $919$, $922$ and $940$, against $917$ for $\xi = 0$ and $962$ without a shape assumption. Conversely, a given rank $k$ is valid over $\B_\xi$ exactly when $p_\xi(q)$ is at most the $\delta$-quantile of the Beta$(k, K + 1 - k)$ law, which gives the contamination it tolerates: the rank $105$ at $K = 110$ tolerates $\xi = 1.2\%$, but the rank of Theorem~\ref{thm:rank} at $K = 10^3$ tolerates only $0.09\%$, and at $K = 10^4$ only $0.01\%$. Large calibration samples resolve small departures, so a user who doubts the shape assumption should calibrate at $p_\xi(q)$ for a plausible $\xi$. If calibration and new units are independent draws from a population whose latent law is in $\B_\xi$, the guarantee holds for a random new unit.
+
+%=============================================================================================
+\section{Numerical studies}\label{sec:numerical}
+
+All reliabilities below are latent, with $\delta = 0.05$. Where a law is specified exactly, the reliability is computed exactly from a binomial distribution; otherwise latent coverage given each data set is exact and the reliability is a share of data sets.
+
+\subsection{When the correction is needed}\label{sec:need}
+
+At the extremal law for Gaussian noise, scaled so that the noisy coverage at the latent $q$-quantile of $|W|$ equals $\Psi_{\N}(q)$, Figure~\ref{fig:reliability} compares the marginal rank, the usual rank and the rank of Theorem~\ref{thm:rank}; Supplementary Table~\ref{S-tab:s-reliability} gives the exact values. At $q = 0.9$ the usual rank has reliability $0.918$ at $K = 10^4$ and $0.150$ at $K = 10^6$, against $0.952$ and $0.950$ for the rank of Theorem~\ref{thm:rank}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig_reliability_q.pdf}
+\caption{Exact latent reliability at the extremal law for Gaussian noise, $q = 0.8$, $0.9$ and $0.95$, $\delta = 0.05$, against $K$ on a logarithmic axis: rank of Theorem~\ref{thm:rank} (solid), usual rank (dashes), marginal rank (dots), target $0.95$ (grey).}
+\label{fig:reliability}
+\end{figure}
+
+
+The usual rank loses the guarantee as $K$ grows, while the rank of Theorem~\ref{thm:rank} stays above $0.95$ and tends to it, which shows numerically that it cannot be lowered. Noise laws drawn per unit within a class, with equal or heterogeneous scales, delay the failure of the usual rank but do not remove it, and the class rank kept reliability at least $0.9501$ in all $20$ such cases (Supplementary \S~\ref{S-sec:s-mixed}). At the worst centred laws of Proposition~\ref{prop:centred} the rank at level $p^\zeta_{\E}(q)$ lies between the usual rank and that of Theorem~\ref{thm:rank} (Supplementary \S~\ref{S-sec:s-centred-sim}). Under contamination of the extremal law the rank of Theorem~\ref{thm:rank} fails as well, at $q = 0.9$ with reliability $0.51$ at $K = 10^4$ for $\xi = 1\%$, while the rank at level $p_\xi(q)$ keeps at least $0.950$ (Supplementary \S~\ref{S-sec:s-contam-sim}).
+
+\subsection{The cost with the same information}\label{sec:cost}
+
+No rule in this comparison is told the noise law within its class or the variances. Six standardized latent laws were used: normal, Laplace, centred gamma with shape $2$, truncated exponential, a bimodal bi-log-concave mixture that is not log-concave, and $t_3$, outside $\B$, as a control. Eight noise designs, with heterogeneous variances $D_i = 0.577 L_i/E(L_i)$ for $L_i$ lognormal with log-scale $0.7$, comprise five single laws (Gaussian, uniform, Laplace, $t_3$, centred exponential) and laws drawn per unit within the symmetric unimodal class, within the mean-zero log-concave class, and across the two classes; $2000$ data sets per setting.
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Rules with the same information at $K = 1000$: rank and width relative to the usual rank and to the rule for the same noise class without a latent shape assumption, ranges over the settings a rule covers (medians in parentheses)}
+\label{tab:sameinfo}
+\centering
+\fontsize{9}{11pt}\selectfont
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{3}{c}{$q = 0.8$} & \multicolumn{3}{c}{$q = 0.9$} \\
+rule & $k$ & $+$usual & $-$no shape & $k$ & $+$usual & $-$no shape \\
+\midrule
+usual & 822 & 0 & -- & 916 & 0 & -- \\
+Gaussian & 826 & 0.9--1.2 & 20--26 (24) & 917 & 0.3--0.4 & 16--21 (21) \\
+symm.\ unimodal & 829 & 1.5--2.2 & 19--28 (24) & 918 & 0.6--1.0 & 15--24 (20) \\
+mean-zero log-conc. & -- & -- & -- & 922 & 1.8--2.9 & 19--33 (26) \\
+no shape, median 0 & 916 & 25--42 & -- & 962 & 18--36 & -- \\
+no shape, log-conc. & 941 & 36--63 & -- & 974 & 25--54 & -- \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{\textwidth}{\fontsize{8}{10pt}\selectfont Widths in percent: $+$usual, above the usual rank; $-$no shape, below the rule for the same noise class without a shape assumption (median-zero for the Gaussian and symmetric unimodal rules). The log-concave level is certified only at $q = 0.9$.}
+\end{table}
+
+Every rule, the usual rank included, had reliability at least $0.998$ in every setting, covered or not: these laws are far from the extremal one, so they measure the cost of the guarantee, not its need. The cost over the usual rank is at most $3\%$ of width at $K = 1000$ and nothing at $K = 110$, where the bi-log-concave ranks equal the usual rank; the saving over the rules without a shape assumption is $15$--$33\%$ at $K = 1000$ and $18$--$48\%$ at $K = 110$, where at $q = 0.95$ only the bi-log-concave rules have a valid rank at all. Against the oracle radius $Q_q(|W|)$, the usual rank was $44$--$86\%$ wider at $K = 110$ and $25$--$55\%$ wider at $K = 1000$, with mean latent coverage $0.95$--$0.99$: the dominant cost is that of calibrating on noisy scores at all, with noise variance about half the latent one.
+
+\subsection{Comparison with existing methods}\label{sec:competitors}
+
+Methods that use more information were run on the same latent laws at $q = 0.9$, with $300$ data sets at $K = 110$ and $200$ at $K = 1000$, under Gaussian, Laplace and mixed symmetric unimodal noise with the same variances. Each rule is judged against its own target (Table~\ref{tab:competitors}).
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Comparison with existing methods at $q = 0.9$, grouped by target: information used, whether the target was met over the bi-log-concave latent laws and three noise scenarios, and width relative to the usual rank}
+\label{tab:competitors}
+\centering
+\fontsize{9}{11pt}\selectfont\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llccc}
+\toprule
+rule & information & target met & \multicolumn{2}{c}{width vs usual (\%)} \\
+& & & $K = 110$ & $K = 1000$ \\
+\midrule
+\multicolumn{5}{l}{\emph{target: reliability $\ge 0.95$}} \\
+Theorem~\ref{thm:rank}, Gaussian & none & yes, $1.000$ & $0$ & $0.3$--$0.5$ \\
+Theorem~\ref{thm:rank}, symm.\ unimodal & none & yes, $1.000$ & $0$ & $0.6$--$0.9$ \\
+Markov rule$^*$ & known $D_i$ & yes, $1.000$ & $19$--$25$ & $20$--$26$ \\
+Fay--Herriot tolerance$^*$ & known $D_i$ & no, down to $0.900$ & $-24$ to $-15$ & $-20$ to $-16$ \\
+\multicolumn{5}{l}{\emph{target: mean latent coverage $\ge 0.9$}} \\
+LatentCP & known $D_i$ & yes, $\ge 0.97$ & $4$--$7$ & $13$--$21$ \\
+deconvolution & known $D_i$ & no, $0.88$--$0.92$ & $-41$ to $-30$ & $-32$ to $-19$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\parbox{\textwidth}{\fontsize{8}{10pt}\selectfont $^*$Constructed here (Supplementary \S~\ref{S-sec:s-kv}). Monte Carlo standard error of a reliability near $0.95$: about $0.013$ ($300$ data sets) and $0.015$ ($200$). Fay--Herriot met its target for normal latent laws with Gaussian noise. Deconvolution: our implementation of Algorithm~1 of \citet*{cohen2025} with bin width $0.2$.}
+\end{table}
+
+The rank of Theorem~\ref{thm:rank}, which uses no noise information, met its target in every setting. Among rules with the same target, the one that is shorter, the Fay--Herriot tolerance interval, relies on the normal model and lost the guarantee outside it. LatentCP met its weaker, marginal target throughout, also where its Gaussian forward model is wrong. The deconvolution threshold, which has no finite-sample guarantee, fell below nominal coverage on average in our implementation. Rules that are given the variances and assume Gaussian noise can be shorter while keeping the guarantee, by about $10\%$ in one setting (Supplementary \S~\ref{S-sec:s-known}); that is what the variances buy.
+
+%=============================================================================================
+\section{Application: school districts}\label{sec:application}
+
+The California Academic Performance Index data \citep{lumley2004} give the 2000 index of every school; districts with at least five schools form the population. Each of $480$ replications, $120$ in each of four conditions, splits the districts into $110$ training, $110$ calibration and the remaining evaluation districts, samples $n = 2$ or $3$ schools per training and calibration district, fits a ridge predictor on the training schools, with or without the 1999 index among the covariates, and centres each district at the population mean of the predictor. The calibration score is the sample-mean residual of a district, whose design variance, estimated from $n$ schools, is very noisy; the target of an evaluation district is its true mean residual.
+
+At $K = 110$ every class rank of Theorem~\ref{thm:rank} equals the usual rank, $k = 105$, so the application checks the usual interval rather than a new one: under the assumptions of Theorem~\ref{thm:rank} it carries a latent guarantee without variance estimates. It covered at least $90\%$ of the evaluation districts in all $480$ replications. The Fay--Herriot tolerance interval, with plugged-in variance estimates, was $19$--$26\%$ shorter but covered fewer than $90\%$ of the districts in up to $9.2\%$ of the replications of a condition; LatentCP, drawing the unknown variance of a new district from the calibration estimates, covered at least $90\%$ throughout and was $4.6$--$5.7\%$ wider. The assumptions cannot be confirmed here: the districts form a finite population, the relevant latent law is the mixture over districts, and the noise of a mean of two or three sampled schools is discrete (Supplementary \S~\ref{S-sec:s-app}).
+
+%=============================================================================================
+\section{Discussion}\label{sec:discussion}
+
+The paper is about validity. Calibrating on noisy scores makes the interval much wider than the oracle radius, $25$--$86\%$ in \S~\ref{sec:cost} with noise variance about half the latent one, and only knowledge of the noise variances can recover part of that width (Supplementary \S~\ref{S-sec:s-known}); the correction studied here adds at most a few percent. Under bi-log-concavity the usual noisy conformal threshold almost covers the latent target, and for centred log-concave residuals the loss of reliability is negligible at any realistic calibration size; the exact correction, a raise of the level from $q$ to $\Psi_{\E}(q)$, needs no noise variances, costs at most a few ranks and keeps a high-probability guarantee for every noise configuration in the class. The ordering of Corollary~\ref{cor:hetero} and the share $\xi$ of Proposition~\ref{prop:contam} are the assumptions that matter most and are hardest to check. Bi-log-concavity cannot be checked on the latent scale, but convolution with log-concave noise preserves it: with a common log-concave noise law, a confidence band for the signed noisy residuals that contains no bi-log-concave distribution function \citep*{dumbgen2017} rules it out; the bands of \citet*{laha2021} could serve the same purpose. A known Gaussian noise variance allows the threshold to be widened instead of its rank raised, by an amount of the order of the noise standard deviation, or of its variance when the latent mean is away from the threshold (Supplementary \S~\ref{S-sec:s-known}).
+
+The centred levels of Proposition~\ref{prop:centred} are numerical below $\zeta = 1$ and are for log-concave residuals only; a certificate, and an extension to $\B$, would complete them. Two further questions remain open. For mean-zero log-concave noise the two-sided level is known only within $(0.90517, 0.906]$ at $q = 0.9$, and the extremality of the centred exponential law is supported by certified computation but not proved. Whether bi-log-concavity is necessary for a nontrivial transfer, or some weaker condition excluding a layer of mass at the threshold suffices, is also open.
+
+%=============================================================================================
+\section*{Supplementary Material}
+
+The Supplementary Material contains the proofs of all results; the certificates in ball arithmetic; the theory for a known Gaussian noise variance; the full tables of the numerical studies, including mixed noise, latent laws that differ between units, contamination and miscentring; details of the application; and a map from every number to the code. Code and data access are at \url{https://github.com/kunhailP/noisy-calibration-latent-coverage}.
+
+\par
+
+\bibhang=1.7pc
+\bibsep=2pt
+\fontsize{9}{14pt plus.8pt minus .6pt}\selectfont
+\renewcommand\bibname{\large \bf References}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax\def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL}\fi
+
+\bibliographystyle{chicago}
+\bibliography{refs}
+
+\vskip .65cm
+\noindent
+Kun Woo Park, Department of Political Science and International Relations, Kookmin University, 77 Jeongneung-ro, Seongbuk-gu, Seoul 02707, Republic of Korea
+\vskip 2pt
+\noindent
+E-mail: pkw6094@kookmin.ac.kr
+
+\end{document}
