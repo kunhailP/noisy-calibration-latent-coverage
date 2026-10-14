@@ -232,7 +232,7 @@ def r07():
         for i, c in enumerate(sorted(x.c.unique())):
             y = x[x.c == c]
             lev = y[y.rule == 'contamination rank'].level.iloc[0]
-            row = [f'${q}$' if i == 0 else '', f'${100 * c:g}\\%$', f'{lev:.5f}']
+            row = [f'${q}$' if i == 0 else '', f'${100 * c:g}\\%$', f'{math.ceil(lev * 1e5) / 1e5:.5f}']
             for K in (1000, 10_000, 100_000):
                 for r in rules:
                     row.append(f3(y[(y.K == K) & (y.rule == r)].reliability.iloc[0]))
