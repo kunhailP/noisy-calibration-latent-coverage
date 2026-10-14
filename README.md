@@ -1,11 +1,27 @@
 # Latent coverage from noisy calibration
 
-Code, proofs and manuscript for "Latent coverage from noisy calibration": which latent coverage a
-conformal threshold calibrated on noisy scores guarantees when the noise law and variance are unknown
-and differ between units, and the smallest rank that keeps a latent guarantee with prescribed
-probability. The certified modules `interval.py` and `noise_classes.py` come unchanged from an earlier
-version of this work, `kunhailP/latent-coverage-noisy-thresholds` (commit `3a9358d`; package `uai`
-renamed `latentcov`); `legacy/` keeps the certificate outputs they produced.
+Code, proofs and manuscript for **"Latent coverage from noisy calibration"** (Kun Woo Park).
+
+Prediction intervals for a latent quantity, such as the true mean of an unsampled small area or a
+response measured with error, are often calibrated on noisy proxies with the usual conformal
+threshold. The paper asks when this threshold covers the latent target with high probability if the
+noise law and variance are unknown and differ between units, and what the smallest correction is.
+
+- **Manuscript:** [`paper/main.pdf`](paper/main.pdf) and the Supplementary Material
+  [`paper/supplement.pdf`](paper/supplement.pdf) (Statistica Sinica template).
+- **Main results.** Unimodality of the latent law gains nothing over no shape assumption. Under
+  bi-log-concavity the noisy level that guarantees latent coverage `q` is `Psi(q)`, exact for
+  Gaussian noise (closed form) and symmetric unimodal noise, and certified for mean-zero
+  log-concave noise at `q = 0.9`. Calibrating at that level gives a conformal rank that keeps the
+  latent guarantee with probability `1 - delta` for every noise law and scale in the class, without
+  noise variances; the usual rank is nearly valid, and fails only when the residual density
+  increases at an end of the interval. Extensions cover centred residuals, contamination of the
+  latent law, latent laws that differ between units, and misspecified noise classes.
+- **Status of each claim** (proved, certified in ball arithmetic, numerical) is listed in Table S1
+  of the Supplementary Material; derivations are in [`notes/`](notes/).
+
+The certified modules `interval.py` and `noise_classes.py` come unchanged from an earlier version of
+this work (package `uai` renamed `latentcov`); `legacy/` keeps the certificate outputs they produced.
 
 ## Layout
 
@@ -67,3 +83,7 @@ running a script directly, or the parallel experiments oversubscribe the cores. 
 number of worker processes (default 32). R04 writes one line per finished job to
 `results/competitors_v2_hetldc.ckpt.jsonl` and, rerun with the same arguments, skips the jobs
 already there; delete that file to start afresh.
+
+## Citation
+
+Park, K. W. Latent coverage from noisy calibration. Manuscript, 2026.
