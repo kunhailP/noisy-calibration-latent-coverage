@@ -287,5 +287,27 @@ def r09():
     write('r09_misspec.tex', lines)
 
 
+def r10():
+    """Intermediate designs (R10): per group of latent laws and q, exact summary."""
+    d = pd.read_csv(RES / 'intermediate_summary.csv')
+    g = d.groupby(['group', 'q']).agg(designs=('designs', 'sum'), above=('designs_H_above_q', 'sum'),
+                                     maxHq=('max_H_minus_q', 'max'),
+                                     usual=('min_rel_usual_K_le_1e5', 'min'),
+                                     thm3=('min_rel_thm3_K_le_1e5', 'min')).reset_index()
+    order = ['symmetric', 'skewed smooth', 'J-shaped', 'proportions', 'proportions (not log-concave)']
+    lines = []
+    for j, grp in enumerate(order):
+        x = g[g.group == grp].sort_values('q')
+        for i, (_, y) in enumerate(x.iterrows()):
+            ex = y.maxHq
+            exs = f'${ex * 1e4:.1f}$' if ex > 0 else f'${ex * 1e4:.1f}$'
+            row = [grp if i == 0 else '', f'${y.q}$', str(int(y.designs)), str(int(y.above)), exs,
+                   f3(y.usual), f3(y.thm3)]
+            lines.append(' & '.join(row) + r' \\')
+        if j < len(order) - 1:
+            lines.append(r'\addlinespace')
+    write('r10_intermediate.tex', lines)
+
+
 if __name__ == '__main__':
-    r01(), r02(), r03(), r04(), r05(), r06(), r07(), r08(), r09()
+    r01(), r02(), r03(), r04(), r05(), r06(), r07(), r08(), r09(), r10()

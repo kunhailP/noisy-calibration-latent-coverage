@@ -265,7 +265,7 @@ def excess_het(law, b, r, noise, rho, n=96):
     """D for heterogeneous scales sigma^2 = rho L / E L, log L ~ N(0, s^2), s = 0.7.
 
     Gaussian noise: D(sigma) is analytic in sigma > 0, so Gauss-Hermite in log L with n nodes
-    (exact to rounding at n = 96; checked against n = 192). Uniform noise: D(a) has kinks where
+    (agrees with adaptive quad in log L to 3e-16 at n = 96). Uniform noise: D(a) has kinks where
     a breakpoint +-r +- a of the kernel meets a kink of the latent density or the other end
     (a = r), which spoils Gauss-Hermite (errors ~1e-6); adaptive quad in log L split there."""
     if noise == 'gaussian':
@@ -339,7 +339,8 @@ def reliability(Ks, ks, H):
     return np.where(ks > 0, out, np.nan)
 
 
-def k_grid(kmin=29, dense_to=3000, kmax=1_000_000, n=12000):
-    """All K in [kmin, dense_to] and a geometric grid of about n points up to kmax."""
+def k_grid(kmin=29, dense_to=3000, kmax=1_000_000, n=12000, extra=()):
+    """All K in [kmin, dense_to], a geometric grid of about n points up to kmax, and extra."""
     g = np.unique(np.round(np.geomspace(dense_to, kmax, n)).astype(np.int64))
-    return np.unique(np.concatenate([np.arange(kmin, dense_to + 1), g]))
+    return np.unique(np.concatenate([np.arange(kmin, dense_to + 1), g,
+                                     np.asarray(extra, dtype=np.int64)]))

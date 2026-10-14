@@ -897,6 +897,29 @@ noise law & class & $H$ & G & SU & LC & $K$, G below $0.5$ \\
 
 Within the symmetric unimodal class, the Laplace, logistic and $t_5$ laws stay below the Gaussian level, and only the uniform law, the extremal one, exceeds it. Skewed log-concave laws exceed both symmetric levels and are covered by the log-concave level. Strongly skewed laws outside the log-concave class, such as a centred lognormal law with log-scale $1$, a centred chi-square law with one degree of freedom and a skewed two-point law, exceed even that level; such laws approximate the sampling error of a mean of a few units from a skewed finite population. These are extremal latent laws; for centred residuals the excess is much smaller, as in \S~\ref{sec:s-centred-sim}.
 
+\subsection{Between the extremal and the benign designs}\label{sec:s-intermediate}
+
+With units independent and identically distributed, $r = Q_q(|W|)$ and $H = \pr(|V| < r)$, the count $N$ of the proof of Theorem~\ref{M-thm:rank} is Bin$(K, H)$, so the latent reliability of rank $k$ is $\pr\{\Bin(K, H) \le k - 1\}$ exactly; if $H \le q$ the usual rank is valid at every $K$. $H$ is computed by quadrature as $q + \int f(w)\{\kappa(w) - 1(|w| < r)\}\,dw$, with $\kappa(w) = \pr(|w + e| < r)$ the noise kernel, which avoids cancellation in $H - q$; values agree with $30$-digit quadrature to $3 \times 10^{-17}$ and, for the proportions, with Monte Carlo.
+
+\emph{Designs.} Latent laws, standardized and all log-concave: symmetric (normal, Laplace); smooth and skewed (centred gamma with shapes $2$ and $5$, skew-normal with shape $4$, and their reflections); J-shaped, with the mode at an end of the support (centred exponential and half-normal, and their reflections). A bias $b$ is added so that $\zeta = |E(W)|/Q_q(|W|)$ is $0$, $0.1$, $0.2$, $0.3$, $0.5$ or $0.75$. Noise is Gaussian or uniform with variance ratio $\rho = \sigma^2/\var(W)$ in $\{0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 0.58, 1, 3\}$, equal for all units or heterogeneous, $\sigma^2 = \rho L/E(L)$ with $L$ lognormal with log-scale $0.7$. Proportions: $\theta \sim$ Beta$(a, b)$ for six log-concave choices with means $0.1$ to $0.5$ and for Beta$(0.5, 4.5)$, which is not bi-log-concave; $W = \theta - c$ with $c$ the mean or the mean $\pm$ half a standard deviation; noise $N\{0, \theta(1 - \theta)/n\}$ with $n \in \{20, 50, 200, 1000\}$, which depends on the latent value and so violates the independence assumed by Theorem~\ref{M-thm:rank}. Rules: the usual rank and the rank of Theorem~\ref{M-thm:rank} for the noise class; $q = 0.8$, $0.9$, $0.95$; reliabilities for every $K$ from $29$ to $3000$ and on a fine grid up to $10^6$.
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Exact reliability between the extremal and the benign designs, $\delta = 0.05$: number of designs, number with $H > q$, largest $H - q$ ($\times 10^{4}$), and smallest latent reliability over $K \le 10^5$ of the usual rank and of the rank of Theorem~\ref{M-thm:rank}}
+\label{tab:s-intermediate}
+\centering
+\fontsize{8}{10pt}\selectfont
+\begin{tabular}{llccccc}
+\toprule
+latent laws & $q$ & designs & $H > q$ & $\max(H - q)$ & usual & Theorem~\ref{M-thm:rank} \\
+\midrule
+\tabinput{supp_tables/r10_intermediate.tex}
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:s-intermediate} shows three things. For symmetric and smooth skewed residuals, biased up to $\zeta = 0.75$, $H < q$ at every noise level: by the small-noise expansion of \S~\ref{sec:s-centred}, $H - q$ has the sign of $f'(r) - f'(-r)$, which is negative when the mode lies inside $(-r, r)$, and larger noise spreads the scores further. With noise variance at least a tenth of the latent one and $\zeta \le 0.5$, $H < q$ for every latent law, with $H - q \le -2.5 \times 10^{-3}$. The usual rank loses reliability only for J-shaped residuals, whose density rises to an edge just beyond the threshold, under small noise, $\rho \le 0.03$; there the rank of Theorem~\ref{M-thm:rank} keeps it. For proportions, the noise variance $\theta(1 - \theta)/n$ vanishes at the edge of a J-shaped Beta law, which keeps $H < q$; with independent noise of the same mean variance the not log-concave Beta$(0.5, 4.5)$ law exceeds even $\Psi_{\N}(q)$, by $1.6 \times 10^{-3}$ at $q = 0.8$ and $n = 1000$.
+
 %=============================================================================================
 \section{The school-district application}\label{sec:s-app}
 
@@ -947,6 +970,7 @@ Corollary~\ref{M-cor:hetero}, Table~\ref{tab:s-hetero} & \texttt{r06\_heterogene
 Proposition~\ref{M-prop:contam}, Table~\ref{tab:s-contam} & \texttt{r07\_contamination.py}, \texttt{latentcov.contamination} & \texttt{contamination*.csv} \\
 Proposition~\ref{M-prop:centred}, Tables~\ref{M-tab:centred} and~\ref{tab:s-centred} & \texttt{r08\_centred.py}, \texttt{latentcov.centred} & \texttt{centred\_*.csv} \\
 misspecified noise class, Table~\ref{tab:s-misspec} & \texttt{r09\_noise\_misspec.py}, \texttt{latentcov.misspec} & \texttt{noise\_misspec.csv} \\
+intermediate designs, Table~\ref{tab:s-intermediate} & \texttt{r10\_intermediate.py}, \texttt{latentcov.intermediate} & \texttt{intermediate*.csv} \\
 levels and ranks of Table~\ref{M-tab:map} & \texttt{latentcov.rank} & computed on call \\
 certificates for the noise classes and $c_q$ & \texttt{latentcov.noise\_classes}, \texttt{latentcov.interval} & \texttt{legacy/*.json} \\
 \bottomrule

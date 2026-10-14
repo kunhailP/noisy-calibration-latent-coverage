@@ -10,12 +10,13 @@ renamed `latentcov`); `legacy/` keeps the certificate outputs they produced.
 ## Layout
 
 ```
-src/latentcov/  interval, noise_classes (earlier version); levels, rank, gaussian, contamination, centred;
+src/latentcov/  interval, noise_classes (earlier version); levels, rank, gaussian, contamination, centred,
+                intermediate;
                 kv/ procedures that use known noise variances (competitors in R04, R05)
-experiments/    r01-r09, fetch_apipop.py and supp_tables.py (see below)
+experiments/    r01-r10, fetch_apipop.py and supp_tables.py (see below)
 results/        outputs of the experiments
 tests/          fast checks
-notes/          proofs and derivations (gaussian_exact, heterogeneous_latent, contamination, centred)
+notes/          proofs and derivations (gaussian_exact, heterogeneous_latent, contamination, centred, intermediate)
 paper/          main.tex and supplement.tex (Statistica Sinica templates), refs.bib, supp_tables/
 legacy/         certificate files of the earlier version
 data/           downloaded data, not redistributed (created by `make data`)
@@ -57,6 +58,7 @@ make all            # or one target at a time, as below
 | `contamination` | r07 | exact reliability under contaminated bi-log-concave latent laws | seconds | `contamination*.csv` |
 | `centred` | r08 | level p_kappa(q) for centred latent residuals, adversarial check, failure K and ranks (notes/centred.md) | about an hour | `centred_levels.csv`, `centred_validation*.csv`, `centred_check3.csv`, `centred_ranks.csv` |
 | `misspec` | r09 | misspecified noise class: levels of single noise laws and the reliability of the class ranks | minutes | `noise_misspec.csv` |
+| `intermediate` | r10 | exact reliability in intermediate designs: miscentred skewed residuals, noise-to-signal ratios, heterogeneous scales, uniform noise, small K, proportions (notes/intermediate.md) | minutes | `intermediate*.csv` |
 | `tables` | supp_tables | tables of the Supplementary Material, from `results/` | seconds | `paper/supp_tables/*.tex` |
 | `paper` | (pdflatex, bibtex) | `paper/main.pdf` and `paper/supplement.pdf` with cross references | a minute | `paper/` |
 
