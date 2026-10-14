@@ -804,6 +804,24 @@ rule & mean cov. & rel. & mean cov. & rel. \\
 \end{tabular}
 \end{table}
 
+Table~\ref{tab:s-mc} gives the Monte Carlo uncertainty of the comparison setting by setting, from \texttt{r04\_mc\_intervals.py}: Wilson $95\%$ intervals for reliabilities, standard errors for mean coverages and paired bootstrap intervals, over data sets, for widths relative to the usual rank. The rank of Theorem~\ref{M-thm:rank} had estimated reliability $1.000$ in all $30$ settings, with Wilson lower limits $0.987$ ($300$ data sets) and $0.981$ ($200$). The Fay--Herriot interval was below $0.95$ in $7$ settings; its Wilson interval lies below $0.95$ in $3$, and with a Bonferroni adjustment over the $30$ settings in $1$. The mean coverage of the deconvolution threshold is significantly below $0.9$ in $4$ settings.
+
+\begin{table}[htbp]
+\renewcommand{\baselinestretch}{1}
+\caption{Comparison with existing methods at $q = 0.9$, per setting, bi-log-concave latent laws: estimated reliability of the rank of Theorem~\ref{M-thm:rank} (Gaussian) with the Wilson $95\%$ lower limit, reliability of the Fay--Herriot tolerance interval with its Wilson interval, mean latent coverage of LatentCP and of the deconvolution threshold (bin $0.2$) with standard errors, and the Fay--Herriot width relative to the usual rank, in percent, with a paired bootstrap interval}
+\label{tab:s-mc}
+\centering
+\fontsize{7.5}{9pt}\selectfont
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllccccc}
+\toprule
+$K$ & latent & noise & Theorem~\ref{M-thm:rank} & Fay--Herriot & LatentCP & deconvolution & Fay--Herriot width \\
+\midrule
+\tabinput{supp_tables/r04_mc.tex}
+\bottomrule
+\end{tabular}}
+\end{table}
+
 Tables~\ref{tab:s-comp110}--\ref{tab:s-t3} give the full results behind Table~\ref{M-tab:competitors}. With $300$ data sets, the binomial standard error of a reliability near $0.95$ is $0.013$, and with $200$ it is $0.015$. The Fay--Herriot interval met its high-probability target for normal latent laws with Gaussian noise and fell short for the Laplace latent law and, at $K = 1000$, for normal latent laws with non-Gaussian noise. The PAC version of LatentCP coincides with the rule without a shape assumption to the precision shown: with $\gamma = \alpha/2$ its inversion keeps the $w$ with $\pr(|w + e| \le t_\gamma) \ge 1/2$, which for symmetric noise is $|w|$ just below $t_\gamma$, and its high-probability rank at level $1 - \gamma = (1 + q)/2$ is that of the shape-free rule. With bin width $0.01$ the deconvolution threshold fails at $K = 110$ because most bins are empty: its mean coverage is $0.28$--$0.43$.
 
 \subsection{Latent laws that differ between units}\label{sec:s-hetero-sim}
@@ -965,7 +983,7 @@ result & script & output \\
 Figure~\ref{M-fig:reliability}, Table~\ref{tab:s-reliability} & \texttt{r01\_reliability\_curves.py} & \texttt{reliability\_curves.csv}, \texttt{reliability\_summary.json} \\
 Table~\ref{M-tab:sameinfo}, Table~\ref{tab:s-sameinfo} & \texttt{r02\_same\_information.py} & \texttt{same\_information\_v2*.csv} \\
 mixed noise, Table~\ref{tab:s-mixed} & \texttt{r03\_mixed\_noise\_stress.py} & \texttt{mixed\_noise\_stress*.csv} \\
-Table~\ref{M-tab:competitors}, Tables~\ref{tab:s-comp110}--\ref{tab:s-t3} & \texttt{r04\_competitors.py} & \texttt{competitors\_v2\_hetldc*.csv} \\
+Table~\ref{M-tab:competitors}, Tables~\ref{tab:s-comp110}--\ref{tab:s-mc} & \texttt{r04\_competitors.py}, \texttt{r04\_mc\_intervals.py} & \texttt{competitors\_v2\_hetldc*.csv}, \texttt{competitors\_mc\_intervals.csv} \\
 application, Table~\ref{tab:s-app} & \texttt{fetch\_apipop.py}, \texttt{r05\_apipop.py} & \texttt{apipop*.csv} \\
 Corollary~\ref{M-cor:hetero}, Table~\ref{tab:s-hetero} & \texttt{r06\_heterogeneous\_latent.py} & \texttt{heterogeneous\_latent*.csv} \\
 Proposition~\ref{M-prop:contam}, Table~\ref{tab:s-contam} & \texttt{r07\_contamination.py}, \texttt{latentcov.contamination} & \texttt{contamination*.csv} \\

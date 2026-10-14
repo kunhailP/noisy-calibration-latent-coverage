@@ -309,5 +309,30 @@ def r10():
     write('r10_intermediate.tex', lines)
 
 
+def r04_mc():
+    """Comparison with existing methods: per-setting Monte Carlo intervals (r04_mc_intervals.py)."""
+    d = pd.read_csv(RES / 'competitors_mc_intervals.csv')
+    d = d[d.latent.isin(BLC)]
+    short = {'normal': 'normal', 'Laplace': 'Laplace', 'centred gamma': 'gamma',
+             'truncated exponential': 'trunc.\\ exp.', 'bimodal': 'bimodal'}
+    nshort = {'Gaussian': 'Gaussian', 'Laplace': 'Laplace', 'mixed symmetric unimodal': 'mixed'}
+    lines = []
+    for K in (110, 1000):
+        for latent in BLC:
+            for noise in ('Gaussian', 'Laplace', 'mixed symmetric unimodal'):
+                y = d[(d.K == K) & (d.latent == latent) & (d.noise == noise)].set_index('rule')
+                t, fh, lc, dc = (y.loc[r] for r in ('ours: Gaussian', 'fay_herriot', 'latentcp', 'cohen_stable'))
+                row = [f'${K}$', short[latent], nshort[noise],
+                       f'{t.reliability:.3f} ({t.rel_lo:.3f})',
+                       f'{fh.reliability:.3f} ({fh.rel_lo:.3f}, {fh.rel_hi:.3f})',
+                       f'{lc.mean_cov:.3f} ({lc.mean_cov_se:.4f})',
+                       f'{dc.mean_cov:.3f} ({dc.mean_cov_se:.4f})',
+                       f'${100 * (fh.width_ratio - 1):.1f}$ (${100 * (fh.width_lo - 1):.1f}$, ${100 * (fh.width_hi - 1):.1f}$)']
+                lines.append(' & '.join(row) + r' \\')
+        if K == 110:
+            lines.append(r'\addlinespace')
+    write('r04_mc.tex', lines)
+
+
 if __name__ == '__main__':
-    r01(), r02(), r03(), r04(), r05(), r06(), r07(), r08(), r09(), r10()
+    r01(), r02(), r03(), r04(), r04_mc(), r05(), r06(), r07(), r08(), r09(), r10()

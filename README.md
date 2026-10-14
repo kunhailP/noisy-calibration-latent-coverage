@@ -68,6 +68,7 @@ make all            # or one target at a time, as below
 | `same-information` | r02 | rules with the same information; bimodal latent law, mixed noise | minutes | `same_information_v2*` |
 | `mixed-noise` | r03 | exact stress test under mixed noise laws | minutes | `mixed_noise_stress*`, `fig_mixed_noise.*` |
 | `competitors` | r04 | comparison with existing methods (LatentCP, Fay-Herriot, deconvolution, HetLDC) | hours | `competitors_v2_hetldc*` |
+| (after `competitors`) | r04_mc_intervals | Monte Carlo intervals for R04: Wilson intervals for reliabilities, paired bootstrap for widths | seconds | `competitors_mc_intervals.csv` |
 | `data` | fetch_apipop | pinned CRAN `survey` 4.5, checked by SHA-256 | seconds | `data/apipop.pkl` |
 | `apipop` | r05 | school-district application | minutes | `apipop*` |
 | `heterogeneous` | r06 | exact check of the heterogeneous-latent corollary | seconds | `heterogeneous_latent.csv` |
