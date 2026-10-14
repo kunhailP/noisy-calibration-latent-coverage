@@ -142,14 +142,14 @@ In calibration, conditionally on the training data, $W_1, \ldots, W_K, W_{\rm ne
 \[
 \pr_{\mathcal D}\{\pr(|W_{\rm new}| \le T \mid \mathcal D) \ge q\}
 \]
-the latent reliability of rank $k$: the probability, over calibration samples, that the interval attains latent coverage $q$. A rank is valid at level $1 - \delta$ if its latent reliability is at least $1 - \delta$ for every latent law and noise configuration in the model. The usual rank is the smallest $k$ with $\pr\{\Bin(K, q) \le k - 1\} \ge 1 - \delta$ \citep{wilks1941, vovk2012}, valid when the scores are noise free. $Q_q$ denotes the lower $q$-quantile, $\Phi$ and $\phi$ the standard normal distribution function and density.
+the latent reliability of rank $k$: the probability, over calibration samples, that the interval attains latent coverage $q$. A rank is valid at level $1 - \delta$ if its latent reliability is at least $1 - \delta$ for every latent law and noise configuration in the model. The usual rank is the smallest $k$ with $\pr\{\Bin(K, q) \le k - 1\} \ge 1 - \delta$ \citep{wilks1941, vovk2012}, valid when the scores are noise free. $Q_q$ denotes the lower $q$-quantile, $\Phi$ and $\phi$ the standard normal distribution function and density. Noisy levels are written $\Psi_{\E}$ for one end of the interval, $p_{\E}$ for both ends, $p^\zeta_{\E}$ for centred residuals, $p_\xi$ for a contaminated latent law and $p_{\xi,\eta}$ when also the noise is contaminated.
 
 %=============================================================================================
 \section{Coverage transfer}\label{sec:transfer}
 
 \subsection{Unimodality does not suffice}
 
-Let $\beta_{\E} = \inf_{\epsilon \in \E}\pr(\epsilon \ge 0)$: $1/2$ for Gaussian, symmetric unimodal and median-zero noise, $\mathrm{e}^{-1}$ for mean-zero log-concave noise, attained by the centred exponential law, and $0$ for mean-zero unimodal noise.
+Let $\beta_{\E} = \inf_{\epsilon \in \E}\pr(\epsilon \ge 0)$: $1/2$ for Gaussian, symmetric unimodal and median-zero noise, $\exp(-1)$ for mean-zero log-concave noise, attained by the centred exponential law, and $0$ for mean-zero unimodal noise.
 
 \begin{proposition}\label{prop:latentshape}
 Let $\beta_{\E} > 0$ and $1 - \beta_{\E} < p < 1$. Then $\pr(|W| \le 1) \ge 1 - (1 - p)/\beta_{\E}$ for every $W$ and every noise with law in $\E$ and $\pr(|W + e| \le 1) \ge p$. If the infimum defining $\beta_{\E}$ is approached by laws continuous at $0$, then for every $\gamma > 0$ there are a unimodal $W$ with $E(W) = 0$ and such a noise with $\pr(|W| \le 1) \le 1 - (1 - p)/\beta_{\E} + \gamma$. If $\beta_{\E} = 0$, approached in the same way, then for every $p < 1$ and $\gamma > 0$ there are such $W$ and noise with $\pr(|W| \le 1) \le \gamma$.
@@ -161,20 +161,20 @@ The lower bound is that of \citet[Proposition~2.3]{guille2024}; Proposition~\ref
 
 For a class $\E$ let
 \begin{equation}\label{eq:psi}
-\Psi_{\E}(q) = \sup_{\epsilon \in \E} E\{\min(1, q \mathrm{e}^{-\epsilon})\}.
+\Psi_{\E}(q) = \sup_{\epsilon \in \E} E\{\min(1, q \exp(-\epsilon))\}.
 \end{equation}
-The extremal latent laws are exponential tails, because concavity of $\log F_Y$ limits how fast mass can accumulate below a quantile: with $X_u$ exponential with rate $u > 0$, the law of $b - X_u$ has distribution function $\min\{1, \mathrm{e}^{u(y - b)}\}$.
+The extremal latent laws are exponential tails, because concavity of $\log F_Y$ limits how fast mass can accumulate below a quantile: with $X_u$ exponential with rate $u > 0$, the law of $b - X_u$ has distribution function $\min\{1, \exp(u(y - b))\}$.
 
 \begin{proposition}\label{prop:general}
 Let $\epsilon$ have a law in $\E$ and be independent of $Y$, with $\log F_Y$ concave. If $\pr(Y + \epsilon \le 0) \ge p > \Psi_{\E}(q)$, then $F_Y(0) \ge q$. If $p < \Psi_{\E}(q)$, some exponential tail $Y$ with $F_Y(0) < q$ and some $\epsilon$ with law in $\E$ have $\pr(Y + \epsilon \le 0) > p$.
 \end{proposition}
 
 \begin{proof}
-Suppose that $v = F_Y^{-1}(q) > 0$, let $a = \log(1/q)$ and let $u$ be a supergradient of $\log F_Y$ at $v$. Then $F_Y(y) \le \min\{1, q\mathrm{e}^{u(y - v)}\}$, so the exponential tail $v + a/u - X_u$ lies stochastically below $Y$. Adding $\epsilon$ preserves this, and as $v > 0$ and $u\epsilon$ has a law in $\E$,
+Suppose that $v = F_Y^{-1}(q) > 0$, let $a = \log(1/q)$ and let $u$ be a supergradient of $\log F_Y$ at $v$. Then $F_Y(y) \le \min\{1, q\exp(u(y - v))\}$, so the exponential tail $v + a/u - X_u$ lies stochastically below $Y$. Adding $\epsilon$ preserves this, and as $v > 0$ and $u\epsilon$ has a law in $\E$,
 \[
-p \le \pr(Y + \epsilon \le 0) \le \pr(a/u - X_u + \epsilon \le 0) = E\{\min(1, q \mathrm{e}^{-u\epsilon})\} \le \Psi_{\E}(q).
+p \le \pr(Y + \epsilon \le 0) \le \pr(a/u - X_u + \epsilon \le 0) = E\{\min(1, q \exp(-u\epsilon))\} \le \Psi_{\E}(q).
 \]
-This uses $F_Y(v) = q$. Since a concave function is continuous on the interior of its domain, the only other case is an atom of mass at least $q$ at the left end $v$ of the support of $Y$; then $Y + \epsilon \le 0$ requires $\epsilon < 0$, and $p \le \pr(\epsilon < 0) \le \lim_{u\to\infty} E\{\min(1, q \mathrm{e}^{-u\epsilon})\} \le \Psi_{\E}(q)$. Conversely, $a - X_1$ with noise $\epsilon$ attains $E\{\min(1, q \mathrm{e}^{-\epsilon})\}$; shift it slightly to the right.
+This uses $F_Y(v) = q$. Since a concave function is continuous on the interior of its domain, the only other case is an atom of mass at least $q$ at the left end $v$ of the support of $Y$; then $Y + \epsilon \le 0$ requires $\epsilon < 0$, and $p \le \pr(\epsilon < 0) \le \lim_{u\to\infty} E\{\min(1, q \exp(-u\epsilon))\} \le \Psi_{\E}(q)$. Conversely, $a - X_1$ with noise $\epsilon$ attains $E\{\min(1, q \exp(-\epsilon))\}$; shift it slightly to the right.
 \end{proof}
 
 Applied to $Y = (W - t)/s$ for any scale $s > 0$, Proposition~\ref{prop:general} controls the right end of $[-t, t]$; applied to $-W$, it controls the left end. For a one-sided interval $(-\infty, t]$ it is the complete answer under concavity of $\log F_W$ alone.
@@ -188,14 +188,14 @@ p_{\E}(q) = \inf\Big\{p : \sup_{a_L, a_R \ge 0,\ a_L + a_R \le 1 - p}\{\vartheta
 Noisy coverage above $p_{\E}(q)$ at threshold $t$ gives latent coverage $q$ for every $W \in \B$ and every noise with law in $\E$ (Supplementary Lemma~\ref{S-lem:twoend}). Putting all the failure at one end shows that $\Psi_{\E}(q) \le p_{\E}(q)$, and if $\Psi_{\E}$ is convex the worst split puts the whole failure at one end, so that $p_{\E}(q) = \Psi_{\E}(q)$ (Supplementary Lemma~\ref{S-lem:convex}).
 
 \begin{theorem}\label{thm:classes}
-Let $q > \mathrm{e}^{-1}$.
-\par\noindent (i) For symmetric unimodal noise, $\Psi_{\E}(q) = (1 + q \mathrm{e}^{-r})/2$, where $r > 0$ solves $(1 + r)\mathrm{e}^{-r} = (1 + \log q)/q$, attained by uniform noise; $\Psi_{\E}$ is strictly convex, so $p_{\E}(q) = \Psi_{\E}(q)$.
+Let $q > \exp(-1)$.
+\par\noindent (i) For symmetric unimodal noise, $\Psi_{\E}(q) = \{1 + q \exp(-\varrho)\}/2$, where $\varrho > 0$ solves $(1 + \varrho)\exp(-\varrho) = (1 + \log q)/q$, attained by uniform noise; $\Psi_{\E}$ is strictly convex, so $p_{\E}(q) = \Psi_{\E}(q)$.
 \par\noindent (ii) For mean-zero unimodal noise, $\Psi_{\E}(q) = 1$.
 \end{theorem}
-Part (i) holds because symmetric unimodal laws are scale mixtures of uniform laws (Supplementary Proposition~\ref{S-prop:su-exact}). For part (ii), a noise spread uniformly over $[-a, 0]$, balanced to mean zero by a small mass far above zero, makes $E\{\min(1, q\mathrm{e}^{-\epsilon})\}$ arbitrarily close to $1$.
+Part (i) holds because symmetric unimodal laws are scale mixtures of uniform laws (Supplementary Proposition~\ref{S-prop:su-exact}). For part (ii), a noise spread uniformly over $[-a, 0]$, balanced to mean zero by a small mass far above zero, makes $E\{\min(1, q\exp(-\epsilon))\}$ arbitrarily close to $1$.
 
 \begin{proposition}[Computer-assisted]\label{prop:lc}
-For mean-zero log-concave noise, $\Psi_{\E}(q)$ is the supremum over centred log-affine laws on segments. At $q = 0.9$ it lies in $(0.90517, 0.9052)$, the lower end attained by the centred exponential law, and certified splits of the failure probability give $p_{\E}(0.9) \le 0.906$.
+With mean-zero log-concave noise, $\Psi_{\E}(q)$ is the supremum over centred log-affine laws on segments. At $q = 0.9$ it lies in $(0.90517, 0.9052)$, the lower end attained by the centred exponential law, and certified splits of the failure probability give $p_{\E}(0.9) \le 0.906$.
 \end{proposition}
 The reduction follows from the localization theorem of \citet{fradelizi2004}; the bounds come from a branch and bound in ball arithmetic, and are certified only at $q = 0.9$ (Supplementary \S\S~\ref{S-sec:s-lc} and~\ref{S-sec:s-ball}).
 
@@ -203,23 +203,23 @@ The reduction follows from the localization theorem of \citet{fradelizi2004}; th
 
 For the Gaussian class $\N$ the supremum in (\ref{eq:psi}) is over the scale only. With $a = \log(1/q)$,
 \begin{equation}\label{eq:G}
-\Psi_{\N}(q) = \sup_{s > 0} \Gamma(q, s), \qquad \Gamma(q, s) = \Phi(-a/s) + q\mathrm{e}^{s^2/2}\Phi(a/s - s).
+\Psi_{\N}(q) = \sup_{s > 0} \Gamma(q, s), \qquad \Gamma(q, s) = \Phi(-a/s) + q\exp(s^2/2)\Phi(a/s - s).
 \end{equation}
 Let $m(b) = \phi(b)/\Phi(b)$ and $A(b) = m(b)\{b + m(b)\} = 1 - \var(Z \mid Z \le b)$, which decreases strictly from $1$ to $0$ as $b$ runs over the real line \citep{sampford1953}.
 
 \begin{theorem}\label{thm:gauss}
 Consider the Gaussian class $\N$.
-\par\noindent (i) If $q \le \mathrm{e}^{-1}$, then $\Psi_{\N}(q) = 1/2$, approached as $s \to \infty$ and not attained.
-\par\noindent (ii) If $q > \mathrm{e}^{-1}$, then $\Gamma(q, \cdot)$ has a unique maximiser $s^* = m(b^*)$, where $b^*$ is the unique solution of $A(b^*) = \log(1/q)$, and
+\par\noindent (i) If $q \le \exp(-1)$, then $\Psi_{\N}(q) = 1/2$, approached as $s \to \infty$ and not attained.
+\par\noindent (ii) If $q > \exp(-1)$, then $\Gamma(q, \cdot)$ has a unique maximiser $s^* = m(b^*)$, where $b^*$ is the unique solution of $A(b^*) = \log(1/q)$, and
 \[
 \Psi_{\N}(q) = \Phi(-c) + \phi(c)/m(b^*), \qquad c = b^* + m(b^*).
 \]
-\par\noindent (iii) $\Psi_{\N}$ is continuously differentiable, with $\Psi_{\N}'(q) = \mathrm{e}^{m(b^*)^2/2}\,\Phi(b^*)$ for $q > \mathrm{e}^{-1}$, and strictly convex on $(\mathrm{e}^{-1}, 1)$. Hence $p_{\N}(q) = \Psi_{\N}(q)$ for every $q \in (\mathrm{e}^{-1}, 1)$.
+\par\noindent (iii) $\Psi_{\N}$ is continuously differentiable, with $\Psi_{\N}'(q) = \exp(m(b^*)^2/2)\,\Phi(b^*)$ for $q > \exp(-1)$, and strictly convex on $(\exp(-1), 1)$. Hence $p_{\N}(q) = \Psi_{\N}(q)$ for every $q \in (\exp(-1), 1)$.
 \end{theorem}
 
-The proof, in Supplementary \S~\ref{S-sec:s-gauss-exact}, reduces the first-order condition to $s = m(b)$, a Mills ratio of the noise, and the envelope derivative to $\mathrm{e}^{m(b)^2/2}\Phi(b)$, whose monotonicity is that of the truncated variance $\var(Z \mid Z \le b)$.
+The proof, in Supplementary \S~\ref{S-sec:s-gauss-exact}, reduces the first-order condition to $s = m(b)$, a Mills ratio of the noise, and the envelope derivative to $\exp(m(b)^2/2)\Phi(b)$, whose monotonicity is that of the truncated variance $\var(Z \mid Z \le b)$.
 
-At $q = 0.8$, $0.9$ and $0.95$, $\Psi_{\N}(q) = 0.8044106$, $0.9008035$ and $0.9501590$ to seven decimals; noisy coverage $0.9$ guarantees latent coverage $0.89918$ and no more. For Gaussian and symmetric unimodal noise the transfer is nontrivial exactly when $q > \mathrm{e}^{-1}$; for mean-zero log-concave noise $\Psi_{\E}(q) \ge 1 - \mathrm{e}^{-1}$ for every $q$, from scaled centred exponential noise. Table~\ref{tab:map} collects the levels.
+At $q = 0.8$, $0.9$ and $0.95$, $\Psi_{\N}(q) = 0.8044106$, $0.9008035$ and $0.9501590$ to seven decimals; noisy coverage $0.9$ guarantees latent coverage $0.89918$ and no more. For Gaussian and symmetric unimodal noise the transfer is nontrivial exactly when $q > \exp(-1)$; for mean-zero log-concave noise $\Psi_{\E}(q) \ge 1 - \exp(-1)$ for every $q$, from scaled centred exponential noise. Table~\ref{tab:map} collects the levels.
 
 \begin{table}[htbp]
 \renewcommand{\baselinestretch}{1}
@@ -227,7 +227,7 @@ At $q = 0.8$, $0.9$ and $0.95$, $\Psi_{\N}(q) = 0.8044106$, $0.9008035$ and $0.9
 \label{tab:map}
 \centering
 \fontsize{8.5}{10.5pt}\selectfont\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{p{3.8cm}cccccl}
+\begin{tabular}{p{3.6cm}cccccl}
 \toprule
 assumption & latent cov. & level & $K = 110$ & $K = 10^3$ & $K = 10^4$ & result \\
 \midrule
@@ -239,7 +239,7 @@ $\B$, mean-zero unimodal noise & none & $1$ & -- & -- & -- & Thm~\ref{thm:classe
 $\B_\xi$, $\xi = 1\%$, Gaussian noise & $0.8942$ & $0.90564$ & 105 & 922 & 9105 & Prop.~\ref{prop:contam} \\
 $\B_\xi$, $\xi = 5\%$, Gaussian noise & $0.8745$ & $0.92517$ & 107 & 940 & 9296 & Prop.~\ref{prop:contam} \\
 any residuals, median-zero noise & $0.8$ & $0.95$ & 109 & 962 & 9537 & Prop.~\ref{prop:latentshape} \\
-any residuals, mean-zero log-conc.\ noise & $1 - \mathrm{e}/10$ & $1 - 0.1/\mathrm{e}$ & 110 & 974 & 9664 & Prop.~\ref{prop:latentshape} \\
+any residuals, mean-zero log-conc.\ noise & $1 - \exp(1)/10$ & $1 - 0.1\exp(-1)$ & 110 & 974 & 9664 & Prop.~\ref{prop:latentshape} \\
 any residuals, $\pr(e \ge 0), \pr(e \le 0) \ge 0.3$ & $0.6666$ & $0.97$ & 110 & 980 & 9729 & Prop.~\ref{prop:latentshape} \\
 \bottomrule
 \end{tabular}
@@ -265,7 +265,7 @@ Let $r = Q_q(|W|)$ for $W \sim G$ and $N = \#\{i : |V_i| < r\}$. Then
 \[
 \pr(|W_{\rm new}| \le T \mid \mathcal D) \ge q \iff T \ge r \iff N \le k - 1.
 \]
-For $s < r$, $\pr(|W| \le s) < q$, so by the transfer of \S~\ref{sec:transfer} at threshold $s$, $\pr(|V_i| \le s) \le p$ for every $p > p_{\E}(q)$, whatever the law and scale of $e_i$; letting $s \uparrow r$, $\pr(|V_i| < r) \le p_{\E}(q)$. $N$ is a sum of independent indicators with these success probabilities, so it is stochastically smaller than $\Bin\{K, p_{\E}(q)\}$. Conversely, for $p < \Psi_{\E}(q)$ the one-ended laws of \S~\ref{sec:transfer} give a log-concave $G$ and a noise with $\pr(|V_i| < r) > p$, so the latent reliability is at most $\pr\{\Bin(K, p) \le k - 1\}$, which tends to $\pr\{\Bin(K, \Psi_{\E}(q)) \le k - 1\}$ as $p \uparrow \Psi_{\E}(q)$.
+For $t < r$, $\pr(|W| \le t) < q$, so by the transfer of \S~\ref{sec:transfer} at threshold $t$, $\pr(|V_i| \le t) \le p$ for every $p > p_{\E}(q)$, whatever the law and scale of $e_i$; letting $t \uparrow r$, $\pr(|V_i| < r) \le p_{\E}(q)$. $N$ is a sum of independent indicators with these success probabilities, so it is stochastically smaller than $\Bin\{K, p_{\E}(q)\}$. Conversely, for $p < \Psi_{\E}(q)$ the one-ended laws of \S~\ref{sec:transfer} give a log-concave $G$ and a noise with $\pr(|V_i| < r) > p$, so the latent reliability is at most $\pr\{\Bin(K, p) \le k - 1\}$, which tends to $\pr\{\Bin(K, \Psi_{\E}(q)) \le k - 1\}$ as $p \uparrow \Psi_{\E}(q)$.
 \end{proof}
 
 The bound holds unit by unit, so the noise laws and scales need not be known or shared; it uses independence of the units, not only exchangeability. For Gaussian and symmetric unimodal noise the rank is sharp: along the laws of the converse, the latent reliability of the smallest valid rank tends to exactly $1 - \delta$ as $K \to \infty$. These laws are degenerate, an exponential tail whose scale tends to zero relative to the threshold, with noise of the same order, so sharpness is an infimum that is approached but not attained; with a known lower bound on the noise relative to the threshold the needed level can only be lower, a question taken up for Gaussian noise in Supplementary \S~\ref{S-sec:s-known}. The procedure needs only $K$, $q$, $\delta$ and a noise class: take the level from Table~\ref{tab:map}, whose levels are rounded up and so are sufficient, or from the accompanying software, which returns the upper end of a certified enclosure; take $k$ as the smallest rank with $\pr\{\Bin(K, \text{level}) \le k - 1\} \ge 1 - \delta$; and report $[\hat\mu_{\rm new} - T, \hat\mu_{\rm new} + T]$ with $T = |V|_{(k)}$. A level rounded to the nearest value may be too low and lower the rank by one.
@@ -295,10 +295,10 @@ p^\zeta_{\E}(q) = \sup\{\pr(|W + e| < 1) : W \in \LC,\ |E(W)| \le \zeta,\ \pr(|W
 the supremum being also over noise laws in $\E$ and their scales. With the threshold scaled to $1$, $\zeta$ bounds the bias of the fitted centre relative to the half-width of the interval; the extremal law above has $\zeta$ close to $1$.
 
 \begin{proposition}\label{prop:centred}
-Let $\E$ be the Gaussian or the symmetric unimodal class, $\mathrm{e}^{-1} < q < 1$ and $\zeta \ge 0$.
+Let $\E$ be the Gaussian or the symmetric unimodal class, $\exp(-1) < q < 1$ and $\zeta \ge 0$.
 \par\noindent (i) If the latent residuals have a common log-concave law with $|E(W)| \le \zeta\,Q_q(|W|)$, the bound of Theorem~\ref{thm:rank} holds with $p^\zeta_{\E}(q)$ in place of $p_{\E}(q)$, for noise laws and scales in the class that differ between units.
 \par\noindent (ii) $p^\zeta_{\E}(q) = \Psi_{\E}(q)$ for $\zeta \ge 1$, and $q < p^\zeta_{\E}(q) \le \Psi_{\E}(q)$ for every $\zeta \ge 0$.
-\par\noindent (iii) In the supremum, $W$ may be restricted to point masses and to laws with density proportional to $\mathrm{e}^{-\psi}$ on a segment, with $\psi$ the maximum of at most three affine functions, and the noise to Gaussian or to uniform laws.
+\par\noindent (iii) In the supremum, $W$ may be restricted to point masses and to laws with density proportional to $\exp(-\psi)$ on a segment, with $\psi$ the maximum of at most three affine functions, and the noise to Gaussian or to uniform laws.
 \end{proposition}
 
 Part (i) is the proof of Theorem~\ref{thm:rank}, applied at $r = Q_q(|W|)$ itself. In part (ii), the extremal law above has its mean inside the interval, and a slightly tilted centred law whose density rises through the right end gains coverage from small noise, at the order of the noise variance; so the usual rank is not exactly valid even for centred residuals. Part (iii) follows from the localization theorem of \citet{fradelizi2006}, with the coverage and the two bounds on the mean as linear constraints, and reduces $p^\zeta_{\E}(q)$ to a search over six parameters (Supplementary \S~\ref{S-sec:s-centred}). Table~\ref{tab:centred} gives the values. They are numerical: each is attained by an explicit law, checked in $30$-digit arithmetic, so no lower level is valid; that it is the supremum rests on a global search, which no other log-concave law among $3700$ tried exceeded.
@@ -336,7 +336,7 @@ In the setting of \S~\ref{sec:setting}, let $W_1, \ldots, W_K, W_{\rm new}$ be i
 \end{corollary}
 
 \begin{proof}
-The first display in the proof of Theorem~\ref{thm:rank} uses only the law of $W_{\rm new}$, with $r_0$ in place of $r$. For $s < r_0 \le Q_q(|W_i|)$, $\pr(|W_i| \le s) < q$, and the transfer applied to $G_i \in \B$ and the noise of unit $i$ gives $\pr(|V_i| < r_0) \le p_{\E}(q)$.
+The first display in the proof of Theorem~\ref{thm:rank} uses only the law of $W_{\rm new}$, with $r_0$ in place of $r$. For $t < r_0 \le Q_q(|W_i|)$, $\pr(|W_i| \le t) < q$, and the transfer applied to $G_i \in \B$ and the noise of unit $i$ gives $\pr(|V_i| < r_0) \le p_{\E}(q)$.
 \end{proof}
 
 The condition says that the new unit is no harder to cover than any calibration unit at the $q$-quantile of $|W|$. It is sufficient, not necessary: a few easier calibration units are absorbed by slack in the others (Supplementary \S~\ref{S-sec:s-hetero}). It cannot simply be dropped: at the extremal law lowering every $Q_q(|W_i|)$ by a factor $1 - 5 \times 10^{-6}$ lowers the reliability to $0.094$ at $K = 10^6$, and if the new unit is a random draw from a population of units with different laws, a shape assumption on the components gives nothing, because mixtures of point masses are arbitrary laws. If the noise scale is random and the latent residual depends on it, as is common when estimation precision predicts the parameter \citep{chen2026}, the corollary applies conditionally on the scale; without that, a large noise scale exactly for units whose residual lies just outside the threshold carries them inside, as can happen when the noise variance is a function of the latent quantity, such as $\theta_i(1 - \theta_i)/n_i$ for estimated proportions.
