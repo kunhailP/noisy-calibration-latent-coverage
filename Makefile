@@ -7,7 +7,7 @@ export OMP_NUM_THREADS = 1
 export OPENBLAS_NUM_THREADS = 1
 export MKL_NUM_THREADS = 1
 
-.PHONY: test reliability same-information mixed-noise competitors data apipop heterogeneous contamination centred all tables paper
+.PHONY: misspec test reliability same-information mixed-noise competitors data apipop heterogeneous contamination centred all tables paper
 
 test:
 	$(PY) -m pytest -q
@@ -55,7 +55,11 @@ centred:
 	$(PY) experiments/r08_centred.py closure $(PROCS)
 	$(PY) experiments/r08_centred.py table
 
-all: test reliability same-information mixed-noise competitors apipop heterogeneous contamination centred
+all: test reliability same-information mixed-noise competitors apipop heterogeneous contamination centred misspec
+
+# minutes: misspecified noise class, exact reliability of the class ranks at the extremal law
+misspec:
+	$(PY) experiments/r09_noise_misspec.py $(PROCS)
 
 # tables of the Supplementary Material, written from results/ (no recomputation)
 tables:

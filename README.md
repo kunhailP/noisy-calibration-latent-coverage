@@ -12,7 +12,7 @@ renamed `latentcov`); `legacy/` keeps the certificate outputs they produced.
 ```
 src/latentcov/  interval, noise_classes (earlier version); levels, rank, gaussian, contamination, centred;
                 kv/ procedures that use known noise variances (competitors in R04, R05)
-experiments/    r01-r08, fetch_apipop.py and supp_tables.py (see below)
+experiments/    r01-r09, fetch_apipop.py and supp_tables.py (see below)
 results/        outputs of the experiments
 tests/          fast checks
 notes/          proofs and derivations (gaussian_exact, heterogeneous_latent, contamination, centred)
@@ -56,6 +56,7 @@ make all            # or one target at a time, as below
 | `heterogeneous` | r06 | exact check of the heterogeneous-latent corollary | seconds | `heterogeneous_latent.csv` |
 | `contamination` | r07 | exact reliability under contaminated bi-log-concave latent laws | seconds | `contamination*.csv` |
 | `centred` | r08 | level p_kappa(q) for centred latent residuals, adversarial check, failure K and ranks (notes/centred.md) | about an hour | `centred_levels.csv`, `centred_validation*.csv`, `centred_check3.csv`, `centred_ranks.csv` |
+| `misspec` | r09 | misspecified noise class: levels of single noise laws and the reliability of the class ranks | minutes | `noise_misspec.csv` |
 | `tables` | supp_tables | tables of the Supplementary Material, from `results/` | seconds | `paper/supp_tables/*.tex` |
 | `paper` | (pdflatex, bibtex) | `paper/main.pdf` and `paper/supplement.pdf` with cross references | a minute | `paper/` |
 

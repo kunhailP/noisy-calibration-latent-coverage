@@ -270,5 +270,22 @@ def r08():
     write('r08_centred.tex', lines)
 
 
+def r09():
+    """Misspecified noise class at q = 0.9: level bound and reliability of the class ranks (R09)."""
+    d = pd.read_csv(RES / 'noise_misspec.csv')
+    d = d[d.q == 0.9]
+    lines = []
+    for name in d.noise.unique():
+        x = d[d.noise == name]
+        g = x[x.rule == 'Gaussian'].iloc[0]
+        rel = {r: x[x.rule == r].rel_10000.iloc[0] for r in x.rule}
+        k50 = g['first_K_below_0.5']
+        row = [name, g.noise_class, f'{g.level_lower_bound:.5f}',
+               f3(rel['Gaussian']), f3(rel['symmetric unimodal']), f3(rel['mean-zero log-concave']),
+               '--' if pd.isna(k50) else f'{int(k50):,}'.replace(',', '{,}')]
+        lines.append(' & '.join(row) + r' \\')
+    write('r09_misspec.tex', lines)
+
+
 if __name__ == '__main__':
-    r01(), r02(), r03(), r04(), r05(), r06(), r07(), r08()
+    r01(), r02(), r03(), r04(), r05(), r06(), r07(), r08(), r09()
